@@ -3,7 +3,6 @@
 //
 
 package org.firstinspires.ftc.teamcode.Core;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public abstract class Mechanism extends Module{
     private String name;
@@ -15,9 +14,8 @@ public abstract class Mechanism extends Module{
 
 
     //Every mechanism should be able to do this functions
-    public abstract void robotInit();
-    public abstract void disableInit();
-
-    public abstract void robotUpdate();
-    public abstract void disableUpdate();
+    public abstract void initMechanism();
+    public abstract void stopMechanism();
+    public abstract void homeMechanism();
+    public abstract Boolean isFinished();
 }

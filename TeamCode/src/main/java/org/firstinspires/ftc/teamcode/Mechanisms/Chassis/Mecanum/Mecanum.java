@@ -11,34 +11,33 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 class Config
 {
-    public String FirstName;
-    public String LastName;
-    public int    BirthYear;
+
 };
 
 public class Mecanum extends Mechanism {
-
     public Mecanum(String modName, String modType) {
         super(modName, modType);
     }
 
     @Override
-    public void robotInit() {
+    public void initMechanism() {
 
     }
 
     @Override
-    public void disableInit() {
+    public void stopMechanism() {
 
     }
 
     @Override
-    public void robotUpdate() {
+    public void homeMechanism() {
 
     }
 
     @Override
-    public void disableUpdate() {
-
+    public Boolean isFinished() {
+        return null;
     }
+
+
 }
