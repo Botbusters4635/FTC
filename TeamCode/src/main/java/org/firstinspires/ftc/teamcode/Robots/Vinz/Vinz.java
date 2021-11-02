@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
+import android.media.audiofx.DynamicsProcessing;
+
 import org.firstinspires.ftc.teamcode.Core.Robot;
+import org.firstinspires.ftc.teamcode.Core.RobotConfig;
+import org.firstinspires.ftc.teamcode.Robots.Vinz.VinzConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
 
 public class Vinz extends Robot {
@@ -10,7 +14,8 @@ public class Vinz extends Robot {
 
 
 
-    Tank tank = new Tank("Chassis", "Mechanism", );
+
+
 
     @Override
     public void robotInit() {

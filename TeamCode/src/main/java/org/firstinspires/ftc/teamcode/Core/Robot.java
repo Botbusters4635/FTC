@@ -9,7 +9,6 @@ public abstract class Robot extends Module{
 
     public Robot(String modName, String modType) {
         super(modName, modType);
-        Module mod = new Module("Chassis", "System");
     }
 
     //Every Robot should be able to do this functions
