@@ -1,10 +1,8 @@
-//
-// Created by Neil Rodriguez 10/28/2021
-//
+package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
-package org.firstinspires.ftc.teamcode.Core;
+import org.firstinspires.ftc.teamcode.Core.Module;
 
-public abstract class Mechanism extends Module{
+public abstract class Mechanism extends Module {
 
     private String name;
 
@@ -19,5 +17,5 @@ public abstract class Mechanism extends Module{
     public abstract void setUpMechanism();
     public abstract void stopMechanism();
     public abstract void homeMechanism();
-    public abstract Boolean isFinished(Boolean state);
+    public abstract Boolean isFinished();
 }

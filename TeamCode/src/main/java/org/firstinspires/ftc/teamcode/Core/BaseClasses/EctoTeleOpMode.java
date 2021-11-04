@@ -2,14 +2,12 @@
 // Created by Neil Rodriguez 10/28/2021
 //
 
-package org.firstinspires.ftc.teamcode.OpModes.TeleOp;
+package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.lang.annotation.Annotation;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
-
-public class EctoTeleOpMode implements TeleOp {
+abstract public class EctoTeleOpMode implements TeleOp {
     @Override
 
     public String name() {
@@ -25,4 +23,6 @@ public class EctoTeleOpMode implements TeleOp {
     public Class<? extends Annotation> annotationType() {
         return null;
     }
+
+
 }

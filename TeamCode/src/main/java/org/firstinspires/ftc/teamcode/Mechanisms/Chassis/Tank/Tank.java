@@ -6,23 +6,28 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank;
 
 //MotorLib
 import com.arcrobotics.ftclib.controller.PIDFController;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 //Team code
-import org.firstinspires.ftc.teamcode.Core.Mechanism;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.Mechanism;
 
 public class Tank extends Mechanism {
 
     public static class TankConfig {
 
-        public MotorEx fL, fR;
-        public MotorEx bL, bR;
+        public Motor frontLeft, backLeft;
+        public Motor frontRight, backRight;
 
-        public int numberOfMotorsPerSide = 2;
+        public MotorGroup leftMotors = new MotorGroup(frontLeft, backLeft);
+        public MotorGroup rightMotors = new MotorGroup(frontRight, backRight);
+
+        public MotorGroup allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
+
+        public DifferentialDrive tank = new DifferentialDrive(leftMotors, rightMotors);
+
+        public int homePosition = 0;
 
         public int positionTolerance = 0;
         public int velocityTolerance = 0;
@@ -38,63 +43,43 @@ public class Tank extends Mechanism {
         super(modName, modType);
     }
 
-    TankConfig config;
+    TankConfig tankConfig;
 
-    public List<MotorEx> leftMotors = new ArrayList<MotorEx>();
-    public List<MotorEx> rightMotors = new ArrayList<MotorEx>();
 
-    PIDFController pidf = new PIDFController(config.p, config.i, config.d, config.f);
+    PIDFController pidfController = new PIDFController(tankConfig.p, tankConfig.i, tankConfig.d, tankConfig.f);
+
+    public void setPercentage(double left, double right) {
+        tankConfig.allMotors.setRunMode(Motor.RunMode.RawPower);
+        tankConfig.tank.tankDrive(left, right);
+    }
 
     @Override
     public void setUpMechanism() {
-        leftMotors.add(config.fR);
-        leftMotors.add(config.fL);
-
-        rightMotors.add(config.bR);
-        rightMotors.add(config.bL);
-
-        pidf.setTolerance(config.positionTolerance, config.velocityTolerance);
-
+        tankConfig.allMotors.setRunMode(Motor.RunMode.RawPower);
+        pidfController.setTolerance(tankConfig.positionTolerance, tankConfig.velocityTolerance);
 
     }
 
     @Override
     public void stopMechanism() {
-        for(int i=0;  i<config.numberOfMotorsPerSide;  i++){
-            leftMotors.get(i).stopMotor();
-            rightMotors.get(i).stopMotor();
-        }
+        tankConfig.tank.stop();
     }
 
     @Override
     public void homeMechanism() {
 
-        for(int i=0; i<config.numberOfMotorsPerSide; i++){
-            leftMotors.get(i).setTargetPosition(0);
-            rightMotors.get(i).setTargetPosition(0);
+        tankConfig.allMotors.setRunMode(Motor.RunMode.PositionControl);
+        tankConfig.allMotors.setTargetPosition(tankConfig.homePosition);
+
+        while (!tankConfig.allMotors.atTargetPosition()){
+            tankConfig.allMotors.set(0.75);
         }
-
-        while (!pidf.atSetPoint()){
-
-            double output = pidf.calculate(
-                    leftMotors.get(0).getCurrentPosition()
-            );
-
-            for(int i=0;i<config.numberOfMotorsPerSide;i++){
-                leftMotors.get(i).setVelocity(output);
-                rightMotors.get(i).setVelocity(output);
-            }
-
-        }
-
-
-
 
     }
 
     @Override
-    public Boolean isFinished(Boolean state) {
-        return state;
+    public Boolean isFinished() {
+        return true;
     }
 
 
