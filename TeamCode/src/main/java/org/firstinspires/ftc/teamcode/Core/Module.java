@@ -6,15 +6,18 @@ package org.firstinspires.ftc.teamcode.Core;
 
 import android.util.Log;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Module {
     private String modName;
     private String modType;
 
+    private Telemetry te
 
-    public Module(String modName, String modType) {
-        this.modName = modName;
-        this.modType = modType;
-        Log.i("Creating " + modType + " ", "Module name: " + modName);
+    public Module(String moduleName, String moduleType) {
+        this.modName = moduleName;
+        this.modType = moduleType;
+        Log.i("Creating " + moduleType + " ", "Module name: " + moduleName);
     }
 
 

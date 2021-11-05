@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //Team code
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.Mechanism;
@@ -26,8 +27,6 @@ public class Tank extends Mechanism {
         public MotorGroup allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
 
         public DifferentialDrive tank = new DifferentialDrive(leftMotors, rightMotors);
-
-        public int homePosition = 0;
 
         public int positionTolerance = 0;
         public int velocityTolerance = 0;
@@ -54,9 +53,19 @@ public class Tank extends Mechanism {
     }
 
     @Override
-    public void setUpMechanism() {
+    public void initMechanism() {
         tankConfig.allMotors.setRunMode(Motor.RunMode.RawPower);
         pidfController.setTolerance(tankConfig.positionTolerance, tankConfig.velocityTolerance);
+
+    }
+
+    @Override
+    public void startMechanism() {
+
+    }
+
+    @Override
+    public void updateMechanism() {
 
     }
 
@@ -65,22 +74,17 @@ public class Tank extends Mechanism {
         tankConfig.tank.stop();
     }
 
-    @Override
-    public void homeMechanism() {
-
-        tankConfig.allMotors.setRunMode(Motor.RunMode.PositionControl);
-        tankConfig.allMotors.setTargetPosition(tankConfig.homePosition);
-
-        while (!tankConfig.allMotors.atTargetPosition()){
-            tankConfig.allMotors.set(0.75);
-        }
-
-    }
-
-    @Override
-    public Boolean isFinished() {
-        return true;
-    }
+//    @Override
+//    public void homeMechanism() {
+//PARA CUANDO NECECITES LO DE POSISCION
+//        tankConfig.allMotors.setRunMode(Motor.RunMode.PositionControl);
+//        tankConfig.allMotors.setTargetPosition(tankConfig.homePosition);
+//
+//        while (!tankConfig.allMotors.atTargetPosition()){
+//            tankConfig.allMotors.set(0.75);
+//        }
+//
+//    }
 
 
 }
