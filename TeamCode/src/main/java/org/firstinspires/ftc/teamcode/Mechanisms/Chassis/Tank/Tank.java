@@ -8,70 +8,69 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //Team code
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.Mechanism;
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
-public class Tank extends Mechanism {
+public class Tank extends EctoMechanism {
 
-    public static class TankConfig {
-
-        public Motor frontLeft, backLeft;
-        public Motor frontRight, backRight;
-
-        public MotorGroup leftMotors = new MotorGroup(frontLeft, backLeft);
-        public MotorGroup rightMotors = new MotorGroup(frontRight, backRight);
-
-        public MotorGroup allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
-
-        public DifferentialDrive tank = new DifferentialDrive(leftMotors, rightMotors);
-
-        public int positionTolerance = 0;
-        public int velocityTolerance = 0;
-
-        public int p = 0;
-        public int i = 0;
-        public int d = 0;
-        public int f = 0;
-
-    }
-
-    public Tank(String modName, String modType) {
+    public Tank(String modName, String modType, TankConfig config) {
         super(modName, modType);
+        tankConfig = config;
     }
 
     TankConfig tankConfig;
 
+    public Motor frontLeft, backLeft;
+    public Motor frontRight, backRight;
+
+    public MotorGroup leftMotors;
+    public MotorGroup rightMotors;
+
+    public MotorGroup allMotors;
+
+    public DifferentialDrive tank;
 
     PIDFController pidfController = new PIDFController(tankConfig.p, tankConfig.i, tankConfig.d, tankConfig.f);
 
-    public void setPercentage(double left, double right) {
-        tankConfig.allMotors.setRunMode(Motor.RunMode.RawPower);
-        tankConfig.tank.tankDrive(left, right);
+    public void setMotorPower(float left, float right) {
+        allMotors.setRunMode(Motor.RunMode.RawPower);
+        tank.tankDrive(left, right);
     }
 
     @Override
     public void initMechanism() {
-        tankConfig.allMotors.setRunMode(Motor.RunMode.RawPower);
+
+        allMotors.setRunMode(Motor.RunMode.RawPower);
         pidfController.setTolerance(tankConfig.positionTolerance, tankConfig.velocityTolerance);
 
+        //Motor Setup
+        frontLeft = new MotorEx(hardwareMap, tankConfig.getfrontLeftId, TankConfig.getGobildaType);
+        backLeft = new MotorEx(hardwareMap, tankConfig.getbackLeftId, TankConfig.getGobildaType);
+        frontRight = new MotorEx(hardwareMap, tankConfig.getfrontRightId, TankConfig.getGobildaType);
+        backRight = new MotorEx(hardwareMap, tankConfig.getbackRightId, TankConfig.getGobildaType);
+
+        leftMotors = new MotorGroup(frontLeft, backLeft);
+        rightMotors = new MotorGroup(frontRight, backRight);
+
+        allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
+
+        tank = new DifferentialDrive(leftMotors, rightMotors);
     }
 
     @Override
-    public void startMechanism() {
-
-    }
+    public void startMechanism() {}
 
     @Override
     public void updateMechanism() {
-
+    //Ododmetria para cuando quiera
     }
 
     @Override
     public void stopMechanism() {
-        tankConfig.tank.stop();
+        tank.stop();
     }
 
 //    @Override

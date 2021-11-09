@@ -1,22 +1,25 @@
+//
+// Created by Neil Rodriguez 10/28/2021
+//
+
 package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Core.Module;
 
-public abstract class Mechanism extends Module {
+public abstract class EctoMechanism extends Module {
 
     private String name;
 
     protected Telemetry telemetry;
     protected HardwareMap hardwareMap;
 
-    public Mechanism(String moduleName, String moduleType) {
+    public EctoMechanism(String moduleName, String moduleType) {
         super(moduleName, moduleType);
     }
 
-    public void setupMechanism(HardwareMap hardwareMap, Telemetry telemetry){
+    public void initMechanism(HardwareMap hardwareMap, Telemetry telemetry){
         this.telemetry = telemetry;
         this.hardwareMap = hardwareMap;
     }
