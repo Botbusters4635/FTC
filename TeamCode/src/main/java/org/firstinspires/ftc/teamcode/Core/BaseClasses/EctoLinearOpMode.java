@@ -7,4 +7,5 @@ abstract public class EctoLinearOpMode extends EctoOpMode{
     Boolean isActive;
 
 
+
 }

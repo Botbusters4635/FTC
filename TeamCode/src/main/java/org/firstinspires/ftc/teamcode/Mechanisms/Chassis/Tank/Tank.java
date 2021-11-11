@@ -47,10 +47,10 @@ public class Tank extends EctoMechanism {
         pidfController.setTolerance(tankConfig.positionTolerance, tankConfig.velocityTolerance);
 
         //Motor Setup
-        frontLeft = new MotorEx(hardwareMap, tankConfig.getfrontLeftId, TankConfig.getGobildaType);
-        backLeft = new MotorEx(hardwareMap, tankConfig.getbackLeftId, TankConfig.getGobildaType);
-        frontRight = new MotorEx(hardwareMap, tankConfig.getfrontRightId, TankConfig.getGobildaType);
-        backRight = new MotorEx(hardwareMap, tankConfig.getbackRightId, TankConfig.getGobildaType);
+        frontLeft = new MotorEx(hardwareMap, tankConfig.getfrontLeftId, tankConfig.getGobildaType);
+        backLeft = new MotorEx(hardwareMap, tankConfig.getbackLeftId, tankConfig.getGobildaType);
+        frontRight = new MotorEx(hardwareMap, tankConfig.getfrontRightId, tankConfig.getGobildaType);
+        backRight = new MotorEx(hardwareMap, tankConfig.getbackRightId, tankConfig.getGobildaType);
 
         leftMotors = new MotorGroup(frontLeft, backLeft);
         rightMotors = new MotorGroup(frontRight, backRight);
@@ -59,6 +59,8 @@ public class Tank extends EctoMechanism {
 
         tank = new DifferentialDrive(leftMotors, rightMotors);
     }
+
+
 
     @Override
     public void startMechanism() {}

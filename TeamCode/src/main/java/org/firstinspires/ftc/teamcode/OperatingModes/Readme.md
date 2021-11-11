@@ -1,1 +1,0 @@
-This "Operating Modes" are like the robots in the FRC code, this si where everything is going to 

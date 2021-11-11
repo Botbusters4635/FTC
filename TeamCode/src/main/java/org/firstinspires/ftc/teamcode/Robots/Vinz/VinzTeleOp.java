@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OperatingModes.TeleOp;
+package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
-import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.TankConfig;
+import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @TeleOp(name = "TeleOp")
 class VinzTeleOp extends EctoOpMode {
@@ -15,6 +15,7 @@ class VinzTeleOp extends EctoOpMode {
     MechanismManager mechanismManager;
 
     Tank chassis = new Tank("Chassis-Tank", "Mechanism", config.tankConfig);
+    Spinner spinner = new Spinner("Spinner", "Mechanism", config.spinnerConfig);
 
     GamepadEx driverGamepad = new GamepadEx(gamepad1);
 
