@@ -1,18 +1,21 @@
+//
+// Created by Diego Villanueva 11/11/21
+//
+
 package org.firstinspires.ftc.teamcode.Mechanisms.Spinner;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
 public class Spinner extends EctoMechanism {
 
-    public Spinner(String moduleName, String moduleType, SpinnerConfiguration config) {
+    public Spinner(String moduleName, String moduleType, SpinnerConfig config) {
         super(moduleName, moduleType);
         spinnerConfig = config;
     }
 
-    SpinnerConfiguration spinnerConfig;
+    SpinnerConfig spinnerConfig;
     Motor spinnerMotor;
 
     public void turnOnMotor() {
@@ -22,7 +25,7 @@ public class Spinner extends EctoMechanism {
     @Override
     public void initMechanism() {
         spinnerMotor.setRunMode(Motor.RunMode.RawPower);
-        spinnerMotor = new Motor(hardwareMap, spinnerConfig.getSpinnerMotorId, spinnerConfig.getSpinnerMotorType);
+        spinnerMotor = new Motor(hardwareMap, spinnerConfig.getSpinnerMotorId, spinnerConfig.getGobildaType);
     }
 
     @Override

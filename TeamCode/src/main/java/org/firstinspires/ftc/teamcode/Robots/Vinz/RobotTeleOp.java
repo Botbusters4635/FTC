@@ -9,19 +9,20 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @TeleOp(name = "TeleOp")
-class VinzTeleOp extends EctoOpMode {
+class RobotTeleOp extends EctoOpMode {
 
-    RobotConfig config;
     MechanismManager mechanismManager;
 
-    Tank chassis = new Tank("Chassis-Tank", "Mechanism", config.tankConfig);
-    Spinner spinner = new Spinner("Spinner", "Mechanism", config.spinnerConfig);
+    Tank chassis = new Tank("Chassis-Tank", "Mechanism", RobotConfig.tankConfig);
+    Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
     GamepadEx driverGamepad = new GamepadEx(gamepad1);
+    GamepadEx manipulatorGamepad = new GamepadEx(gamepad2);
 
     @Override
     public void startRobot() {
         mechanismManager.addMechanism(chassis);
+        mechanismManager.addMechanism(spinner);
         //mechanismManager.addMechanism(arm);
         //mechanismManager.addMechanism(intake);
     }
@@ -40,6 +41,8 @@ class VinzTeleOp extends EctoOpMode {
         }
 
         //Manipulator Driver
-
+        if (manipulatorGamepad.gamepad.dpad_down){
+            spinner.turnOnMotor();
+        }
     }
 }
