@@ -71,8 +71,8 @@ public class Tank extends EctoMechanism {
     }
 
     @Override
-    public void stopMechanism() {
-        tank.stop();
+        public void stopMechanism() {
+            tank.stop();
     }
 
 //    @Override
