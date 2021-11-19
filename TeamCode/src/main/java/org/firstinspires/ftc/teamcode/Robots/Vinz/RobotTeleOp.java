@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
+import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
@@ -13,7 +14,8 @@ class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 
-    Tank chassis = new Tank("Chassis-Tank", "Mechanism", RobotConfig.tankConfig);
+    Tank chassis = new Tank("ChassisTank", "Mechanism", RobotConfig.tankConfig);
+    Mecanum chasses = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.tankConfig);
     Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
     GamepadEx driverGamepad = new GamepadEx(gamepad1);
