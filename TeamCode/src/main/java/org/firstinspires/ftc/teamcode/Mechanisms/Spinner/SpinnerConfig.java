@@ -1,14 +1,17 @@
-
+/
+// Created by Diego Villanueva 11/11/21
 package org.firstinspires.ftc.teamcode.Mechanisms.Spinner;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
-import org.firstinspires.ftc.teamcode.Mechanisms.intake.SpinnerConfig;
+public class SpinnerConfig {
 
-public class Spinner extends EctoMechanism {
-
-    public Spinner(String moduleName, String moduleType, org.firstinspires.ftc.teamcode.Mechanisms.intake.SpinnerConfig config) {
-        super(moduleName, moduleType);
-        spinnerConfig = config;
+    public SpinnerConfig(String spinnerMotorId, Motor.GoBILDA GobildaMotorType) {
+        getSpinnerMotorId = spinnerMotorId;
+        getGobildaType = GobildaMotorType;
     }
+
+    String getSpinnerMotorId;
+    Motor.GoBILDA getGobildaType;
+
+}

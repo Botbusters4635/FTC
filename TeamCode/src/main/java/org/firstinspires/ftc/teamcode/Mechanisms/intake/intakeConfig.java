@@ -1,15 +1,19 @@
-
-package org.firstinspires.ftc.teamcode.Mechanisms.intake;
+/
+// Created by Diego Villanueva 11/11/21
+//
+package org.firstinspires.ftc.teamcode.Mechanisms.Spinner;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
-import org.firstinspires.ftc.teamcode.Mechanisms.intake.IntakeConfig;
+public class IntakeConfig {
 
-public class Intake extends EctoMechanism {
-
-    public Intake (String moduleName, String moduleType, org.firstinspires.ftc.teamcode.Mechanisms.intake.IntakeConfig config) {
-        super(moduleName, moduleType);
-
-        intakeConfig = config;
+    public IntakeConfig(String IntakeMotorId, Motor.GoBILDA GobildaMotorType) {
+        getIntakeMotorId = IntakeMotorId;
+        getGobildaType = GobildaMotorType;
     }
+
+    String getIntakeMotorId;
+    Motor.GoBILDA getGobildaType;
+
+}
+

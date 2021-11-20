@@ -16,12 +16,10 @@ public class Intake extends EctoMechanism {
     IntakeConfig intakeConfig;
     Motor intakeMotor;
 
-    public void turnOnMotor() {
+    public void turnOn(){
 
-        if(boton = pressed) {
-            move brazo to 0;
             intakeMotor.set(1);
-        }
+
     }
 
     @Override
