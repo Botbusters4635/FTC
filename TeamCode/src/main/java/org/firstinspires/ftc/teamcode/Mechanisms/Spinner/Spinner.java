@@ -18,8 +18,8 @@ public class Spinner extends EctoMechanism {
     SpinnerConfig spinnerConfig;
     Motor spinnerMotor;
 
-    public void turnOnMotor() {
-        spinnerMotor.set(1);
+    public void turnOn(double percentagePower) {
+        spinnerMotor.set(percentagePower);
     }
 
     @Override

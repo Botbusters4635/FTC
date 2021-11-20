@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
-import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
+import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @TeleOp(name = "TeleOp")
@@ -13,18 +13,18 @@ class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 
-    Tank chassis = new Tank("Chassis-Tank", "Mechanism", RobotConfig.tankConfig);
+    Mecanum chassis = new Mecanum("MecanumTank", "Mechanism", RobotConfig.mecanumConfig);
     Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
-    GamepadEx driverGamepad = new GamepadEx(gamepad1);
-    GamepadEx manipulatorGamepad = new GamepadEx(gamepad2);
+    GamepadEx driverController = new GamepadEx(gamepad1);
+    GamepadEx manipulatorController = new GamepadEx(gamepad2);
 
     @Override
     public void startRobot() {
         mechanismManager.addMechanism(chassis);
         mechanismManager.addMechanism(spinner);
-        //mechanismManager.addMechanism(arm);
-        //mechanismManager.addMechanism(intake);
+//        mechanismManager.addMechanism(arm);
+//        mechanismManager.addMechanism(intake);
     }
 
     @Override
@@ -36,13 +36,17 @@ class RobotTeleOp extends EctoOpMode {
     public void updateRobot(Double timeStep) {
 
         //Chassis Driver
-        if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightY() != 0){
-            chassis.setMotorPower(gamepad1.left_stick_x, gamepad1.right_stick_x);
+        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0){
+            chassis.setChassisMovement(
+                    driverController.getLeftX(),
+                    driverController.getLeftY(),
+                    driverController.getRightX()
+            );
         }
 
         //Manipulator Driver
-        if (manipulatorGamepad.gamepad.dpad_down){
-            spinner.turnOnMotor();
+        if (manipulatorController.gamepad.dpad_down){
+            spinner.turnOn(0.8);
         }
     }
 }

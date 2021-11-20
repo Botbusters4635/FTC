@@ -28,6 +28,11 @@ public class Mecanum extends EctoMechanism {
 
     public MecanumDrive mecanum;
 
+    public void setChassisMovement(double strafeSpeed, double forwardSpeed, double turnSpeed) {
+        allMotors.setRunMode(Motor.RunMode.RawPower);
+        mecanum.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
+    }
+
     @Override
     public void initMechanism() {
         allMotors.setRunMode(Motor.RunMode.RawPower);
@@ -44,14 +49,10 @@ public class Mecanum extends EctoMechanism {
     }
 
     @Override
-    public void startMechanism() {
-
-    }
+    public void startMechanism() {}
 
     @Override
-    public void updateMechanism() {
-
-    }
+    public void updateMechanism() {}
 
     @Override
     public void stopMechanism() {
