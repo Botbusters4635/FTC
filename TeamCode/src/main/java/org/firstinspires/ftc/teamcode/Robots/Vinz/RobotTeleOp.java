@@ -14,8 +14,7 @@ class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 
-    Tank chassis = new Tank("ChassisTank", "Mechanism", RobotConfig.tankConfig);
-    Mecanum chasses = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.tankConfig);
+    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
     Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
     GamepadEx driverGamepad = new GamepadEx(gamepad1);
@@ -39,12 +38,11 @@ class RobotTeleOp extends EctoOpMode {
 
         //Chassis Driver
         if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightY() != 0){
-            chassis.setMotorPower(gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
 
         //Manipulator Driver
         if (manipulatorGamepad.gamepad.dpad_down){
-            spinner.turnOnMotor();
+            spinner.turnOn(0.8);
         }
     }
 }
