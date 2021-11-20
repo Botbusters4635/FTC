@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.TankConfig;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.SpinnerConfig;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.intake.intakeConfig ;
+import org.firstinspires.ftc.teamcode.Mechanisms.Intake.IntakeConfig;
 
 public class RobotConfig {
 

@@ -1,14 +1,12 @@
 
-package org.firstinspires.ftc.teamcode.Mechanisms.Spinner;
+package org.firstinspires.ftc.teamcode.Mechanisms.Intake;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
-import org.firstinspires.ftc.teamcode.Mechanisms.intake.IntakeConfig;
 
 public class Intake extends EctoMechanism {
 
-    public Intake (String moduleName, String moduleType, org.firstinspires.ftc.teamcode.Mechanisms.intake.IntakeConfig config) {
+    public Intake (String moduleName, String moduleType, org.firstinspires.ftc.teamcode.Mechanisms.Intake.IntakeConfig config) {
         super(moduleName, moduleType);
         intakeConfig = config;
     }
@@ -16,10 +14,8 @@ public class Intake extends EctoMechanism {
     IntakeConfig intakeConfig;
     Motor intakeMotor;
 
-    public void turnOn(int vel){
-        vel = 1;
-        intakeMotor.set(vel);
-
+    public void turnOn(int powerPecentage){
+        intakeMotor.set(powerPecentage);
     }
 
     @Override

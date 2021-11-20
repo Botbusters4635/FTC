@@ -16,10 +16,11 @@ public class Spinner extends EctoMechanism {
     }
 
     SpinnerConfig spinnerConfig;
+
     Motor spinnerMotor;
 
-    public void turnOnMotor() {
-        spinnerMotor.set(1);
+    public void turnOn(double powerPecentage) {
+        spinnerMotor.set(powerPecentage);
     }
 
     @Override
