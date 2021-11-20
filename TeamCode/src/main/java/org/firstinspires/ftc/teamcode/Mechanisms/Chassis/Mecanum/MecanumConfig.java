@@ -9,7 +9,6 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 public class MecanumConfig {
 
-
     public MecanumConfig(String frontLeftId, String backLeftId, String frontRightId, String backRightId, Motor.GoBILDA GobildaMotorType) {
 
         getfrontLeftId = frontLeftId;
@@ -18,6 +17,7 @@ public class MecanumConfig {
         getbackRightId = backRightId;
 
         getGobildaType = GobildaMotorType;
+
     }
 
     public String getfrontLeftId;

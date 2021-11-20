@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
+import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @TeleOp(name = "TeleOp")
@@ -13,7 +14,8 @@ class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 
-    Mecanum chassis = new Mecanum("MecanumTank", "Mechanism", RobotConfig.mecanumConfig);
+    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
     Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
     GamepadEx driverController = new GamepadEx(gamepad1);
@@ -48,5 +50,6 @@ class RobotTeleOp extends EctoOpMode {
         if (manipulatorController.gamepad.dpad_down){
             spinner.turnOn(0.8);
         }
+      
     }
 }
