@@ -15,17 +15,18 @@ class RobotTeleOp extends EctoOpMode {
     MechanismManager mechanismManager;
 
     Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
     Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
 
-    GamepadEx driverGamepad = new GamepadEx(gamepad1);
-    GamepadEx manipulatorGamepad = new GamepadEx(gamepad2);
+    GamepadEx driverController = new GamepadEx(gamepad1);
+    GamepadEx manipulatorController = new GamepadEx(gamepad2);
 
     @Override
     public void startRobot() {
         mechanismManager.addMechanism(chassis);
         mechanismManager.addMechanism(spinner);
-        //mechanismManager.addMechanism(arm);
-        //mechanismManager.addMechanism(intake);
+//        mechanismManager.addMechanism(arm);
+//        mechanismManager.addMechanism(intake);
     }
 
     @Override
@@ -37,12 +38,18 @@ class RobotTeleOp extends EctoOpMode {
     public void updateRobot(Double timeStep) {
 
         //Chassis Driver
-        if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightY() != 0){
+        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0){
+            chassis.setChassisMovement(
+                    driverController.getLeftX(),
+                    driverController.getLeftY(),
+                    driverController.getRightX()
+            );
         }
 
         //Manipulator Driver
-        if (manipulatorGamepad.gamepad.dpad_down){
+        if (manipulatorController.gamepad.dpad_down){
             spinner.turnOn(0.8);
         }
+      
     }
 }

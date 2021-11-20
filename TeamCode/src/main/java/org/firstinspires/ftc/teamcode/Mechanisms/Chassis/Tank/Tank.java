@@ -35,7 +35,7 @@ public class Tank extends EctoMechanism {
 
     PIDFController pidfController = new PIDFController(tankConfig.p, tankConfig.i, tankConfig.d, tankConfig.f);
 
-    public void setMotorPower(float left, float right) {
+    public void setChassisMovement(float left, float right) {
         allMotors.setRunMode(Motor.RunMode.RawPower);
         tank.tankDrive(left, right);
     }
@@ -71,8 +71,8 @@ public class Tank extends EctoMechanism {
     }
 
     @Override
-    public void stopMechanism() {
-        tank.stop();
+        public void stopMechanism() {
+            tank.stop();
     }
 
 //    @Override
