@@ -14,7 +14,7 @@ abstract public class EctoOpMode extends OpMode {
 
     int updateRate = 10; //Milliseconds
 
-    public MechanismManager mechanismManager = new MechanismManager(telemetry, hardwareMap);
+    public MechanismManager mechanismManager = new MechanismManager();
 
     @Override
     public final void start() {

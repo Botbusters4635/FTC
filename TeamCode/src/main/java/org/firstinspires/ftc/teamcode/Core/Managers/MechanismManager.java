@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 public class MechanismManager {
     //CONSTRUCTORS
+
+    public MechanismManager() {}
+
     public MechanismManager(Telemetry telemetry, HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
