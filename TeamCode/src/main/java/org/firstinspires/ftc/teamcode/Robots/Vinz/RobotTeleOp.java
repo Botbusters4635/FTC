@@ -6,31 +6,31 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
-import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
-import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
+
 
 @TeleOp(name = "TeleOp")
 public class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 
-    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+    Mecanum chassis;
 
-    Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
-
-    GamepadEx driverController = new GamepadEx(gamepad1);
-    GamepadEx manipulatorController = new GamepadEx(gamepad2);
+    GamepadEx driverController;
 
     @Override
     public void startRobot() {
+
         mechanismManager.addMechanism(chassis);
-        mechanismManager.addMechanism(spinner);
-//        mechanismManager.addMechanism(arm);
-//        mechanismManager.addMechanism(intake);
+
     }
 
     @Override
     public void initRobot() {
+        mechanismManager = new MechanismManager(telemetry, hardwareMap);
+
+        chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
+        driverController = new GamepadEx(gamepad1);
 
     }
 
@@ -46,10 +46,6 @@ public class RobotTeleOp extends EctoOpMode {
             );
         }
 
-        //Manipulator Driver
-        if (manipulatorController.gamepad.dpad_down){
-            spinner.turnOn(0.8);
-        }
-      
+
     }
 }
