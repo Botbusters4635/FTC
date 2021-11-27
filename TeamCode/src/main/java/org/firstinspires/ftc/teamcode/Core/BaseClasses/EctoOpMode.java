@@ -5,6 +5,7 @@
 package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 
 abstract public class EctoOpMode extends OpMode {
@@ -13,22 +14,22 @@ abstract public class EctoOpMode extends OpMode {
 
     int updateRate = 10; //Milliseconds
 
-    MechanismManager mechanismManager;
+    public MechanismManager mechanismManager = new MechanismManager(telemetry, hardwareMap);
 
     @Override
-    public final void start(){
+    public final void start() {
         lastTimeRunned = getRuntime();
         mechanismManager.startMechanisms();
         startRobot();
     }
-    
+
     @Override
     public final void init() {
-            initRobot();
-            telemetry.setMsTransmissionInterval(updateRate);
-            mechanismManager.telemetry = telemetry;
-            mechanismManager.hardwareMap = hardwareMap;
-            mechanismManager.initMechanisms();
+        initRobot();
+        telemetry.setMsTransmissionInterval(updateRate);
+        mechanismManager.telemetry = telemetry;
+        mechanismManager.hardwareMap = hardwareMap;
+        mechanismManager.initMechanisms();
     }
 
     @Override
@@ -38,8 +39,10 @@ abstract public class EctoOpMode extends OpMode {
         lastTimeRunned = getRuntime();
         updateRobot(timeStep);
     }
-    
-    public final void stop(){ mechanismManager.stopMechanisms(); }
+
+    public final void stop() {
+        mechanismManager.stopMechanisms();
+    }
 
 
     abstract public void startRobot();

@@ -11,34 +11,27 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 @TeleOp(name = "TeleOp")
 public class RobotTeleOp extends EctoOpMode {
 
-    MechanismManager mechanismManager;
+    //Mechanisms
+    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
 
-    Mecanum chassis;
 
-    GamepadEx driverController;
-
-    @Override
-    public void startRobot() {
-
-        mechanismManager.addMechanism(chassis);
-
-    }
+    //Controllers
+    GamepadEx driverController = new GamepadEx(gamepad1);
 
     @Override
     public void initRobot() {
-        mechanismManager = new MechanismManager(telemetry, hardwareMap);
+        mechanismManager.addMechanism(chassis);
+    }
 
-        chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
-
-        driverController = new GamepadEx(gamepad1);
-
+    @Override
+    public void startRobot() {
     }
 
     @Override
     public void updateRobot(Double timeStep) {
 
         //Chassis Driver
-        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0){
+        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0) {
             chassis.setChassisMovement(
                     driverController.getLeftX(),
                     driverController.getLeftY(),
