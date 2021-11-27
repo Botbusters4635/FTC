@@ -10,8 +10,6 @@ import org.firstinspires.ftc.teamcode.Core.Module;
 
 public abstract class EctoMechanism extends Module {
 
-    private String name;
-
     protected Telemetry telemetry;
     protected HardwareMap hardwareMap;
 
