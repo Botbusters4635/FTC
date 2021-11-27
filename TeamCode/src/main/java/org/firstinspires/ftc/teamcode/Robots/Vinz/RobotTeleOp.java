@@ -21,6 +21,7 @@ public class RobotTeleOp extends EctoOpMode {
     @Override
     public void initRobot() {
         mechanismManager.addMechanism(chassis);
+
     }
 
     @Override
