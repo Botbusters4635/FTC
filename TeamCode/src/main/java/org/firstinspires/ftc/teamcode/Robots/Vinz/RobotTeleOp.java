@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @TeleOp(name = "TeleOp")
-class RobotTeleOp extends EctoOpMode {
+public class RobotTeleOp extends EctoOpMode {
 
     MechanismManager mechanismManager;
 

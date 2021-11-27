@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Intake.IntakeConfig;
 public class RobotConfig {
 
     //Chassis Config
-    static public TankConfig tankConfig = new TankConfig("frontLeftMotor", "backLeftMotor", "frontRightMotor", "backRightMotor", Motor.GoBILDA.RPM_223);
+//    static public TankConfig tankConfig = new TankConfig("frontLeftMotor", "backLeftMotor", "frontRightMotor", "backRightMotor", Motor.GoBILDA.RPM_223);
     static public MecanumConfig mecanumConfig = new MecanumConfig("frontLeftMotor", "backLeftMotor", "frontRightMotor", "backRightMotor", Motor.GoBILDA.RPM_223);
 
     //Mechanisms Config    

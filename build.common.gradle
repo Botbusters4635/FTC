@@ -244,9 +244,9 @@ android {
         jniLibs.srcDir rootProject.file('libs')
         jniLibs.srcDir rootProject.file('libs')
     }
-}
     ndkVersion '21.3.6528147'
 }
+
 
 repositories {
     mavenCentral()
