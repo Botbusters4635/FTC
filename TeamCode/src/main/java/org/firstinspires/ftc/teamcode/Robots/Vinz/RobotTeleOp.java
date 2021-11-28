@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
-import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 
 
@@ -12,14 +10,20 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 public class RobotTeleOp extends EctoOpMode {
 
     //Mechanisms
-    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
-
+    Mecanum chassis;
 
     //Controllers
-    GamepadEx driverController = new GamepadEx(gamepad1);
+    GamepadEx driverController;
 
     @Override
     public void initRobot() {
+
+        //Mechanisms initilized
+        chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
+        driverController = new GamepadEx(gamepad1);
+
+        //Add mechanisms
         mechanismManager.addMechanism(chassis);
 
     }

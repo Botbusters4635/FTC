@@ -4,7 +4,6 @@
 
 package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum;
 
-import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -21,8 +20,10 @@ public class Mecanum extends EctoMechanism {
 
     MecanumConfig mecanumConfig;
 
-    public Motor frontLeft, backLeft;
-    public Motor frontRight, backRight;
+    public Motor frontLeft;
+    public Motor backLeft;
+    public Motor frontRight;
+    public Motor backRight;
 
     public MotorGroup allMotors;
 
@@ -35,12 +36,15 @@ public class Mecanum extends EctoMechanism {
 
     @Override
     public void initMechanism() {
-        allMotors.setRunMode(Motor.RunMode.RawPower);
 
-        frontLeft = new MotorEx(hardwareMap, mecanumConfig.getfrontLeftId, mecanumConfig.getGobildaType);
+        frontLeft = new MotorEx(hardwareMap, mecanumConfig.getfrontLeftId , mecanumConfig.getGobildaType);
         backLeft = new MotorEx(hardwareMap, mecanumConfig.getbackLeftId, mecanumConfig.getGobildaType);
         frontRight = new MotorEx(hardwareMap, mecanumConfig.getfrontRightId, mecanumConfig.getGobildaType);
         backRight = new MotorEx(hardwareMap, mecanumConfig.getbackRightId, mecanumConfig.getGobildaType);
+
+        allMotors.setRunMode(Motor.RunMode.RawPower);
+
+
 
         allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
 
