@@ -11,9 +11,6 @@ import org.firstinspires.ftc.teamcode.Core.Module;
 
 public abstract class EctoMechanism extends Module {
 
-    protected Telemetry telemetry;
-    protected HardwareMap hardwareMap;
-
     public EctoMechanism(String moduleName, String moduleType) {
         super(moduleName, moduleType);
     }

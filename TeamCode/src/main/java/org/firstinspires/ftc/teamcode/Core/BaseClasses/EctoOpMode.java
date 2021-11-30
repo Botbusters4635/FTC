@@ -25,6 +25,10 @@ abstract public class EctoOpMode extends OpMode {
 
     @Override
     public final void init() {
+    }
+
+    @Override
+    public final void init_loop() {
         initRobot();
         telemetry.setMsTransmissionInterval(updateRate);
         mechanismManager.telemetry = telemetry;
