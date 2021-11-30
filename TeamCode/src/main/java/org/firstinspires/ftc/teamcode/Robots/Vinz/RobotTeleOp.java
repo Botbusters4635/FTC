@@ -12,14 +12,19 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 public class RobotTeleOp extends EctoOpMode {
 
     //Mechanisms
-    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+    Mecanum chassis;
 
 
     //Controllers
-    GamepadEx driverController = new GamepadEx(gamepad1);
+    GamepadEx driverController;
 
     @Override
     public void initRobot() {
+
+        driverController = new GamepadEx(gamepad1);
+
+        chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
         mechanismManager.addMechanism(chassis);
 
     }
