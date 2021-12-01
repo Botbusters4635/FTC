@@ -24,7 +24,7 @@ public class MecanumConfig {
     public String getfrontRightId;
     public String getbackLeftId;
     public String getbackRightId;
-    public static Motor.GoBILDA getGobildaType;
+    public Motor.GoBILDA getGobildaType;
 
     public int positionTolerance = 0;
     public int velocityTolerance = 0;
