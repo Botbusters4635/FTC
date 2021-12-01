@@ -14,7 +14,7 @@ abstract public class EctoOpMode extends OpMode {
 
     int updateRate = 10; //Milliseconds
 
-    public MechanismManager mechanismManager = new MechanismManager();
+    public MechanismManager mechanismManager;
 
     @Override
     public final void start() {
@@ -25,6 +25,8 @@ abstract public class EctoOpMode extends OpMode {
 
     @Override
     public final void init() {
+        mechanismManager = new MechanismManager();
+        initRobotClasses();
     }
 
     @Override
@@ -44,15 +46,42 @@ abstract public class EctoOpMode extends OpMode {
         updateRobot(timeStep);
     }
 
+
+    /*
+    - Runs Once Press Stop
+    - Stops Everything.
+    */
     public final void stop() {
         mechanismManager.stopMechanisms();
     }
 
 
+    /*
+    - Runs Once You select The OP Mode On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    abstract public void initRobotClasses();
+
+
+    /*
+    - Runs When You Click "Init" On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    abstract public void initRobot();
+
+
+    /*
+    - Runs When You click "Start" On The Driver Station
+    - Used To Move Certain Mechanims To Their Starting Point
+    */
     abstract public void startRobot();
 
-    abstract public void initRobot(); //Init
 
+    /*
+    - Runs After You Click "Start" On The Driver Station
+    - Used To Get The Input From The Controllers and "Control" The Mechanisms
+    - Runs Every 10 Miliseconds
+    */
     abstract public void updateRobot(Double timeStep);
 
 }

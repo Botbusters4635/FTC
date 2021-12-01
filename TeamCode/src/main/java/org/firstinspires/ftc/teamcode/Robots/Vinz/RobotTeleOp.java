@@ -19,14 +19,20 @@ public class RobotTeleOp extends EctoOpMode {
     GamepadEx driverController;
 
     @Override
-    public void initRobot() {
+    public void initRobotClasses() {
 
-        driverController = new GamepadEx(gamepad1);
-
+        //Mechanisms
         chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
 
-        mechanismManager.addMechanism(chassis);
 
+        //Controllers
+        driverController = new GamepadEx(gamepad1);
+
+    }
+
+    @Override
+    public void initRobot() {
+        mechanismManager.addMechanism(chassis);
     }
 
     @Override
