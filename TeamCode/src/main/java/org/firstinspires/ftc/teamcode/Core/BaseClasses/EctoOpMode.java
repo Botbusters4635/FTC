@@ -16,19 +16,20 @@ abstract public class EctoOpMode extends OpMode {
 
     public MechanismManager mechanismManager;
 
-    @Override
-    public final void start() {
-        lastTimeRunned = getRuntime();
-        mechanismManager.startMechanisms();
-        startRobot();
-    }
-
+    /*
+    - Runs Once You select The OP Mode On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
     @Override
     public final void init() {
         mechanismManager = new MechanismManager();
         initRobotClasses();
     }
 
+    /*
+    - Runs When You Click "Init" On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
     @Override
     public final void init_loop() {
         initRobot();
@@ -38,6 +39,22 @@ abstract public class EctoOpMode extends OpMode {
         mechanismManager.initMechanisms();
     }
 
+    /*
+    - Runs When You click "Start" On The Driver Station
+    - Used To Move Certain Mechanims To Their Starting Point
+    */
+    @Override
+    public final void start() {
+        lastTimeRunned = getRuntime();
+        mechanismManager.startMechanisms();
+        startRobot();
+    }
+
+    /*
+    - Runs After You Click "Start" On The Driver Station
+    - Used To Get The Input From The Controllers and "Control" The Mechanisms
+    - Runs Every 10 Miliseconds
+    */
     @Override
     public final void loop() {
         mechanismManager.updateMechanisms();
