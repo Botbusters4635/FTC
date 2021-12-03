@@ -6,39 +6,44 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
-import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank.Tank;
-import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
+
 
 @TeleOp(name = "TeleOp")
 public class RobotTeleOp extends EctoOpMode {
 
-    MechanismManager mechanismManager;
+    //Mechanisms
+    Mecanum chassis;
 
-    Mecanum chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
 
-    Spinner spinner = new Spinner("Spinner", "Mechanism", RobotConfig.spinnerConfig);
-
-    GamepadEx driverController = new GamepadEx(gamepad1);
-    GamepadEx manipulatorController = new GamepadEx(gamepad2);
+    //Controllers
+    GamepadEx driverController;
 
     @Override
-    public void startRobot() {
-        mechanismManager.addMechanism(chassis);
-        mechanismManager.addMechanism(spinner);
-//        mechanismManager.addMechanism(arm);
-//        mechanismManager.addMechanism(intake);
+    public void initRobotClasses() {
+
+        //Mechanisms
+        chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
+
+
+        //Controllers
+        driverController = new GamepadEx(gamepad1);
+
     }
 
     @Override
     public void initRobot() {
+        mechanismManager.addMechanism(chassis);
+    }
 
+    @Override
+    public void startRobot() {
     }
 
     @Override
     public void updateRobot(Double timeStep) {
 
         //Chassis Driver
-        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0){
+        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0) {
             chassis.setChassisMovement(
                     driverController.getLeftX(),
                     driverController.getLeftY(),
@@ -46,10 +51,6 @@ public class RobotTeleOp extends EctoOpMode {
             );
         }
 
-        //Manipulator Driver
-        if (manipulatorController.gamepad.dpad_down){
-            spinner.turnOn(0.8);
-        }
-      
+
     }
 }

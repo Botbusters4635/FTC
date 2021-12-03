@@ -4,15 +4,18 @@
 
 package org.firstinspires.ftc.teamcode.Core;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Module {
 
-    private Telemetry telemetry;
+    public Telemetry telemetry;
+    public HardwareMap hardwareMap;
 
-    public Module(String moduleName, Object moduleType) {
+    public Module(String moduleName, String moduleType) {
 
-        telemetry.addData(moduleName, moduleType);
+//        telemetry.addData(moduleName, moduleType);
 
     }
 

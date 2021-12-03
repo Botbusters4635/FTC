@@ -6,14 +6,10 @@ package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 import org.firstinspires.ftc.teamcode.Core.Module;
 
 public abstract class EctoMechanism extends Module {
-
-    private String name;
-
-    protected Telemetry telemetry;
-    protected HardwareMap hardwareMap;
 
     public EctoMechanism(String moduleName, String moduleType) {
         super(moduleName, moduleType);

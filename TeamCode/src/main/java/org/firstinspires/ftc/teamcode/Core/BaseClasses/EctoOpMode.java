@@ -5,6 +5,7 @@
 package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
 
 abstract public class EctoOpMode extends OpMode {
@@ -13,24 +14,47 @@ abstract public class EctoOpMode extends OpMode {
 
     int updateRate = 10; //Milliseconds
 
-    MechanismManager mechanismManager;
+    public MechanismManager mechanismManager;
 
+    /*
+    - Runs Once You select The OP Mode On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
     @Override
-    public final void start(){
+    public final void init() {
+        mechanismManager = new MechanismManager();
+        initRobotClasses();
+    }
+
+    /*
+    - Runs When You Click "Init" On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    @Override
+    public final void init_loop() {
+        initRobot();
+        telemetry.setMsTransmissionInterval(updateRate);
+        mechanismManager.telemetry = telemetry;
+        mechanismManager.hardwareMap = hardwareMap;
+        mechanismManager.initMechanisms();
+    }
+
+    /*
+    - Runs When You click "Start" On The Driver Station
+    - Used To Move Certain Mechanims To Their Starting Point
+    */
+    @Override
+    public final void start() {
         lastTimeRunned = getRuntime();
         mechanismManager.startMechanisms();
         startRobot();
     }
-    
-    @Override
-    public final void init() {
-            initRobot();
-            telemetry.setMsTransmissionInterval(updateRate);
-            mechanismManager.telemetry = telemetry;
-            mechanismManager.hardwareMap = hardwareMap;
-            mechanismManager.initMechanisms();
-    }
 
+    /*
+    - Runs After You Click "Start" On The Driver Station
+    - Used To Get The Input From The Controllers and "Control" The Mechanisms
+    - Runs Every 10 Miliseconds
+    */
     @Override
     public final void loop() {
         mechanismManager.updateMechanisms();
@@ -38,14 +62,43 @@ abstract public class EctoOpMode extends OpMode {
         lastTimeRunned = getRuntime();
         updateRobot(timeStep);
     }
-    
-    public final void stop(){ mechanismManager.stopMechanisms(); }
 
 
+    /*
+    - Runs Once Press Stop
+    - Stops Everything.
+    */
+    public final void stop() {
+        mechanismManager.stopMechanisms();
+    }
+
+
+    /*
+    - Runs Once You select The OP Mode On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    abstract public void initRobotClasses();
+
+
+    /*
+    - Runs When You Click "Init" On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    abstract public void initRobot();
+
+
+    /*
+    - Runs When You click "Start" On The Driver Station
+    - Used To Move Certain Mechanims To Their Starting Point
+    */
     abstract public void startRobot();
 
-    abstract public void initRobot(); //Init
 
+    /*
+    - Runs After You Click "Start" On The Driver Station
+    - Used To Get The Input From The Controllers and "Control" The Mechanisms
+    - Runs Every 10 Miliseconds
+    */
     abstract public void updateRobot(Double timeStep);
 
 }
