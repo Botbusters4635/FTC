@@ -25,15 +25,17 @@ public class Spinner extends EctoMechanism {
 
     @Override
     public void initMechanism() {
-        spinnerMotor.setRunMode(Motor.RunMode.RawPower);
         spinnerMotor = new Motor(hardwareMap, spinnerConfig.getSpinnerMotorId, spinnerConfig.getGobildaType);
+        spinnerMotor.setRunMode(Motor.RunMode.RawPower);
+
     }
 
     @Override
     public void startMechanism() {}
 
     @Override
-    public void updateMechanism() {}
+    public void updateMechanism() {
+    }
 
     @Override
     public void stopMechanism() {

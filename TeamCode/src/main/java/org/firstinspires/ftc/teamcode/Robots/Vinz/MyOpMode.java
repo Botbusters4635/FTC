@@ -1,53 +1,43 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
-@TeleOp(name = "TeleyOp")
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
+import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
+import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 
-public class MyOpMode extends OpMode {
-
-    MotorEx frontLeftMotor;
-    MotorEx frontRightMotor;
-    MotorEx backLeftMotor;
-    MotorEx backRightMotor;
-
-    GamepadEx driverController;
-
-    MecanumDrive chassis;
-
-    MotorGroup motors;
+public class MyOpMode extends EctoOpMode{
+    MechanismManager mechanismManager;
+    Intake intake;
+    GamepadEx gamepadEx;
 
     @Override
-    public void init() {
+    public void initRobotClasses() {
 
-        driverController = new GamepadEx(gamepad1);
-
-        frontLeftMotor = new MotorEx(hardwareMap, "frontLeftMotor");
-        frontRightMotor = new MotorEx(hardwareMap, "frontRightMotor");
-        backLeftMotor = new MotorEx(hardwareMap, "backLeftMotor");
-        backRightMotor = new MotorEx(hardwareMap, "backRightMotor");
-
-        motors = new MotorGroup(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
-
-        chassis = new MecanumDrive(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
+       gamepadEx = new GamepadEx(gamepad1);
+        mechanismManager = new MechanismManager();
+        intake = new Intake("Intake", "Mechanism", RobotConfig.intakeConfig);
     }
 
     @Override
-    public void loop() {
-        motors.setRunMode(Motor.RunMode.RawPower);
+    public void initRobot() {
+        mechanismManager.addMechanism(intake);
+    }
 
-        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0) {
-            chassis.driveRobotCentric(
-                    driverController.getLeftX(),
-                    driverController.getLeftY(),
-                    driverController.getRightX()
-            );
-        }
+    @Override
+    public void startRobot() {
+
+    }
+
+    @Override
+    public void updateRobot(Double timeStep) {
+if(gamepadEx.getButton(GamepadKeys.Button.A)){
+    intake.turnOn(1);
+        }else if (!gamepadEx.getButton(GamepadKeys.Button.A)){
+    intake.turnOn(.3);
+}
     }
 }
