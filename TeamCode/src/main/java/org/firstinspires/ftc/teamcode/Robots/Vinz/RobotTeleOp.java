@@ -55,9 +55,13 @@ public class RobotTeleOp extends EctoOpMode {
         }
 
         //Manipulator Driver
-        if(driverController.getButton( GamepadKeys.Button.A)){
+
+        //Sets arm position to Angle 49
+        if(driverController.getButton(GamepadKeys.Button.A)){
             arm.setPosition(49);
         }
+
+        //Sets arm position to Angle 100
         if(driverController.getButton(GamepadKeys.Button.B)){
             arm.setPosition(100);
         }

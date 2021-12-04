@@ -1,13 +1,17 @@
+/*
+//created by Diego Villanueva 3/12/2021
+*/
+
+
 package org.firstinspires.ftc.teamcode.Mechanisms.Arm;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
-
 public class Arm extends EctoMechanism {
 
-    public Arm (String moduleName, String moduleType, org.firstinspires.ftc.teamcode.Mechanisms.Arm.ArmConfig config) {
+    public Arm(String moduleName, String moduleType, ArmConfig config) {
         super(moduleName, moduleType);
         armConfig = config;
     }
@@ -15,7 +19,7 @@ public class Arm extends EctoMechanism {
     ArmConfig armConfig;
     Motor armMotor;
 
-    public  void setPosition(double angle) {
+    public void setPosition(double angle) {
         double e = armConfig.getMotorTicks / 360;
         angle = angle * e;
         armMotor.setTargetPosition((int) angle);
