@@ -21,8 +21,8 @@ public class MechanismManager {
     //VARIABLES
     public HardwareMap hardwareMap;
     public Telemetry telemetry;
-    ArrayList<EctoMechanism> mechanisms;
-    ArrayList<Double> lastTimeRunned;
+    ArrayList<EctoMechanism> mechanisms = new ArrayList<EctoMechanism>();
+    ArrayList<Double> lastTimeRunned = new ArrayList<>();
 
     //VOIDS/ FUNCTIONS
     public void addMechanism(EctoMechanism mechanism) {
