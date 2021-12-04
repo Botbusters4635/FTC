@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
+import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 
 
@@ -13,7 +15,7 @@ public class RobotTeleOp extends EctoOpMode {
 
     //Mechanisms
     Mecanum chassis;
-
+    Arm arm;
 
     //Controllers
     GamepadEx driverController;
@@ -23,7 +25,7 @@ public class RobotTeleOp extends EctoOpMode {
 
         //Mechanisms
         chassis = new Mecanum("ChassisMecanum", "Mechanism", RobotConfig.mecanumConfig);
-
+        arm = new Arm("Arm","Mechanism",RobotConfig.armConfig);
 
         //Controllers
         driverController = new GamepadEx(gamepad1);
@@ -33,6 +35,7 @@ public class RobotTeleOp extends EctoOpMode {
     @Override
     public void initRobot() {
         mechanismManager.addMechanism(chassis);
+        mechanismManager.addMechanism(arm);
     }
 
     @Override
@@ -49,6 +52,14 @@ public class RobotTeleOp extends EctoOpMode {
                     driverController.getLeftY(),
                     driverController.getRightX()
             );
+        }
+
+        //Manipulator Driver
+        if(driverController.getButton( GamepadKeys.Button.A)){
+            arm.setPosition(49);
+        }
+        if(driverController.getButton(GamepadKeys.Button.B)){
+            arm.setPosition(100);
         }
 
 
