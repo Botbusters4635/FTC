@@ -7,14 +7,18 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
-public class MecanumConfig {
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.Configuration;
 
-    public MecanumConfig(String frontLeftId, String backLeftId, String frontRightId, String backRightId, Motor.GoBILDA GobildaMotorType) {
+public class MecanumConfig extends Configuration {
+
+    public MecanumConfig(String frontLeftId, String backLeftId, String frontRightId, String backRightId, String IMUId, Motor.GoBILDA GobildaMotorType) {
 
         getfrontLeftId = frontLeftId;
         getfrontRightId = frontRightId;
         getbackLeftId = backLeftId;
         getbackRightId = backRightId;
+
+        getIMUId = IMUId;
 
         getGobildaType = GobildaMotorType;
 
@@ -24,6 +28,9 @@ public class MecanumConfig {
     public String getfrontRightId;
     public String getbackLeftId;
     public String getbackRightId;
+
+    public String getIMUId;
+
     public Motor.GoBILDA getGobildaType;
 
     public int positionTolerance = 0;

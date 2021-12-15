@@ -1,54 +1,53 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
+import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 
 
-@TeleOp(name = "TeleOp")
+@TeleOp(name = "StableOpMode")
 public class TeleOperatedMode extends EctoOpMode {
 
-        /*
-        //Mechanisms
-        */
+    //Mechanisms
+    Mecanum chassis;
 
-
-        /*
-        //Controllers
-        */
-
+    //Controllers
+    GamepadEx driverController;
 
     @Override
     public void initRobotClasses() {
 
-        /*
         //Mechanisms
-        */
+        chassis = new Mecanum("ChassisMecanum", "Mechanism", Configuration.MechanismsConfig.mecanumConfig);
 
-
-        /*
         //Controllers
-        */
+        driverController = new GamepadEx(gamepad1);
 
     }
 
-    //The initRobot() Void Is For Adding The Mechanisms To The MechanismManager Array.
     @Override
     public void initRobot() {
+        mechanismManager.addMechanism(chassis);
     }
 
-    //The startRobot() Void Is For Moving Certain Mechanisms To Their Start Position
-    //For Example, An Arm Mechanim Would Need To Move To A Certain Position In Order
-    //For It To Start Always In The Same Position
     @Override
     public void startRobot() {
     }
 
-    //The updateRobot() Void Is The Main Loop Of The Code
-    //It Is Being Called Constantly every 10ms
-    //Here You Should Get The Inputs From The Gamepads And Control The Mechanisms With The Inputs
     @Override
     public void updateRobot(Double timeStep) {
-    }
 
+        //Chassis Driver
+        if (driverController.getLeftY() != 0 || driverController.getLeftX() != 0 || driverController.getRightX() != 0) {
+            chassis.setChassisMovement(
+                    driverController.getLeftX() * -1,
+                    driverController.getLeftY() * -1,
+                    driverController.getRightX() * -1,
+                    Mecanum.orientation.field
+            );
+        }
+
+    }
 }

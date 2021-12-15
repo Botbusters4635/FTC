@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode.Mechanisms.Intake;
+package org.firstinspires.ftc.teamcode.Mechanisms.Manipulator;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
-public class Intake extends EctoMechanism {
+public class Manipulator extends EctoMechanism {
 
-    public Intake (String moduleName, String moduleType, IntakeConfig config) {
+    public Manipulator(String moduleName, String moduleType, ManipulatorConfig config) {
         super(moduleName, moduleType);
-        intakeConfig = config;
+        manipulatorConfig = config;
     }
 
-    IntakeConfig intakeConfig;
+    ManipulatorConfig manipulatorConfig;
     Motor intakeMotor;
 
     public void turnOn(double powerPecentage){
@@ -20,7 +20,7 @@ public class Intake extends EctoMechanism {
 
     @Override
     public void initMechanism() {
-        intakeMotor = new Motor(hardwareMap, intakeConfig.getIntakeMotorId, intakeConfig.getGobildaType);
+        intakeMotor = new Motor(hardwareMap, manipulatorConfig.getManipulatorMotorId, manipulatorConfig.getGobildaType);
         intakeMotor.setRunMode(Motor.RunMode.RawPower);
     }
 
@@ -34,5 +34,6 @@ public class Intake extends EctoMechanism {
     public void stopMechanism() {
         intakeMotor.set(0);
     }
+
 
 }

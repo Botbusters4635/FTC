@@ -10,51 +10,87 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
+import org.firstinspires.ftc.teamcode.Core.Utils.Gyro.IntegratedIMU;
 
 public class Mecanum extends EctoMechanism {
+
+    public enum orientation {
+        robot,
+        field
+    }
+
 
     public Mecanum(String moduleName, String moduleType, MecanumConfig config) {
         super(moduleName, moduleType);
         mecanumConfig = config;
     }
 
-    MecanumConfig mecanumConfig;
+    public IntegratedIMU imu;
 
-    public Motor frontLeft;
-    public Motor backLeft;
-    public Motor frontRight;
-    public Motor backRight;
+    private MotorEx frontLeft;
+    private MotorEx backLeft;
+    private MotorEx frontRight;
+    private MotorEx backRight;
 
-    public MotorGroup allMotors;
+    private MotorGroup allMotors;
 
-    public MecanumDrive mecanum;
 
-    public void setChassisMovement(double strafeSpeed, double forwardSpeed, double turnSpeed) {
+    private final MecanumConfig mecanumConfig;
+
+    private MecanumDrive mecanum;
+
+
+    public void setChassisMovement(double strafeSpeed, double forwardSpeed, double turnSpeed, orientation robotOrentationType) {
         allMotors.setRunMode(Motor.RunMode.RawPower);
-        mecanum.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
+
+        switch (robotOrentationType) {
+            case field:
+                mecanum.driveFieldCentric(strafeSpeed, forwardSpeed, turnSpeed, imu.getHeading());
+                break;
+            case robot:
+                mecanum.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
+        }
+
+    }
+
+    public void headAlways(int errorTolerance) {
+
+        if (imu.getHeading() < errorTolerance * -1 && imu.getHeading() < 0) {
+            setChassisMovement(0.0, 0.0, 1, orientation.robot);
+        }
+
+        if (imu.getHeading() > errorTolerance && imu.getHeading() > 0) {
+            setChassisMovement(0.0, 0.0, -1, orientation.robot);
+        }
+
     }
 
     @Override
     public void initMechanism() {
 
-        frontLeft = new MotorEx(hardwareMap, mecanumConfig.getfrontLeftId , mecanumConfig.getGobildaType);
+        imu = new IntegratedIMU(hardwareMap, mecanumConfig.getIMUId);
+        imu.initSensor();
+
+        frontLeft = new MotorEx(hardwareMap, mecanumConfig.getfrontLeftId, mecanumConfig.getGobildaType);
         backLeft = new MotorEx(hardwareMap, mecanumConfig.getbackLeftId, mecanumConfig.getGobildaType);
         frontRight = new MotorEx(hardwareMap, mecanumConfig.getfrontRightId, mecanumConfig.getGobildaType);
         backRight = new MotorEx(hardwareMap, mecanumConfig.getbackRightId, mecanumConfig.getGobildaType);
 
         allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
-        allMotors.setRunMode(Motor.RunMode.RawPower);
 
-        //motor Setup
         mecanum = new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
+
+        allMotors.setRunMode(Motor.RunMode.RawPower);
 
     }
 
     @Override
-    public void startMechanism() {}
+    public void startMechanism() {
+    }
 
     @Override
-    public void updateMechanism() {}
+    public void updateMechanism() {
+    }
 
     @Override
     public void stopMechanism() {
