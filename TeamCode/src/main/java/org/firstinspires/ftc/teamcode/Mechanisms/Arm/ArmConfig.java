@@ -14,6 +14,7 @@ public class ArmConfig {
     double p = 0.05;
     double i = 0.00;
     double d = 0.00;
+    double f = 0.00;
 
 
     String getArmMotorId;

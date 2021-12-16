@@ -40,11 +40,12 @@ public class EncoderTester extends EctoOpMode {
 
     @Override
     public void updateRobot(Double timeStep) {
+        telemetry.addData("Arm", arm.getCurrentPosition());
+
         telemetry.addData("Front Left", fL.getCurrentPosition());
         telemetry.addData("Front Right", fR.getCurrentPosition());
         telemetry.addData("Back Left", bL.getCurrentPosition());
         telemetry.addData("Back Right", bR.getCurrentPosition());
-        telemetry.addData("Arm", arm.getCurrentPosition());
         telemetry.update();
     }
 }

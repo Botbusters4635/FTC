@@ -15,6 +15,7 @@ public class Intake extends EctoMechanism {
     Motor intakeMotor;
 
     public void turnOn(double powerPecentage){
+
         intakeMotor.set(powerPecentage);
     }
 

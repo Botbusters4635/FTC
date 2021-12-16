@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanism
 import android.widget.Spinner;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
@@ -24,7 +25,7 @@ public class TestTeleOp extends EctoOpMode {
 
     Manipulator manipulator;
 
-    Manipulator arm;
+    Arm arm;
 
     Intake intake;
 
@@ -32,17 +33,19 @@ public class TestTeleOp extends EctoOpMode {
 
     //Controllers
     public static GamepadEx driverGamepad;
+    public static GamepadEx manipulatorGamepad;
 
     @Override
     public void initRobotClasses() {
 
         //Controllers
+        manipulatorGamepad = new GamepadEx(gamepad2);
         driverGamepad = new GamepadEx(gamepad1);
 
         //Mechanisms
         chassis = new Mecanum("ChassisMecanum", "Mechanism", mecanumConfig);
-        arm = new Manipulator("arm", "Mechanism", manipulatorConfig);
-        manipulator = new Manipulator("Manipulator", "Mechanism", armConfig);
+        arm = new Arm("arm", "Mechanism", armConfig);
+        manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
 
     }
 
@@ -60,18 +63,32 @@ public class TestTeleOp extends EctoOpMode {
 
     @Override
     public void updateRobot(Double timeStep) {
+
+        ///////////////////////////
+        //////// Chassis /////////
+        //////////////////////////
+
+        //
         //Chassis Driver
-//        if (driverGamepad.getLeftY() != 0 || driverGamepad.getLeftX() != 0 || driverGamepad.getRightX() != 0) {
-//            chassis.setChassisMovement(
-//                    driverGamepad.getLeftX() * -1,
-//                    driverGamepad.getLeftY() * -1,
-//                    driverGamepad.getRightX() * -1,
-//                    Mecanum.orientation.field
-//            );
-//        }
+        //
+        if (driverGamepad.getLeftY() != 0 || driverGamepad.getLeftX() != 0 || driverGamepad.getRightX() != 0) {
+            chassis.setChassisMovement(
+                    driverGamepad.getLeftX() * -1,
+                    driverGamepad.getLeftY() * -1,
+                    driverGamepad.getRightX() * -1,
+                    Mecanum.orientation.field
+            );
+        }
 
 
-        //arm
+
+        ///////////////////////////
+        /////// Manipulator //////
+        //////////////////////////
+
+        //
+        //Manipulator
+        //
         if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorIn) != 0) {
             manipulator.turnOn(
                     driverGamepad.getTrigger
@@ -94,15 +111,15 @@ public class TestTeleOp extends EctoOpMode {
             );
         }
 
-
-        //manipulator
-        if (driverGamepad.getLeftY() != 0 ) {
-            arm.turnOn(
-                    driverGamepad.getLeftY() * 1
-            );
-        } else if (driverGamepad.getLeftY() == 0 ) {
-            arm.turnOn(0);
+        //
+        //Arm Buttons
+        //
+        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.highLevel)) {
+            arm.setPosition(1800);
         }
 
+        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.mediumLevel)) {
+            arm.setPosition(900);
+        }
     }
 }
