@@ -35,11 +35,5 @@ public class MecanumConfig extends Configuration {
 
     public int positionTolerance = 0;
     public int velocityTolerance = 0;
-
-    public int p = 0;
-    public int i = 0;
-    public int d = 0;
-    public int f = 0;
-
 }
 

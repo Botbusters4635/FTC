@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,12 +11,16 @@ public class EncoderTester extends EctoOpMode {
 
     MotorEx fL, fR, bL, bR;
 
+    MotorEx arm;
+
     @Override
     public void initRobotClasses() {
         fL = new MotorEx(hardwareMap, "fL");
         fR = new MotorEx(hardwareMap, "fR");
         bL = new MotorEx(hardwareMap, "bL");
         bR = new MotorEx(hardwareMap, "bR");
+
+        arm = new MotorEx(hardwareMap, "arm");
     }
 
     @Override
@@ -24,6 +29,8 @@ public class EncoderTester extends EctoOpMode {
         fR.setRunMode(MotorEx.RunMode.PositionControl);
         bL.setRunMode(MotorEx.RunMode.PositionControl);
         bR.setRunMode(MotorEx.RunMode.PositionControl);
+
+        arm.setRunMode(Motor.RunMode.PositionControl);
     }
 
     @Override
@@ -37,6 +44,7 @@ public class EncoderTester extends EctoOpMode {
         telemetry.addData("Front Right", fR.getCurrentPosition());
         telemetry.addData("Back Left", bL.getCurrentPosition());
         telemetry.addData("Back Right", bR.getCurrentPosition());
+        telemetry.addData("Arm", arm.getCurrentPosition());
         telemetry.update();
     }
 }

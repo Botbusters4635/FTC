@@ -1,13 +1,18 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.mecanumConfig;
+
+import android.widget.Spinner;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
+import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
+import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 
 
@@ -18,6 +23,12 @@ public class TestTeleOp extends EctoOpMode {
     Mecanum chassis;
 
     Manipulator manipulator;
+
+    Manipulator arm;
+
+    Intake intake;
+
+    Spinner spinner;
 
     //Controllers
     public static GamepadEx driverGamepad;
@@ -30,7 +41,8 @@ public class TestTeleOp extends EctoOpMode {
 
         //Mechanisms
         chassis = new Mecanum("ChassisMecanum", "Mechanism", mecanumConfig);
-        manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
+        arm = new Manipulator("arm", "Mechanism", manipulatorConfig);
+        manipulator = new Manipulator("Manipulator", "Mechanism", armConfig);
 
     }
 
@@ -38,6 +50,8 @@ public class TestTeleOp extends EctoOpMode {
     public void initRobot() {
         mechanismManager.addMechanism(chassis);
         mechanismManager.addMechanism(manipulator);
+        mechanismManager.addMechanism(arm);
+
     }
 
     @Override
@@ -46,17 +60,6 @@ public class TestTeleOp extends EctoOpMode {
 
     @Override
     public void updateRobot(Double timeStep) {
-
-
-        telemetry.addData("Relative Heading", chassis.imu.getHeading());
-        telemetry.addData("Absolute Heading", chassis.imu.getAbsoluteHeading());
-
-        telemetry.addData("Left X", driverGamepad.getLeftX());
-        telemetry.addData("Right X", driverGamepad.getRightX());
-
-        telemetry.addData("Left Y", driverGamepad.getLeftY());
-
-
         //Chassis Driver
 //        if (driverGamepad.getLeftY() != 0 || driverGamepad.getLeftX() != 0 || driverGamepad.getRightX() != 0) {
 //            chassis.setChassisMovement(
@@ -67,10 +70,39 @@ public class TestTeleOp extends EctoOpMode {
 //            );
 //        }
 
-        if (driverGamepad.getLeftY() != 0 ) {
-            manipulator.turnOn(driverGamepad.getLeftY());
+
+        //arm
+        if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorIn) != 0) {
+            manipulator.turnOn(
+                    driverGamepad.getTrigger
+                            (Configuration.ButtonsConfig.driver.manipulatorIn) * 1
+            );
+        } else if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorIn) == 0) {
+            manipulator.turnOn(
+                    0
+            );
         }
 
+        if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorOut) != 0) {
+            manipulator.turnOn(
+                    driverGamepad.getTrigger
+                            (Configuration.ButtonsConfig.driver.manipulatorOut) * -1
+            );
+        } else if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorOut) == 0) {
+            manipulator.turnOn(
+                    0
+            );
+        }
+
+
+        //manipulator
+        if (driverGamepad.getLeftY() != 0 ) {
+            arm.turnOn(
+                    driverGamepad.getLeftY() * 1
+            );
+        } else if (driverGamepad.getLeftY() == 0 ) {
+            arm.turnOn(0);
+        }
 
     }
 }
