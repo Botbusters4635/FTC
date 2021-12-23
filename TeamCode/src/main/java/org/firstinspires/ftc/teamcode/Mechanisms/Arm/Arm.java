@@ -5,6 +5,7 @@
 package org.firstinspires.ftc.teamcode.Mechanisms.Arm;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.ArmFeedforward;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 
@@ -21,32 +22,52 @@ public class Arm extends EctoMechanism {
     ArmConfig armConfig;
     MotorEx armMotor;
     PIDFController pidf;
+    ArmFeedforward feedforward = new ArmFeedforward(kS, kCos, kV, kA);
 
-    public void setPosition(int setPoint) {
-        double output = pidf.calculate(armMotor.getCurrentPosition(), setPoint);
-        armMotor.setVelocity(output);
+    public double lastSetPoint = 0.0;
+
+    public double getActualPosition() {
+        return armMotor.getCurrentPosition();
+    }
+
+    public double getTargetPosition() {
+        return lastSetPoint;
+    }
+
+    public void setPosition(double setPoint) {
+        lastSetPoint = setPoint;
+        pidf.setSetPoint(setPoint);
     }
 
 
     @Override
     public void initMechanism() {
 
-        pidf = new PIDFController(armConfig.p, armConfig.i, armConfig.d, armConfig.f);
+        pidf = new PIDFController(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
         armMotor = new MotorEx(hardwareMap, armConfig.getArmMotorId, armConfig.getGobildaType);
 
-        armMotor.setRunMode(Motor.RunMode.VelocityControl);
+        armMotor.setRunMode(Motor.RunMode.RawPower);
 
-        armMotor.setPositionTolerance(armConfig.getErrorTolerance);
-
-        pidf.setTolerance(5, 10);
+        pidf.setTolerance(armConfig.getPositionErrorTolerance, armConfig.getVelocityErrorTolerance);
 
     }
 
     @Override
-    public void startMechanism() {}
+    public void startMechanism() {
+    }
 
     @Override
-    public void updateMechanism() {}
+    public void updateMechanism() {
+
+        pidf.setPIDF(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
+
+        double output = pidf.calculate(
+                armMotor.getCurrentPosition()
+        );
+
+        armMotor.set(output);
+
+    }
 
     @Override
     public void stopMechanism() {

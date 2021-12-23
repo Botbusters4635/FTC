@@ -18,6 +18,10 @@ public class Manipulator extends EctoMechanism {
         intakeMotor.set(powerPecentage);
     }
 
+    public void turnOff(){
+        intakeMotor.stopMotor();
+    }
+
     @Override
     public void initMechanism() {
         intakeMotor = new Motor(hardwareMap, manipulatorConfig.getManipulatorMotorId, manipulatorConfig.getGobildaType);

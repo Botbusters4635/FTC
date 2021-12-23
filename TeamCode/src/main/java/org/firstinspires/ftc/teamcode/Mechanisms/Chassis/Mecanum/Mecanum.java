@@ -53,6 +53,10 @@ public class Mecanum extends EctoMechanism {
 
     }
 
+    public void stopChassis(){
+        mecanum.stop();
+    }
+
     public void headAlways(int errorTolerance) {
 
         if (imu.getHeading() < errorTolerance * -1 && imu.getHeading() < 0) {
@@ -90,11 +94,13 @@ public class Mecanum extends EctoMechanism {
 
     @Override
     public void updateMechanism() {
+
+
     }
 
     @Override
     public void stopMechanism() {
-        mecanum.stop();
+        stopChassis();
     }
 
 }
