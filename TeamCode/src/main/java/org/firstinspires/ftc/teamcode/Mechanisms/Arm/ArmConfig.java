@@ -6,10 +6,10 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 @Config
 public class ArmConfig {
 
-    public ArmConfig(String armMotorId, double motorTicks, double velocityErrorTolerance, double positionErrorTolerance, Motor.GoBILDA GobildaMotorType) {
+    public ArmConfig(String armMotorId, double pulsesPerRevolution, double velocityErrorTolerance, double positionErrorTolerance, Motor.GoBILDA GobildaMotorType) {
         getArmMotorId = armMotorId;
         getGobildaType = GobildaMotorType;
-        getMotorTicks = motorTicks;
+        getPulsesPerRevolution = pulsesPerRevolution;
         getPositionErrorTolerance = positionErrorTolerance;
         getVelocityErrorTolerance = velocityErrorTolerance;
     }
@@ -19,6 +19,8 @@ public class ArmConfig {
     public static double d = 0.00;
     public static double f = 0.00;
 
+    public static double kCos = 0.00;
+
 
     String getArmMotorId;
 
@@ -26,7 +28,7 @@ public class ArmConfig {
 
     Double getPositionErrorTolerance;
 
-    Double getMotorTicks;
+    Double getPulsesPerRevolution;
 
     Motor.GoBILDA getGobildaType;
 

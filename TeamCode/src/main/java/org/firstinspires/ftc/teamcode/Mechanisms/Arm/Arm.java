@@ -19,10 +19,10 @@ public class Arm extends EctoMechanism {
     }
 
 
+
     ArmConfig armConfig;
     MotorEx armMotor;
     PIDFController pidf;
-    ArmFeedforward feedforward = new ArmFeedforward(kS, kCos, kV, kA);
 
     public double lastSetPoint = 0.0;
 
@@ -50,6 +50,7 @@ public class Arm extends EctoMechanism {
 
         pidf.setTolerance(armConfig.getPositionErrorTolerance, armConfig.getVelocityErrorTolerance);
 
+
     }
 
     @Override
@@ -61,11 +62,14 @@ public class Arm extends EctoMechanism {
 
         pidf.setPIDF(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
 
-        double output = pidf.calculate(
+        double PIDoutput = pidf.calculate(
                 armMotor.getCurrentPosition()
         );
 
-        armMotor.set(output);
+        double addedValue = ArmConfig.kCos * Math.cos(((getActualPosition() / armConfig.getPulsesPerRevolution) * 360) *  Math.PI / 180);
+
+
+        armMotor.set(PIDoutput + addedValue);
 
     }
 
