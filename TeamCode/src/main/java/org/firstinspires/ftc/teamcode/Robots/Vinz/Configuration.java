@@ -14,7 +14,7 @@ public class Configuration {
 
         static public MecanumConfig mecanumConfig = new MecanumConfig("frontLeftMotor", "backLeftMotor", "frontRightMotor", "backRightMotor", "imu", Motor.GoBILDA.RPM_223);
         static public ManipulatorConfig  manipulatorConfig = new ManipulatorConfig("manipulatorMotor", Motor.GoBILDA.RPM_435);
-        static public ArmConfig armConfig = new ArmConfig("armMotor",1451.5, 13.5, 0, Motor.GoBILDA.RPM_117);
+        static public ArmConfig armConfig = new ArmConfig("armMotor",1451.5, 13.5, 30, Motor.GoBILDA.RPM_117);
 
     }
 

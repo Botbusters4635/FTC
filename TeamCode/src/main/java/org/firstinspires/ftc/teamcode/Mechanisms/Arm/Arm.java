@@ -19,6 +19,7 @@ public class Arm extends EctoMechanism {
     }
 
 
+    ArmFeedforward feedforward;
 
     ArmConfig armConfig;
     MotorEx armMotor;
@@ -34,6 +35,10 @@ public class Arm extends EctoMechanism {
         return lastSetPoint;
     }
 
+    public boolean isAtTarget() {
+        return pidf.atSetPoint();
+    }
+
     public void setPosition(double setPoint) {
         lastSetPoint = setPoint;
         pidf.setSetPoint(setPoint);
@@ -43,12 +48,13 @@ public class Arm extends EctoMechanism {
     @Override
     public void initMechanism() {
 
-        pidf = new PIDFController(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
-        armMotor = new MotorEx(hardwareMap, armConfig.getArmMotorId, armConfig.getGobildaType);
 
+        pidf = new PIDFController(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
+        pidf.setTolerance(armConfig.getPositionErrorTolerance, armConfig.getVelocityErrorTolerance);
+
+        armMotor = new MotorEx(hardwareMap, armConfig.getArmMotorId, armConfig.getGobildaType);
         armMotor.setRunMode(Motor.RunMode.RawPower);
 
-        pidf.setTolerance(armConfig.getPositionErrorTolerance, armConfig.getVelocityErrorTolerance);
 
 
     }
@@ -62,14 +68,14 @@ public class Arm extends EctoMechanism {
 
         pidf.setPIDF(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
 
+
         double PIDoutput = pidf.calculate(
                 armMotor.getCurrentPosition()
         );
 
-        double addedValue = ArmConfig.kCos * Math.cos(((getActualPosition() / armConfig.getPulsesPerRevolution) * 360) *  Math.PI / 180);
-
-
-        armMotor.set(PIDoutput + addedValue);
+        if (!pidf.atSetPoint()){
+            armMotor.set(PIDoutput);
+        }
 
     }
 

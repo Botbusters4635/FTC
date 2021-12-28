@@ -74,6 +74,9 @@ public class TestTeleOp extends EctoOpMode {
         dashboardTelemetry.addData("Actual Position", arm.getActualPosition());
         dashboardTelemetry.addData("Target Position", arm.getTargetPosition());
 
+        dashboardTelemetry.addData("Tolerable Target Position", arm.isAtTarget());
+
+
         dashboardTelemetry.update();
 
         ///////////////////////////
@@ -123,11 +126,11 @@ public class TestTeleOp extends EctoOpMode {
         //Arm
         //
         if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.highLevel)) {
-            arm.setPosition(150);
+            arm.setPosition(300);
         }
 
         if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.mediumLevel)) {
-            arm.setPosition(70);
+            arm.setPosition(150);
         }
         if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.lowLevel)) {
             arm.setPosition(50);

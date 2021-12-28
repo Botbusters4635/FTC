@@ -14,12 +14,10 @@ public class ArmConfig {
         getVelocityErrorTolerance = velocityErrorTolerance;
     }
 
-    public static double p = 0.00;
+    public static double p = 0.012;
     public static double i = 0.00;
-    public static double d = 0.00;
+    public static double d = 0.0002;
     public static double f = 0.00;
-
-    public static double kCos = 0.00;
 
 
     String getArmMotorId;
