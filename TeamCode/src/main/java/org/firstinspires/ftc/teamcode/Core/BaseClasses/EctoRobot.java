@@ -4,6 +4,9 @@
 
 package org.firstinspires.ftc.teamcode.Core.BaseClasses;
 
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoLinearOpMode;
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
+
 public abstract class EctoRobot {
     public EctoOpMode teleOpMode;
 

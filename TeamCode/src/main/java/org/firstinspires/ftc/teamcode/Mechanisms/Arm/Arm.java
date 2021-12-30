@@ -19,8 +19,6 @@ public class Arm extends EctoMechanism {
     }
 
 
-    ArmFeedforward feedforward;
-
     ArmConfig armConfig;
     MotorEx armMotor;
     PIDFController pidf;

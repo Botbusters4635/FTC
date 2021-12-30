@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 
 @TeleOp(name = "EncoderTester")
 public class EncoderTester extends EctoOpMode {
@@ -15,12 +15,12 @@ public class EncoderTester extends EctoOpMode {
 
     @Override
     public void initRobotClasses() {
-        fL = new MotorEx(hardwareMap, "fL");
-        fR = new MotorEx(hardwareMap, "fR");
-        bL = new MotorEx(hardwareMap, "bL");
-        bR = new MotorEx(hardwareMap, "bR");
+        fL = new MotorEx(hardwareMap, "frontLeftMotor");
+        fR = new MotorEx(hardwareMap, "frontRightMotor");
+        bL = new MotorEx(hardwareMap, "backLeftMotor");
+        bR = new MotorEx(hardwareMap, "backRightMotor");
 
-        arm = new MotorEx(hardwareMap, "arm");
+        arm = new MotorEx(hardwareMap, "armMotor");
     }
 
     @Override

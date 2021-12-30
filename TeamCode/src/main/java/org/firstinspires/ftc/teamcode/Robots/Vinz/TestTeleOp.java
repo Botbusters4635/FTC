@@ -1,29 +1,23 @@
 package org.firstinspires.ftc.teamcode.Robots.Vinz;
 
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.armConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.manipulatorConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.MechanismsConfig.mecanumConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.armConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.intakeConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.manipulatorConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.mecanumConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.spinnerConfig;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoOpMode;
-
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
-@TeleOp(name = "TestTeleOp")
+@TeleOp(name = "TeleOp")
 public class TestTeleOp extends EctoOpMode {
-
-    FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     //Mechanisms
     Mecanum chassis;
@@ -31,8 +25,6 @@ public class TestTeleOp extends EctoOpMode {
     Manipulator manipulator;
 
     Arm arm;
-
-//    0.00259
 
     Intake intake;
 
@@ -53,99 +45,73 @@ public class TestTeleOp extends EctoOpMode {
         chassis = new Mecanum("ChassisMecanum", "Mechanism", mecanumConfig);
         arm = new Arm("arm", "Mechanism", armConfig);
         manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
+        intake = new Intake("intake", "Mechanism", intakeConfig);
+        spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
 
     }
 
     @Override
     public void initRobot() {
+
         mechanismManager.addMechanism(chassis);
+
         mechanismManager.addMechanism(manipulator);
+
         mechanismManager.addMechanism(arm);
+
+        mechanismManager.addMechanism(intake);
+
+        mechanismManager.addMechanism(spinner);
+
     }
 
     @Override
-    public void startRobot() {
-    }
+    public void startRobot() {}
 
     @Override
     public void updateRobot(Double timeStep) {
 
-
-        dashboardTelemetry.addData("Actual Position", arm.getActualPosition());
-        dashboardTelemetry.addData("Target Position", arm.getTargetPosition());
-
-        dashboardTelemetry.addData("Tolerable Target Position", arm.isAtTarget());
-
-
-        dashboardTelemetry.update();
-
-        ///////////////////////////
+        //////////////////////////
         //////// Chassis /////////
         //////////////////////////
 
-        //
-        //Chassis Driver
-        //
         if (driverGamepad.getLeftY() != 0 || driverGamepad.getLeftX() != 0 || driverGamepad.getRightX() != 0) {
             chassis.setChassisMovement(
                     driverGamepad.getLeftX() * -1,
                     driverGamepad.getLeftY() * -1,
                     driverGamepad.getRightX() * -1,
-                    Mecanum.orientation.field
+                    Mecanum.orientation.robot
             );
         } else {
             chassis.stopChassis();
         }
 
-        ///////////////////////////
-        /////// Manipulator //////
-        //////////////////////////
 
-        //
-        //Manipulator
-        //
-        if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorIn) != 0) {
-            manipulator.turnOn(
-                    driverGamepad.getTrigger
-                            (Configuration.ButtonsConfig.driver.manipulatorIn) * 1
-            );
-        } else {
-            manipulator.turnOff();
-        }
 
-        if (driverGamepad.getTrigger(Configuration.ButtonsConfig.driver.manipulatorOut) != 0) {
-            manipulator.turnOn(
-                    driverGamepad.getTrigger
-                            (Configuration.ButtonsConfig.driver.manipulatorOut) * -1
-            );
-        } else {
-            manipulator.turnOff();
-        }
+        /////////////////////////
+        ////// Manipulator //////
+        /////////////////////////
+
 
         //
         //Arm
         //
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.highLevel)) {
+        if (manipulatorGamepad.getButton(Configuration.Buttons.y)) {
             arm.setPosition(300);
         }
 
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.mediumLevel)) {
+        if (manipulatorGamepad.getButton(Configuration.Buttons.b)) {
             arm.setPosition(150);
         }
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.lowLevel)) {
-            arm.setPosition(50);
+
+        if (manipulatorGamepad.getButton(Configuration.Buttons.a)) {
+            arm.setPosition(75);
         }
 
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.homeLevel)) {
+        if (manipulatorGamepad.getButton(Configuration.Buttons.x)) {
             arm.setPosition(0);
         }
 
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.adjustmentUp)){
-            arm.setPosition(arm.lastSetPoint + 1);
-        }
 
-        if (manipulatorGamepad.getButton(Configuration.ButtonsConfig.manipulator.adjustmentUp)){
-            arm.setPosition(arm.lastSetPoint + -1);
-        }
     }
 }
