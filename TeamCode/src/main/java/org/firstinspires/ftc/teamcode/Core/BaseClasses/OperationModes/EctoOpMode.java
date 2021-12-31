@@ -40,7 +40,7 @@ abstract public class EctoOpMode extends OpMode {
 
     @Override
     public final void loop() {
-        mechanismManager.updateMechanisms();
+//        mechanismManager.updateMechanisms();
         double timeStep = getRuntime() - lastTimeRunned;
         lastTimeRunned = getRuntime();
         updateRobot(timeStep);

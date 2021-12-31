@@ -10,20 +10,20 @@ import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanism
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.spinnerConfig;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoLinearOpMode;
+import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 @Autonomous(name = "Red Autonomous")
-public class Red extends EctoLinearOpMode {
+public class Red extends EctoOpMode {
 
-  SampleMecanumDrive chassis;
+  SampleMecanumDrive drive;
 
   Manipulator manipulator;
 
@@ -33,16 +33,44 @@ public class Red extends EctoLinearOpMode {
 
   Spinner spinner;
 
-  Trajectory strafeToASH;
+  TrajectorySequence trajectory;
 
-
+  // Robot Positions
   Pose2d startingPosition;
+  Pose2d allianceShippingHub;
 
   @Override
   public void initRobotClasses() {
-    chassis = new SampleMecanumDrive(hardwareMap);
-    startingPosition = new Pose2d(12, -65.5, 0);
+    // Autonomous Init Process
+    drive = new SampleMecanumDrive(hardwareMap);
 
+    startingPosition = new Pose2d(12, -65.5, 0);
+    allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
+
+    drive.setPoseEstimate(startingPosition);
+
+    //Inits Our Trajectory
+    trajectory =
+            drive
+                    .trajectorySequenceBuilder(startingPosition)
+                    // 1st Cycle
+                    .lineToSplineHeading(allianceShippingHub)
+                    .lineToSplineHeading(startingPosition)
+                    .forward(30)
+                    .back(30)
+                    // 2nd Cycle
+                    .lineToSplineHeading(allianceShippingHub)
+                    .lineToSplineHeading(startingPosition)
+                    .forward(30)
+                    .back(30)
+                    // 3nd Cycle
+                    .lineToSplineHeading(allianceShippingHub)
+                    .lineToSplineHeading(startingPosition)
+                    .forward(30)
+                    // FIN
+                    .build();
+
+    // Mechanisms
     arm = new Arm("arm", "Mechanism", armConfig);
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
     intake = new Intake("intake", "Mechanism", intakeConfig);
@@ -50,21 +78,8 @@ public class Red extends EctoLinearOpMode {
   }
 
   @Override
-  protected void initTrajectories() {
-    chassis.setPoseEstimate(startingPosition);
-
-    strafeToASH =
-        chassis
-            .trajectoryBuilder(startingPosition)
-            .lineToSplineHeading(new Pose2d(-12.5, -37.5, Math.toRadians(90)))
-            .build();
-
-
-  }
-
-  @Override
-  protected void initRobot() {
-
+  public void initRobot() {
+    //Adding Mechanisms 2 MM (Mechanism Manager)
     mechanismManager.addMechanism(manipulator);
 
     mechanismManager.addMechanism(arm);
@@ -72,11 +87,17 @@ public class Red extends EctoLinearOpMode {
     mechanismManager.addMechanism(intake);
 
     mechanismManager.addMechanism(spinner);
+
+
+
+    drive.followTrajectorySequenceAsync(trajectory);
   }
 
   @Override
-  public void startRobotTrajectories() {
+  public void startRobot() {}
 
-    manipulator.turnOn(1);
+  @Override
+  public void updateRobot(Double timeStep) {
+    drive.update();
   }
 }
