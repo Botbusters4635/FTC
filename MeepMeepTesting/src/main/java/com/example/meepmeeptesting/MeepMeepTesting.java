@@ -28,11 +28,15 @@ public class MeepMeepTesting {
                         .lineToSplineHeading(startingPosition)
                         .forward(30)
                         .back(30)
-                        // 3nd Cycle
+                        // 3rd Cycle
                         .lineToSplineHeading(new Pose2d(-12, -40, Math.toRadians(90)))
                         .lineToSplineHeading(startingPosition)
-                        .forward(30)
-//                          FIN
+                        // Spinner
+                        .lineToSplineHeading(new Pose2d(-52, -65.5, Math.toRadians(90)))
+                        .waitSeconds(2)
+                        .lineToSplineHeading(new Pose2d(-16, -65.5, Math.toRadians(0)))
+                        .lineToSplineHeading(new Pose2d(42, -65.5, Math.toRadians(0)))
+                        // FIN
                         .build());
 
     meepMeep
