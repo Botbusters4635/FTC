@@ -23,21 +23,24 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 @Autonomous(name = "Red Autonomous")
 public class Red extends EctoOpMode {
 
+  // Chassis
   SampleMecanumDrive drive;
 
+  // Mechanisms
   Manipulator manipulator;
-
   Arm arm;
-
   Intake intake;
-
   Spinner spinner;
 
+  // Trajectories
   TrajectorySequence trajectory;
 
   // Robot Positions
   Pose2d startingPosition;
   Pose2d allianceShippingHub;
+  Pose2d spinnerPos;
+  Pose2d wareHouseP1;
+  Pose2d wareHouseP2;
 
   @Override
   public void initRobotClasses() {
@@ -46,29 +49,11 @@ public class Red extends EctoOpMode {
 
     startingPosition = new Pose2d(12, -65.5, 0);
     allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
+    spinnerPos = new Pose2d(-52, -65.5, Math.toRadians(90));
+    wareHouseP1 = new Pose2d(-40, -65.5, Math.toRadians(0));
+    wareHouseP2 = new Pose2d(38, -65.5, Math.toRadians(0));
 
     drive.setPoseEstimate(startingPosition);
-
-    //Inits Our Trajectory
-    trajectory =
-            drive
-                    .trajectorySequenceBuilder(startingPosition)
-                    // 1st Cycle
-                    .lineToSplineHeading(allianceShippingHub)
-                    .lineToSplineHeading(startingPosition)
-                    .forward(30)
-                    .back(30)
-                    // 2nd Cycle
-                    .lineToSplineHeading(allianceShippingHub)
-                    .lineToSplineHeading(startingPosition)
-                    .forward(30)
-                    .back(30)
-                    // 3nd Cycle
-                    .lineToSplineHeading(allianceShippingHub)
-                    .lineToSplineHeading(startingPosition)
-                    .forward(30)
-                    // FIN
-                    .build();
 
     // Mechanisms
     arm = new Arm("arm", "Mechanism", armConfig);
@@ -79,7 +64,8 @@ public class Red extends EctoOpMode {
 
   @Override
   public void initRobot() {
-    //Adding Mechanisms 2 MM (Mechanism Manager)
+
+    // Adding Mechanisms 2 MM (Mechanism Manager)
     mechanismManager.addMechanism(manipulator);
 
     mechanismManager.addMechanism(arm);
@@ -88,7 +74,112 @@ public class Red extends EctoOpMode {
 
     mechanismManager.addMechanism(spinner);
 
+    // Inits Our Trajectory
+    trajectory =
+        drive
 
+            // 1st Cycle
+            .trajectorySequenceBuilder(startingPosition)
+            .addDisplacementMarker(
+                () -> {
+                  // Levantar Brazo (300)
+                })
+            .lineToSplineHeading(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  // Prender Manipulador
+                })
+            .lineToSplineHeading(startingPosition)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar Manipulador
+                  // Bajar Brazo (150)
+                })
+            .forward(15)
+            .addDisplacementMarker(
+                () -> {
+                  // Bajar Brazo (0)
+                })
+            .forward(15)
+            .addDisplacementMarker(
+                () -> {
+                  // Iniciar El Intake
+                  // Iniciar El Manipulador
+                })
+            .back(4)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar El Intake
+                  // Apagar El Manipulador
+                  // Subir Brazo (150)
+                })
+            .back(26)
+            .addDisplacementMarker(
+                () -> {
+                  // Subir El Brazo (300)
+                })
+
+            // 2nd Cycle
+            .lineToSplineHeading(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  // Prender Manipulador
+                })
+            .lineToSplineHeading(startingPosition)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar Manipulador
+                  // Bajar Brazo (150)
+                })
+            .forward(15)
+            .addDisplacementMarker(
+                () -> {
+                  // Bajar Brazo (0)
+                })
+            .forward(15)
+            .addDisplacementMarker(
+                () -> {
+                  // Iniciar El Intake
+                  // Iniciar El Manipulador
+                })
+            .back(4)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar El Intake
+                  // Apagar El Manipulador
+                  // Subir Brazo (150)
+                })
+            .back(26)
+            .addDisplacementMarker(
+                () -> {
+                  // Subir El Brazo (300)
+                })
+
+            // 3rd Cycle
+            .lineToSplineHeading(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  // Prender Manipulador
+                })
+            .waitSeconds(0.2)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar Manipulador
+                })
+            .lineToSplineHeading(spinnerPos)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar Manipulador
+                })
+            .waitSeconds(2)
+            .addDisplacementMarker(
+                () -> {
+                  // Apagar Manipulador
+                })
+            .lineToSplineHeading(wareHouseP1)
+            .lineToSplineHeading(wareHouseP2)
+            // FIN
+            .build();
 
     drive.followTrajectorySequenceAsync(trajectory);
   }
