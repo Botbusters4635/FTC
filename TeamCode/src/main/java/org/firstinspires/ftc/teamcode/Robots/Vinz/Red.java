@@ -10,6 +10,7 @@ import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanism
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.spinnerConfig;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
@@ -82,69 +83,78 @@ public class Red extends EctoOpMode {
             .trajectorySequenceBuilder(startingPosition)
             .addDisplacementMarker(
                 () -> {
-                  // Levantar Brazo (300)
+                  arm.setPosition(300);
                 })
             .lineToSplineHeading(allianceShippingHub)
             .addDisplacementMarker(
                 () -> {
-                  // Prender Manipulador
+                  manipulator.turnOn(-1);
                 })
             .lineToSplineHeading(startingPosition)
             .addDisplacementMarker(
                 () -> {
-                  // Apagar Manipulador
-                  // Bajar Brazo (150)
+                  manipulator.turnOn(0);
+                  arm.setPosition(150);
                 })
             .forward(15)
             .addDisplacementMarker(
                 () -> {
-                  // Bajar Brazo (0)
+                  arm.setPosition(0);
                 })
             .forward(15)
             .addDisplacementMarker(
                 () -> {
-                  // Iniciar El Intake
-                  // Iniciar El Manipulador
+                  intake.turnOn(1);
+                  manipulator.turnOn(1);
                 })
             .back(4)
             .addDisplacementMarker(
                 () -> {
-                  // Apagar El Intake
-                  // Apagar El Manipulador
-                  // Subir Brazo (150)
+                  intake.turnOn(0);
+                  manipulator.turnOn(0);
+                  arm.setPosition(150);
                 })
             .back(26)
             .addDisplacementMarker(
                 () -> {
-                  // Subir El Brazo (300)
+                  arm.setPosition(300);
                 })
 
             // 2nd Cycle
             .lineToSplineHeading(allianceShippingHub)
             .addDisplacementMarker(
                 () -> {
+                  manipulator.turnOn(-1);
                   // Prender Manipulador
                 })
             .lineToSplineHeading(startingPosition)
             .addDisplacementMarker(
                 () -> {
+                  manipulator.turnOn(0);
+                  arm.setPosition(150);
                   // Apagar Manipulador
                   // Bajar Brazo (150)
                 })
             .forward(15)
             .addDisplacementMarker(
                 () -> {
+                  arm.setPosition(0);
                   // Bajar Brazo (0)
                 })
             .forward(15)
             .addDisplacementMarker(
                 () -> {
+                  intake.turnOn(1);
+                  manipulator.turnOn(1);
                   // Iniciar El Intake
                   // Iniciar El Manipulador
                 })
             .back(4)
             .addDisplacementMarker(
                 () -> {
+                  intake.turnOn(0);
+                  manipulator.turnOn(0);
+                  arm.setPosition(150);
                   // Apagar El Intake
                   // Apagar El Manipulador
                   // Subir Brazo (150)
@@ -152,6 +162,7 @@ public class Red extends EctoOpMode {
             .back(26)
             .addDisplacementMarker(
                 () -> {
+                  arm.setPosition(300);
                   // Subir El Brazo (300)
                 })
 
@@ -159,21 +170,28 @@ public class Red extends EctoOpMode {
             .lineToSplineHeading(allianceShippingHub)
             .addDisplacementMarker(
                 () -> {
+                  manipulator.turnOn(-1);
                   // Prender Manipulador
                 })
             .waitSeconds(0.2)
             .addDisplacementMarker(
                 () -> {
+                  manipulator.turnOn(0);
                   // Apagar Manipulador
                 })
             .lineToSplineHeading(spinnerPos)
-            .addDisplacementMarker(
+            .addSpatialMarker(
+                new Vector2d(-31, -52),
                 () -> {
-                  // Apagar Manipulador
+                  arm.setPosition(150);
+                  spinner.turnOn(1);
                 })
+
             .waitSeconds(2)
             .addDisplacementMarker(
                 () -> {
+                    spinner.turnOn(0);
+                    arm.setPosition(0);
                   // Apagar Manipulador
                 })
             .lineToSplineHeading(wareHouseP1)

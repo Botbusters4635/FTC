@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanism
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.spinnerConfig;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
@@ -80,7 +81,7 @@ public class TestTeleOp extends EctoOpMode {
                     driverGamepad.getLeftX() * -1,
                     driverGamepad.getLeftY() * -1,
                     driverGamepad.getRightX() * -1,
-                    Mecanum.orientation.robot
+                    Mecanum.orientation.field
             );
         } else {
             chassis.stopChassis();
@@ -112,6 +113,18 @@ public class TestTeleOp extends EctoOpMode {
             arm.setPosition(0);
         }
 
+
+        if (driverGamepad.getLeftY() != 0) {
+            manipulator.turnOn(driverGamepad.getLeftY());
+        } else {
+            manipulator.turnOn(0);
+        }
+
+        if (driverGamepad.getRightY() != 0) {
+            intake.turnOn(driverGamepad.getRightY());
+        } else {
+            intake.turnOn(0);
+        }
 
     }
 }

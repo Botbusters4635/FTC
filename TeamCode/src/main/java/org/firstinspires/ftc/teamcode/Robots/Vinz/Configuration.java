@@ -22,7 +22,7 @@ public class Configuration {
         static public ManipulatorConfig  manipulatorConfig = new ManipulatorConfig("manipulatorMotor", Motor.GoBILDA.RPM_435);
         static public ArmConfig armConfig = new ArmConfig("armMotor", 1451.5, 13.5, 30, Motor.GoBILDA.RPM_117);
         static public IntakeConfig intakeConfig = new IntakeConfig("intakeMotor", Motor.GoBILDA.RPM_435);
-        static public SpinnerConfig spinnerConfig = new SpinnerConfig("spinnerMotot ", Motor.GoBILDA.RPM_435);
+        static public SpinnerConfig spinnerConfig = new SpinnerConfig("spinnerMotor", Motor.GoBILDA.RPM_435);
 
     }
 

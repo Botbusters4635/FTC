@@ -110,6 +110,8 @@ public class MeepMeepTesting {
                             () -> {
                               // Apagar Manipulador
                             })
+
+                            // Spinner
                         .lineToSplineHeading(spinner)
                         .addDisplacementMarker(
                             () -> {
@@ -120,6 +122,7 @@ public class MeepMeepTesting {
                             () -> {
                               // Apagar Manipulador
                             })
+                            // Park To Ware House
                         .lineToSplineHeading(wareHouseP1)
                         .lineToSplineHeading(wareHouseP2)
                         // FIN
