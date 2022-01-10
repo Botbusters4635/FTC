@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots.Vinz;
+package org.firstinspires.ftc.teamcode.Robots.Vinz.TeleOperated;
 
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.intakeConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.manipulatorConfig;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
+import org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration;
 
 @TeleOp(name = "MotorTester")
 public class MotorTester extends EctoOpMode {

@@ -51,6 +51,8 @@ public class Configuration {
             static public GamepadKeys.Button dPadUp = GamepadKeys.Button.DPAD_UP;
             static public GamepadKeys.Button dPadRight = GamepadKeys.Button.DPAD_RIGHT;
 
+            static public GamepadKeys.Button start = GamepadKeys.Button.START;
+
     }
 
 }

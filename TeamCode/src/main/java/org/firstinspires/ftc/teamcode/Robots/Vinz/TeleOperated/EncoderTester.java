@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots.Vinz;
+package org.firstinspires.ftc.teamcode.Robots.Vinz.TeleOperated;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -47,5 +47,7 @@ public class EncoderTester extends EctoOpMode {
         telemetry.addData("Back Left", bL.getCurrentPosition());
         telemetry.addData("Back Right", bR.getCurrentPosition());
         telemetry.update();
+
+
     }
 }
