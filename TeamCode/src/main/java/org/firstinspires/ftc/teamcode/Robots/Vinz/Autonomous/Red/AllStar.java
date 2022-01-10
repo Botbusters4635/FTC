@@ -20,88 +20,74 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
-@Autonomous(name = "RED AllStar")
+@Autonomous(name = "gfjcjchvjlb")
 public class AllStar extends EctoOpMode {
 
-  // Chassis
-  SampleMecanumDrive drive;
-
-  // Mechanisms
-  Manipulator manipulator;
-  Arm arm;
-  Intake intake;
-  Spinner spinner;
-
-  // Trajectories
-  TrajectorySequence trajectory;
-
-  // Robot Positions
-  Pose2d startingPosition;
-  Pose2d allianceShippingHub;
-  Pose2d spinnerPos;
-  Pose2d wareHouseP1;
-  Pose2d wareHouseP2;
-
-  @Override
-  public void initRobotClasses() {
-    // Autonomous Init Process
-    drive = new SampleMecanumDrive(hardwareMap);
-
-    startingPosition = new Pose2d(12, -62, 0);
-    allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
-    spinnerPos = new Pose2d(-52, -65.5, Math.toRadians(90));
-    wareHouseP1 = new Pose2d(-40, -65.5, Math.toRadians(0));
-    wareHouseP2 = new Pose2d(38, -65.5, Math.toRadians(0));
-
-    drive.setPoseEstimate(startingPosition);
+    // Chassis
+    SampleMecanumDrive drive;
 
     // Mechanisms
-    arm = new Arm("arm", "Mechanism", armConfig);
-    manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
-    intake = new Intake("intake", "Mechanism", intakeConfig);
-    spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
-  }
+    Manipulator manipulator;
+    Arm arm;
+    Intake intake;
+    Spinner spinner;
 
-  @Override
-  public void initRobot() {
+    // Trajectories
+    TrajectorySequence trajectory;
 
-    mechanismManager.addMechanism(manipulator);
-    mechanismManager.addMechanism(arm);
-    mechanismManager.addMechanism(intake);
-    mechanismManager.addMechanism(spinner);
+    // Robot Positions
+    Pose2d startingPosition;
+    Pose2d allianceShippingHub;
+    Pose2d spinnerPos;
+    Pose2d wareHouseP1;
+    Pose2d wareHouseP2;
 
-    // Inits Our Trajectory
-    trajectory =
-        drive
+    @Override
+    public void initRobotClasses() {
+        // Autonomous Init Process
+        drive = new SampleMecanumDrive(hardwareMap);
 
+        startingPosition = new Pose2d(12, -62, 0);
+        allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
+        spinnerPos = new Pose2d(-52, -65.5, Math.toRadians(90));
+        wareHouseP1 = new Pose2d(-40, -65.5, Math.toRadians(0));
+        wareHouseP2 = new Pose2d(38, -65.5, Math.toRadians(0));
 
-            .trajectorySequenceBuilder(startingPosition)
-//            .addDisplacementMarker(
-//                () -> {
-//                  //                  arm.setPosition(350);
-//                })
-            .forward(10)
-//                .lineToSplineHeading(allianceShippingHub)
-//            .addDisplacementMarker(
-//                () -> {
-//                  manipulator.turnOn(1);
-//                })
-//            .lineToSplineHeading(startingPosition)
-//            .addDisplacementMarker(
-//                () -> {
-//                  manipulator.turnOff();
-//                  //                  arm.setPosition(150);
-//                })
-            .build();
+        drive.setPoseEstimate(startingPosition);
 
-    drive.followTrajectorySequenceAsync(trajectory);
-  }
+        // Mechanisms
+        arm = new Arm("arm", "Mechanism", armConfig);
+        manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
+        intake = new Intake("intake", "Mechanism", intakeConfig);
+        spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
+    }
 
-  @Override
-  public void startRobot() {}
+    @Override
+    public void initRobot() {
 
-  @Override
-  public void updateRobot(Double timeStep) {
-    drive.update();
-  }
+        mechanismManager.addMechanism(manipulator);
+        mechanismManager.addMechanism(arm);
+        mechanismManager.addMechanism(intake);
+        mechanismManager.addMechanism(spinner);
+
+        // Inits Our Trajectory
+        trajectory =
+                drive
+                        .trajectorySequenceBuilder(startingPosition)
+                        .forward(10)
+                        .build();
+
+    }
+
+    @Override
+    public void startRobot() {
+
+        drive.followTrajectorySequenceAsync(trajectory);
+
+    }
+
+    @Override
+    public void updateRobot(Double timeStep) {
+        drive.update();
+    }
 }
