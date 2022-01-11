@@ -23,71 +23,84 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 @Autonomous(name = "gfjcjchvjlb")
 public class AllStar extends EctoOpMode {
 
-    // Chassis
-    SampleMecanumDrive drive;
+  // Chassis
+  SampleMecanumDrive drive;
+
+  // Mechanisms
+  Manipulator manipulator;
+  Arm arm;
+  Intake intake;
+  Spinner spinner;
+
+  // Trajectories
+  TrajectorySequence trajectory;
+
+  // Robot Positions
+  Pose2d startingPosition;
+  Pose2d allianceShippingHub;
+  Pose2d spinnerPos;
+  Pose2d wareHouseP1;
+  Pose2d wareHouseP2;
+
+  @Override
+  public void initRobotClasses() {
+    // Autonomous Init Process
+    drive = new SampleMecanumDrive(hardwareMap);
+
+    startingPosition = new Pose2d(12, -62, 0);
+    allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
+    spinnerPos = new Pose2d(-52, -65.5, Math.toRadians(90));
+    wareHouseP1 = new Pose2d(-40, -65.5, Math.toRadians(0));
+    wareHouseP2 = new Pose2d(38, -65.5, Math.toRadians(0));
+
+    drive.setPoseEstimate(startingPosition);
 
     // Mechanisms
-    Manipulator manipulator;
-    Arm arm;
-    Intake intake;
-    Spinner spinner;
+    arm = new Arm("arm", "Mechanism", armConfig);
+    manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
+    intake = new Intake("intake", "Mechanism", intakeConfig);
+    spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
+  }
 
-    // Trajectories
-    TrajectorySequence trajectory;
+  @Override
+  public void initRobot() {
 
-    // Robot Positions
-    Pose2d startingPosition;
-    Pose2d allianceShippingHub;
-    Pose2d spinnerPos;
-    Pose2d wareHouseP1;
-    Pose2d wareHouseP2;
+    mechanismManager.addMechanism(manipulator);
+    mechanismManager.addMechanism(arm);
+    mechanismManager.addMechanism(intake);
+    mechanismManager.addMechanism(spinner);
 
-    @Override
-    public void initRobotClasses() {
-        // Autonomous Init Process
-        drive = new SampleMecanumDrive(hardwareMap);
+    // Inits Our Trajectory
+    trajectory =
+        drive
+                // Starts Path
+            .trajectorySequenceBuilder(startingPosition)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setPosition(300);
+                })
+                // Goes To Alliance Shipping Hub
+            .lineToSplineHeading(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  // Escupir Game Piece
+                })
+                // Goes To Starting Position
+            .lineToSplineHeading(startingPosition)
+            .addDisplacementMarker(
+                () -> {
+                  // Bajar Brazo a MEDIUM
+                })
+            .build();
 
-        startingPosition = new Pose2d(12, -62, 0);
-        allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
-        spinnerPos = new Pose2d(-52, -65.5, Math.toRadians(90));
-        wareHouseP1 = new Pose2d(-40, -65.5, Math.toRadians(0));
-        wareHouseP2 = new Pose2d(38, -65.5, Math.toRadians(0));
+    drive.followTrajectorySequenceAsync(trajectory);
+  }
 
-        drive.setPoseEstimate(startingPosition);
+  @Override
+  public void startRobot() {}
 
-        // Mechanisms
-        arm = new Arm("arm", "Mechanism", armConfig);
-        manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
-        intake = new Intake("intake", "Mechanism", intakeConfig);
-        spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
-    }
-
-    @Override
-    public void initRobot() {
-
-        mechanismManager.addMechanism(manipulator);
-        mechanismManager.addMechanism(arm);
-        mechanismManager.addMechanism(intake);
-        mechanismManager.addMechanism(spinner);
-
-        // Inits Our Trajectory
-        trajectory =
-                drive
-                        .trajectorySequenceBuilder(startingPosition)
-                        .forward(10)
-                        .build();
-
-    }
-
-    @Override
-    public void startRobot() {
-
-        drive.followTrajectorySequenceAsync(trajectory);
-
-    }
-
-    @Override
-    public void updateRobot(Double timeStep) {
-        drive.update();
-    }
+  @Override
+  public void updateRobot(Double timeStep) {
+    drive.update();
+  }
 }
