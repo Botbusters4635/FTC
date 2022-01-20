@@ -7,11 +7,15 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
   public static void main(String[] args) {
-    MeepMeep meepMeep = new MeepMeep(800);
+    MeepMeep meepMeep = new MeepMeep(600);
 
     Pose2d startingPosition = new Pose2d(12, -64, 0);
-    Pose2d wareHouse = new Pose2d(48, -64);
+    Pose2d wareHouseP2 = new Pose2d(48, -64);
+    Pose2d wareHouseP1 = new Pose2d(-32, -64);
+
     Pose2d allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
+
+    Pose2d spinner = new Pose2d(-48, -64, Math.toRadians(90));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
@@ -37,7 +41,7 @@ public class MeepMeepTesting {
                             () -> {
                               // Bajar Brazo a MEDIUM
                             })
-                        .lineToSplineHeading(wareHouse)
+                        .lineToSplineHeading(wareHouseP2)
                         .addDisplacementMarker(
                             () -> {
                               // Bajar Brazo a MEDIUM
@@ -50,6 +54,7 @@ public class MeepMeepTesting {
 
                         // 2nd Cycle
                         .lineToSplineHeading(allianceShippingHub)
+                        .strafeRight(3)
                         .addDisplacementMarker(
                             () -> {
                               // Escupir Game Piece
@@ -59,7 +64,7 @@ public class MeepMeepTesting {
                             () -> {
                               // Bajar Brazo a MEDIUM
                             })
-                        .lineToSplineHeading(wareHouse)
+                        .lineToSplineHeading(wareHouseP2)
                         .addDisplacementMarker(
                             () -> {
                               // Bajar Brazo a MEDIUM
@@ -70,8 +75,24 @@ public class MeepMeepTesting {
                               // Bajar Brazo a MEDIUM
                             })
 
-                        // 2nd Cycle
+                        // 3rd Cycle
                         .lineToSplineHeading(allianceShippingHub)
+                        .strafeRight(3)
+                        .addDisplacementMarker(
+                            () -> {
+                              // Escupir Game Piece
+                            })
+
+                        // Spinner
+                        .lineToSplineHeading(spinner)
+                        .addDisplacementMarker(
+                            () -> {
+                              // Escupir Game Piece
+                            })
+
+                        // Warehouse Parking
+                        .lineToSplineHeading(wareHouseP1)
+                        .lineToSplineHeading(wareHouseP2)
                         .addDisplacementMarker(
                             () -> {
                               // Escupir Game Piece
