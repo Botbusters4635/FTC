@@ -8,7 +8,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
-public class Manipulator extends EctoMechanism {
+public class Manipulator extends EctoMechanism{
 
   public Manipulator(String moduleName, String moduleType, ManipulatorConfig config) {
     super(moduleName, moduleType);
