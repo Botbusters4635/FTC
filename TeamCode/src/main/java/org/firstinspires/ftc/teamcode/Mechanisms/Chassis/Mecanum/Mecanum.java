@@ -4,7 +4,9 @@
 
 package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum;
 
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
@@ -57,7 +59,7 @@ public class Mecanum extends EctoMechanism {
         mecanum.stop();
     }
 
-    public void headAlways(int errorTolerance) {
+    public void headAlways(int errorTolerance, GamepadKeys button) {
 
         if (imu.getHeading() < errorTolerance * -1 && imu.getHeading() < 0) {
             setChassisMovement(0.0, 0.0, 1, orientation.robot);
