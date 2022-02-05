@@ -37,10 +37,11 @@ public class AllStar extends EctoOpMode {
     TRAJ3,
   }
 
-  //VISION STUFF
+  // VISION STUFF
   private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
   private static final String[] LABELS = {"TSE"};
-  private static final String VUFORIA_KEY = "AcPYhx//////AAABmUFaV20z2EmQkqbvhi5zgVyC8RDLUdcdScdfOzcbH3fA+pSEVZWlNIF+Ut/4VmqGbuk7uFqip+a3n8/B0pq1/CI+gVsV+uBZZ1CGA6DmLbDMwNu0jXJGH13oetb0LsQVjQXKVn5UNHDs3NSuZIElqucqsKVFjd4/UiYMTjV6mlkb9wtuZ2DXUThYi65NaqdEH9erho/RsjeoAhRbHBiHWZacLOT54Sv3TFt+QdWR9RvvDZewNSaP9bYCE8322fjmqdKd7qjT/jNEgJsM4G3qA9QqpOueIGbxKVJY5nN5vBLWruEdo/aH0C1pnxMzVTlQIFQjhALfyGHRCBSBWujGcXQq59onVkH/fnzg07TBLdFo ";
+  private static final String VUFORIA_KEY =
+      "AcPYhx//////AAABmUFaV20z2EmQkqbvhi5zgVyC8RDLUdcdScdfOzcbH3fA+pSEVZWlNIF+Ut/4VmqGbuk7uFqip+a3n8/B0pq1/CI+gVsV+uBZZ1CGA6DmLbDMwNu0jXJGH13oetb0LsQVjQXKVn5UNHDs3NSuZIElqucqsKVFjd4/UiYMTjV6mlkb9wtuZ2DXUThYi65NaqdEH9erho/RsjeoAhRbHBiHWZacLOT54Sv3TFt+QdWR9RvvDZewNSaP9bYCE8322fjmqdKd7qjT/jNEgJsM4G3qA9QqpOueIGbxKVJY5nN5vBLWruEdo/aH0C1pnxMzVTlQIFQjhALfyGHRCBSBWujGcXQq59onVkH/fnzg07TBLdFo ";
 
   private VuforiaLocalizer vuforia;
   private TFObjectDetector tfod;
@@ -68,11 +69,10 @@ public class AllStar extends EctoOpMode {
   Pose2d wareHouseP2Pos;
 
   // Arm Positions
-  int low = 20;
-  int medium = 50;
-  int high = 120;
+  int low = 75;
+  int medium = 150;
+  int high = 250;
   int randomPosition = high;
-
 
   State currentState = TRAJ1;
 
@@ -87,21 +87,22 @@ public class AllStar extends EctoOpMode {
     allianceShippingHubP3Pos = new Pose2d(-8, -42, Math.toRadians(90));
     wareHouseP1Pos = new Pose2d(-20, -66);
     wareHouseP2Pos = new Pose2d(48, -66);
-    spinnerPos = new Pose2d(-54, -64, Math.toRadians(90));
+    spinnerPos = new Pose2d(-50, -64, Math.toRadians(90));
 
     drive.setPoseEstimate(startPos);
+
+    initVuforia();
+    initTfod();
 
     // Mechanisms
     arm = new Arm("arm", "Mechanism", armConfig);
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
     intake = new Intake("intake", "Mechanism", intakeConfig);
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
-
   }
 
   @Override
   public void initRobot() {
-
 
     mechanismManager.addMechanism(manipulator);
     mechanismManager.addMechanism(arm);
@@ -109,8 +110,6 @@ public class AllStar extends EctoOpMode {
     mechanismManager.addMechanism(spinner);
 
     // Inits Our Trajectory
-    initVuforia();
-    initTfod();
 
     if (tfod != null) {
       tfod.activate();
@@ -120,62 +119,60 @@ public class AllStar extends EctoOpMode {
     if (tfod != null) {
 
       List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-      if (updatedRecognitions != null) {
 
-        for (Recognition recognition : updatedRecognitions) {
+      if (updatedRecognitions != null && !updatedRecognitions.isEmpty()) {
 
-          if (recognition.getLeft() < 100  && recognition.getLeft() > 0){
-            randomPosition = low;
-            telemetry.addData("Level", "1");
-          }
+        telemetry.addData("# Object Detected", updatedRecognitions.size());
+        Recognition newRecognition = updatedRecognitions.get(updatedRecognitions.size() - 1);
 
-          if (recognition.getLeft() < 300 && recognition.getLeft() > 200){
-            randomPosition = medium;
-            telemetry.addData("Level", "2");
-          }
-
-          if (recognition.getLeft() < 700 && recognition.getLeft() > 400){
-            randomPosition = high;
-            telemetry.addData("Level", "3");
-          }
-
+        if (newRecognition.getLeft() < 249 && newRecognition.getLeft() > 0) {
+          randomPosition = low;
+          telemetry.addData("Level", "1");
         }
 
-        telemetry.update();
+        if (newRecognition.getLeft() < 399 && newRecognition.getLeft() > 250) {
+          randomPosition = medium;
+          telemetry.addData("Level", "2");
+        }
 
+        if (newRecognition.getLeft() < 800 && newRecognition.getLeft() > 400) {
+          randomPosition = high;
+          telemetry.addData("Level", "3");
+        }
       }
+
+      telemetry.update();
     }
 
     trajectoryOne =
         drive
             .trajectorySequenceBuilder(startPos)
-            //            .addDisplacementMarker(() -> arm.setPosition(medium))
+            .addDisplacementMarker(() -> arm.setPosition(medium))
 
             // 1st Cycle
             .lineToSplineHeading(allianceShippingHubPos)
             .addDisplacementMarker(
                 () -> {
-                  //                  Random Position
-//                                    arm.setPosition(randomPosition);
+                  arm.setPosition(randomPosition);
                   manipulator.turnOn(1);
                 })
             .lineToSplineHeading(startPos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(medium);
+                  arm.setPosition(medium);
                   manipulator.turnOff();
                 })
             .lineToSplineHeading(wareHouseP2Pos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(low);
+                  arm.setPosition(low);
                   manipulator.turnOn(-1);
                   intake.turnOn(-1);
                 })
             .lineToSplineHeading(startPos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(medium);
+                  arm.setPosition(medium);
                   manipulator.turnOff();
                   intake.turnOff();
                 })
@@ -191,26 +188,26 @@ public class AllStar extends EctoOpMode {
 
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(high);
+                  arm.setPosition(high);
                   manipulator.turnOn(1);
                 })
             .lineToSplineHeading(startPos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(medium);
+                  arm.setPosition(medium);
                   manipulator.turnOff();
                 })
             .lineToSplineHeading(wareHouseP2Pos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(low);
+                  arm.setPosition(low);
                   manipulator.turnOn(-1);
                   intake.turnOn(-1);
                 })
             .lineToSplineHeading(startPos)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.setPosition(medium);
+                  arm.setPosition(medium);
                   manipulator.turnOff();
                   intake.turnOff();
                 })
@@ -227,7 +224,7 @@ public class AllStar extends EctoOpMode {
                 () -> {
                   spinner.turnOn(-1);
                   manipulator.turnOn(1);
-                  //                  arm.setPosition(high);
+                  arm.setPosition(high);
                 })
 
             // Spinner
@@ -235,7 +232,7 @@ public class AllStar extends EctoOpMode {
             .waitSeconds(1.5)
             .addDisplacementMarker(
                 () -> {
-                  //                  arm.stopMechanism();
+                  arm.stopMechanism();
                   manipulator.turnOff();
                   spinner.turnOff();
                 })
@@ -244,6 +241,8 @@ public class AllStar extends EctoOpMode {
             .lineToSplineHeading(wareHouseP1Pos)
             .lineToSplineHeading(wareHouseP2Pos)
             .build();
+
+    drive.followTrajectorySequenceAsync(trajectoryOne);
 
     telemetry.addData(">", "Press Play to start op mode");
     telemetry.update();
@@ -256,9 +255,9 @@ public class AllStar extends EctoOpMode {
 
   @Override
   public void updateRobot(Double timeStep) {
+    telemetry.addData("Level", randomPosition);
 
     switch (currentState) {
-
       case TRAJ1:
         if (!drive.isBusy()) {
           currentState = State.TRAJ2;
@@ -267,7 +266,7 @@ public class AllStar extends EctoOpMode {
 
       case TRAJ2:
         if (!drive.isBusy()) {
-          currentState = State.TRAJ2;
+          currentState = State.TRAJ3;
           drive.followTrajectorySequenceAsync(trajectoryThree);
         }
 
@@ -286,16 +285,15 @@ public class AllStar extends EctoOpMode {
     parameters.vuforiaLicenseKey = VUFORIA_KEY;
     parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam");
     vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
   }
 
   private void initTfod() {
 
     int tfodMonitorViewId =
-            hardwareMap
-                    .appContext
-                    .getResources()
-                    .getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        hardwareMap
+            .appContext
+            .getResources()
+            .getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
     TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
     tfodParameters.minResultConfidence = 0.8f;
@@ -303,8 +301,5 @@ public class AllStar extends EctoOpMode {
     tfodParameters.inputSize = 320;
     tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
     tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-
   }
-
 }
-

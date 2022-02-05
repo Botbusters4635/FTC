@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 import java.util.ArrayList;
 
 public class MechanismManager {
+
     //CONSTRUCTORS
     public MechanismManager() {
     }

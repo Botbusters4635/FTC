@@ -27,6 +27,11 @@ public class TeleOperated extends EctoOpMode {
   Intake intake;
   Spinner spinner;
 
+  // Arm Positions
+  int highLevel = 300;
+  int midLevel = 150;
+  int lowLevel = 75;
+
   // Controllers
   public static GamepadEx driverGamepad;
   public static GamepadEx manipulatorGamepad;
@@ -61,10 +66,7 @@ public class TeleOperated extends EctoOpMode {
   @Override
   public void updateRobot(Double timeStep) {
 
-    //////////////////////////
-    //////// Chassis /////////
-    //////////////////////////
-
+    // + CHASSIS
     if (driverGamepad.getLeftY() != 0
         || driverGamepad.getLeftX() != 0
         || driverGamepad.getRightX() != 0) {
@@ -73,60 +75,89 @@ public class TeleOperated extends EctoOpMode {
           driverGamepad.getLeftY() * -1,
           driverGamepad.getRightX() * -1,
           Mecanum.orientation.field);
+    } else if (driverGamepad.getLeftY() != 0
+            && driverGamepad.getButton(Configuration.Buttons.leftStickButton)
+        || driverGamepad.getLeftX() != 0
+            && driverGamepad.getButton(Configuration.Buttons.leftStickButton)
+        || driverGamepad.getRightX() != 0
+            && driverGamepad.getButton(Configuration.Buttons.rightStickButton)) {
+      chassis.setChassisMovement(
+          driverGamepad.getLeftX() * -0.5,
+          driverGamepad.getLeftY() * -0.5,
+          driverGamepad.getRightX() * -0.5,
+          Mecanum.orientation.field);
+      {
+      }
     } else {
       chassis.stopChassis();
     }
 
-    /////////////////////////
-    ////// Manipulator //////
-    /////////////////////////
+    // + ARM
+    if (driverGamepad.getButton(Configuration.Buttons.y)) {
 
-    //
-    // Arm
-    //
-    if (manipulatorGamepad.getButton(Configuration.Buttons.y)) {
-      arm.setPosition(300);
-    }
+      arm.setPosition(highLevel);
 
-    if (manipulatorGamepad.getButton(Configuration.Buttons.b)) {
-      arm.setPosition(150);
-    }
+    } else if (driverGamepad.getButton(Configuration.Buttons.b)) {
 
-    if (manipulatorGamepad.getButton(Configuration.Buttons.a)) {
-      arm.setPosition(75);
-    }
+      arm.setPosition(midLevel);
 
-    if (manipulatorGamepad.getButton(Configuration.Buttons.x)) {
+    } else if (driverGamepad.getButton(Configuration.Buttons.a)) {
+
+      arm.setPosition(lowLevel);
+
+    } else if (driverGamepad.getButton(Configuration.Buttons.x)) {
+
       arm.setHomePosition();
-    }
-
-    if (manipulatorGamepad.getButton(Configuration.Buttons.start)) {
+    } if (driverGamepad.getButton(Configuration.Buttons.start)) {
       arm.resetHomePosition();
     }
 
-    if (manipulatorGamepad.getLeftY() != 0) {
-      manipulator.turnOn(manipulatorGamepad.getLeftY());
+    // + INTAKE && MANIPULATOR
+    if (driverGamepad.getButton(Configuration.Buttons.dPadUp)) {
+
+      manipulator.turnOn(1);
+
     } else {
+
       manipulator.turnOff();
+
     }
 
-    if (manipulatorGamepad.getRightY() != 0) {
-      intake.turnOn(manipulatorGamepad.getRightY());
+    if (driverGamepad.getButton(Configuration.Buttons.dPadRight)) {
+
+      manipulator.turnOn(-1);
+      intake.turnOn(-1);
+
+    } else if (driverGamepad.getButton(Configuration.Buttons.dPadLeft)) {
+
+      intake.turnOn(1);
+
     } else {
+
+      manipulator.turnOff();
       intake.turnOff();
+
     }
 
-    if (manipulatorGamepad.getTrigger(Configuration.Buttons.leftTrigger) != 0) {
-      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.leftTrigger));
+    // + SPINNER BUTTON CONFIGURATION
+    if (driverGamepad.getTrigger(Configuration.Buttons.rightTrigger) != 0) {
+
+      spinner.turnOn(driverGamepad.getTrigger(Configuration.Buttons.rightTrigger));
+
+    } else if (driverGamepad.getTrigger(Configuration.Buttons.leftTrigger) != 0) {
+
+      spinner.turnOn(driverGamepad.getTrigger(Configuration.Buttons.leftTrigger) * -1);
+
     } else {
+
       spinner.turnOff();
     }
 
-    if (manipulatorGamepad.getTrigger(Configuration.Buttons.rightTrigger) != 0) {
-      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.rightTrigger) * -1);
-    } else {
-      spinner.turnOff();
-    }
+    telemetry.addData("Left Y JoyInput:", driverGamepad.getLeftY());
+    telemetry.addData("Left X JoyInput:", driverGamepad.getLeftX());
+
+    telemetry.addData("Right Y JoyInput:", driverGamepad.getRightY());
+    telemetry.addData("Right X JoyInput:", driverGamepad.getRightX());
 
     telemetry.addData("arm", arm.getActualPosition());
     telemetry.update();
