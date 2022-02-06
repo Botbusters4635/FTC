@@ -68,23 +68,23 @@ public class TeleOperated extends EctoOpMode {
 
     // + CHASSIS
     if (driverGamepad.getLeftY() != 0
-        || driverGamepad.getLeftX() != 0
-        || driverGamepad.getRightX() != 0) {
-      chassis.setChassisMovement(
-          driverGamepad.getLeftX() * -1,
-          driverGamepad.getLeftY() * -1,
-          driverGamepad.getRightX() * -1,
-          Mecanum.orientation.field);
-    } else if (driverGamepad.getLeftY() != 0
             && driverGamepad.getButton(Configuration.Buttons.leftStickButton)
         || driverGamepad.getLeftX() != 0
             && driverGamepad.getButton(Configuration.Buttons.leftStickButton)
         || driverGamepad.getRightX() != 0
             && driverGamepad.getButton(Configuration.Buttons.rightStickButton)) {
       chassis.setChassisMovement(
-          driverGamepad.getLeftX() * -0.5,
-          driverGamepad.getLeftY() * -0.5,
-          driverGamepad.getRightX() * -0.5,
+              driverGamepad.getLeftX() * -0.5,
+              driverGamepad.getLeftY() * -0.5,
+              driverGamepad.getRightX() * -0.5,
+              Mecanum.orientation.field);
+    } else if (driverGamepad.getLeftY() != 0
+        || driverGamepad.getLeftX() != 0
+        || driverGamepad.getRightX() != 0) {
+      chassis.setChassisMovement(
+          driverGamepad.getLeftX() * -1,
+          driverGamepad.getLeftY() * -1,
+          driverGamepad.getRightX() * -1,
           Mecanum.orientation.field);
       {
       }
@@ -108,7 +108,8 @@ public class TeleOperated extends EctoOpMode {
     } else if (driverGamepad.getButton(Configuration.Buttons.x)) {
 
       arm.setHomePosition();
-    } if (driverGamepad.getButton(Configuration.Buttons.start)) {
+    }
+    if (driverGamepad.getButton(Configuration.Buttons.start)) {
       arm.resetHomePosition();
     }
 
@@ -120,7 +121,6 @@ public class TeleOperated extends EctoOpMode {
     } else {
 
       manipulator.turnOff();
-
     }
 
     if (driverGamepad.getButton(Configuration.Buttons.dPadRight)) {
@@ -136,7 +136,6 @@ public class TeleOperated extends EctoOpMode {
 
       manipulator.turnOff();
       intake.turnOff();
-
     }
 
     // + SPINNER BUTTON CONFIGURATION
