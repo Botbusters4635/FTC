@@ -1,14 +1,9 @@
-//
-// Created by Neil Rodriguez 12/28/2022
-//
+package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
-package org.firstinspires.ftc.teamcode.Robots.Vinz.Autonomous.Red;
-
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Autonomous.Red.AllStar.State.TRAJ1;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.armConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.intakeConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.manipulatorConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Vinz.Configuration.Mechanisms.spinnerConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.intakeConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -28,20 +23,15 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 import java.util.List;
 
-@Autonomous(name = "Red-AllStar")
-public class AllStar extends EctoOpMode {
-
-  enum State {
-    TRAJ1,
-    TRAJ2,
-    TRAJ3,
-  }
+@Autonomous(name = "TorreonsRegionalWinner")
+public class RegionalWinner extends EctoOpMode {
 
   // VISION STUFF
   private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
   private static final String[] LABELS = {"TSE"};
   private static final String VUFORIA_KEY =
       "AcPYhx//////AAABmUFaV20z2EmQkqbvhi5zgVyC8RDLUdcdScdfOzcbH3fA+pSEVZWlNIF+Ut/4VmqGbuk7uFqip+a3n8/B0pq1/CI+gVsV+uBZZ1CGA6DmLbDMwNu0jXJGH13oetb0LsQVjQXKVn5UNHDs3NSuZIElqucqsKVFjd4/UiYMTjV6mlkb9wtuZ2DXUThYi65NaqdEH9erho/RsjeoAhRbHBiHWZacLOT54Sv3TFt+QdWR9RvvDZewNSaP9bYCE8322fjmqdKd7qjT/jNEgJsM4G3qA9QqpOueIGbxKVJY5nN5vBLWruEdo/aH0C1pnxMzVTlQIFQjhALfyGHRCBSBWujGcXQq59onVkH/fnzg07TBLdFo ";
+  int tfodActive = 0;
 
   private VuforiaLocalizer vuforia;
   private TFObjectDetector tfod;
@@ -71,10 +61,8 @@ public class AllStar extends EctoOpMode {
   // Arm Positions
   int low = 75;
   int medium = 150;
-  int high = 250;
+  int high = 275;
   int randomPosition = high;
-
-  State currentState = TRAJ1;
 
   @Override
   public void initRobotClasses() {
@@ -99,6 +87,45 @@ public class AllStar extends EctoOpMode {
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
     intake = new Intake("intake", "Mechanism", intakeConfig);
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
+    mechanismManager.addMechanism(manipulator);
+    mechanismManager.addMechanism(arm);
+    mechanismManager.addMechanism(intake);
+    mechanismManager.addMechanism(spinner);
+
+    // Inits Our Trajectory
+
+    if (tfod != null) {
+      tfod.activate();
+      tfod.setZoom(1, 16.0 / 9.0);
+    }
+
+    if (tfod != null) {
+
+      List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
+      if (updatedRecognitions != null && !updatedRecognitions.isEmpty()) {
+
+        telemetry.addData("# Object Detected", updatedRecognitions.size());
+        Recognition newRecognition = updatedRecognitions.get(updatedRecognitions.size() - 1);
+
+        if (newRecognition.getLeft() < 249 && newRecognition.getLeft() > 0) {
+          randomPosition = low;
+          telemetry.addData("Level", "1");
+        }
+
+        if (newRecognition.getLeft() < 399 && newRecognition.getLeft() > 250) {
+          randomPosition = medium;
+          telemetry.addData("Level", "2");
+        }
+
+        if (newRecognition.getLeft() < 800 && newRecognition.getLeft() > 400) {
+          randomPosition = high;
+          telemetry.addData("Level", "3");
+        }
+      }
+
+      telemetry.update();
+    }
   }
 
   @Override
@@ -144,105 +171,27 @@ public class AllStar extends EctoOpMode {
       telemetry.update();
     }
 
+    // + TRAJ 1
     trajectoryOne =
         drive
             .trajectorySequenceBuilder(startPos)
-            .addDisplacementMarker(() -> arm.setPosition(medium))
-
             // 1st Cycle
-            .lineToSplineHeading(allianceShippingHubPos)
             .addDisplacementMarker(
                 () -> {
                   arm.setPosition(randomPosition);
-                  manipulator.turnOn(1);
-                })
-            .lineToSplineHeading(startPos)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(medium);
-                  manipulator.turnOff();
-                })
-            .lineToSplineHeading(wareHouseP2Pos)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(low);
-                  manipulator.turnOn(-1);
-                  intake.turnOn(-1);
-                })
-            .lineToSplineHeading(startPos)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(medium);
-                  manipulator.turnOff();
-                  intake.turnOff();
                 })
             .lineToSplineHeading(allianceShippingHubPos)
-            .strafeRight(5)
-            // FIN
-            .build();
-
-    trajectoryTwo =
-        drive
-            .trajectorySequenceBuilder(allianceShippingHubPos)
-            // 2nd Cycle
-
+            .waitSeconds(0.2)
             .addDisplacementMarker(
                 () -> {
-                  arm.setPosition(high);
                   manipulator.turnOn(1);
                 })
-            .lineToSplineHeading(startPos)
+            .waitSeconds(0.2)
             .addDisplacementMarker(
                 () -> {
-                  arm.setPosition(medium);
                   manipulator.turnOff();
                 })
-            .lineToSplineHeading(wareHouseP2Pos)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(low);
-                  manipulator.turnOn(-1);
-                  intake.turnOn(-1);
-                })
-            .lineToSplineHeading(startPos)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(medium);
-                  manipulator.turnOff();
-                  intake.turnOff();
-                })
-            .lineToSplineHeading(allianceShippingHubPos)
-            .strafeRight(5)
             .build();
-
-    trajectoryThree =
-        drive
-            .trajectorySequenceBuilder(trajectoryTwo.end())
-            // 3rd Cycle
-
-            .addDisplacementMarker(
-                () -> {
-                  spinner.turnOn(-1);
-                  manipulator.turnOn(1);
-                  arm.setPosition(high);
-                })
-
-            // Spinner
-            .lineToSplineHeading(spinnerPos)
-            .waitSeconds(1.5)
-            .addDisplacementMarker(
-                () -> {
-                  arm.stopMechanism();
-                  manipulator.turnOff();
-                  spinner.turnOff();
-                })
-
-            // Warehouse Parking
-            .lineToSplineHeading(wareHouseP1Pos)
-            .lineToSplineHeading(wareHouseP2Pos)
-            .build();
-
-    drive.followTrajectorySequenceAsync(trajectoryOne);
 
     telemetry.addData(">", "Press Play to start op mode");
     telemetry.update();
@@ -250,35 +199,24 @@ public class AllStar extends EctoOpMode {
 
   @Override
   public void startRobot() {
-    tfod.deactivate();
+    drive.followTrajectorySequenceAsync(trajectoryOne);
   }
 
   @Override
   public void updateRobot(Double timeStep) {
-    telemetry.addData("Level", randomPosition);
 
-    switch (currentState) {
-      case TRAJ1:
-        if (!drive.isBusy()) {
-          currentState = State.TRAJ2;
-          drive.followTrajectorySequenceAsync(trajectoryTwo);
-        }
-
-      case TRAJ2:
-        if (!drive.isBusy()) {
-          currentState = State.TRAJ3;
-          drive.followTrajectorySequenceAsync(trajectoryThree);
-        }
-
-      case TRAJ3:
-        if (!drive.isBusy()) {
-          currentState = State.TRAJ3;
-        }
+    if (tfodActive != 1) {
+      tfod.deactivate();
+      tfod.shutdown();
+      tfodActive++;
     }
+
+    telemetry.addData("Level", randomPosition);
 
     drive.update();
   }
 
+  // + Inits Vision
   private void initVuforia() {
 
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();

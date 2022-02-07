@@ -50,7 +50,7 @@ public class Arm extends EctoMechanism {
     armMotor.set(0);
   }
 
-  public void resetHomePosition() {
+  public void resetEncoder() {
     if (!usePids) {
       armMotor.encoder.reset();
     }

@@ -9,7 +9,7 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(12, -64, 0);
+    Pose2d startingPosition = new Pose2d(13, -64, 0);
     Pose2d wareHouseP2 = new Pose2d(48, -64);
     Pose2d wareHouseP1 = new Pose2d(-32, -64);
 
