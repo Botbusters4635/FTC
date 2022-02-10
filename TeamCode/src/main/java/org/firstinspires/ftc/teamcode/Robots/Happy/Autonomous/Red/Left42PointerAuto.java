@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.intakeConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
 
@@ -17,16 +16,22 @@ import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode
 import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
-import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 import java.util.List;
 
-@Autonomous(name = "TorreonsRegionalWinner")
-public class RegionalWinner extends EctoOpMode {
+@Autonomous(name = "42-Pointer")
+public class Left42PointerAuto extends EctoOpMode {
 
-  // VISION STUFF
+  enum RobotState {
+    Running,
+    Idle
+  }
+
+  RobotState currentRobotState = RobotState.Running;
+
+  // + VISION STUFF
   private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
   private static final String[] LABELS = {"TSE"};
   private static final String VUFORIA_KEY =
@@ -35,29 +40,26 @@ public class RegionalWinner extends EctoOpMode {
   private VuforiaLocalizer vuforia;
   private TFObjectDetector tfod;
 
-  // Chassis
+  // + TRAJECTORIES
+  TrajectorySequence trajectoryInitializer;
+  TrajectorySequence levelOne;
+  TrajectorySequence levelTwo;
+  TrajectorySequence levelThree;
+
+  // + Positions
+  Pose2d startingPosition = new Pose2d(-35, -64, 0);
+  Pose2d allianceShippingHub = new Pose2d(-10, -48, Math.toRadians(90));
+  Pose2d spinnerPos = new Pose2d(-50, -64, Math.toRadians(90));
+  Pose2d storageUnitPos = new Pose2d(-60, -35, Math.toRadians(90));
   SampleMecanumDrive drive;
 
-  // Mechanisms
-  Manipulator manipulator;
+  // + Mechanisms
   Arm arm;
-  Intake intake;
+  Manipulator manipulator;
   Spinner spinner;
+  //  Intake intake;
 
-  // Trajectories
-  TrajectorySequence trajectoryOne;
-  TrajectorySequence trajectoryTwo;
-  TrajectorySequence trajectoryThree;
-
-  // Robot Positions
-  Pose2d startPos;
-  Pose2d allianceShippingHubPos;
-  Pose2d allianceShippingHubP3Pos;
-  Pose2d spinnerPos;
-  Pose2d wareHouseP1Pos;
-  Pose2d wareHouseP2Pos;
-
-  // Arm Positions
+  // + Arm Positions
   int low = 75;
   int medium = 150;
   int high = 275;
@@ -66,40 +68,118 @@ public class RegionalWinner extends EctoOpMode {
   @Override
   public void initRobotClasses() {
 
+    drive = new SampleMecanumDrive(hardwareMap);
+    drive.setPoseEstimate(startingPosition);
+
     initVuforia();
     initTfod();
 
-    // Autonomous Init Process
-    drive = new SampleMecanumDrive(hardwareMap);
+    trajectoryInitializer =
+        drive
+            .trajectorySequenceBuilder(startingPosition)
+            .lineToLinearHeading(allianceShippingHub)
+            .build();
 
-    startPos = new Pose2d(12, -64, 0);
-    allianceShippingHubPos = new Pose2d(-12, -42, Math.toRadians(90));
-    allianceShippingHubP3Pos = new Pose2d(-8, -42, Math.toRadians(90));
-    wareHouseP1Pos = new Pose2d(-20, -66);
-    wareHouseP2Pos = new Pose2d(48, -66);
-    spinnerPos = new Pose2d(-50, -64, Math.toRadians(90));
+    levelOne =
+        drive
+            .trajectorySequenceBuilder(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setPosition(low);
+                })
+            .forward(0.1)
+            .forward(0.1)
+            .waitSeconds(1)
+            .addDisplacementMarker(
+                () -> {
+                  manipulator.turnOn(0.6);
+                })
+            .lineToLinearHeading(spinnerPos)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setHomePosition();
+                  manipulator.turnOff();
+                  spinner.turnOn(0.6);
+                })
+            .waitSeconds(4)
+            .lineToLinearHeading(storageUnitPos)
+            .addDisplacementMarker(
+                () -> {
+                  spinner.turnOff();
+                })
+            .build();
 
-    drive.setPoseEstimate(startPos);
+    levelTwo =
+        drive
+            .trajectorySequenceBuilder(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setPosition(medium);
+                })
+            .forward(0.1)
+            .forward(0.1)
+            .waitSeconds(1)
+            .addDisplacementMarker(
+                () -> {
+                  manipulator.turnOn(0.6);
+                })
+            .lineToLinearHeading(spinnerPos)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setHomePosition();
+                  manipulator.turnOff();
+                  spinner.turnOn(0.6);
+                })
+            .waitSeconds(4)
+            .lineToLinearHeading(storageUnitPos)
+            .addDisplacementMarker(
+                () -> {
+                  spinner.turnOff();
+                })
+            .build();
 
+    levelThree =
+        drive
+            .trajectorySequenceBuilder(allianceShippingHub)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setPosition(high);
+                })
+            .forward(0.1)
+            .forward(0.1)
+            .waitSeconds(1)
+            .addDisplacementMarker(
+                () -> {
+                  manipulator.turnOn(0.6);
+                })
+            .lineToLinearHeading(spinnerPos)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setHomePosition();
+                  manipulator.turnOff();
+                  spinner.turnOn(0.6);
+                })
+            .waitSeconds(4)
+            .lineToLinearHeading(storageUnitPos)
+            .addDisplacementMarker(
+                () -> {
+                  spinner.turnOff();
+                })
+            .build();
 
-    // Mechanisms
     arm = new Arm("arm", "Mechanism", armConfig);
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
-    intake = new Intake("intake", "Mechanism", intakeConfig);
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
 
+    mechanismManager.addMechanism(arm);
+    mechanismManager.addMechanism(manipulator);
+    mechanismManager.addMechanism(spinner);
   }
 
   @Override
   public void initRobot() {
 
-    mechanismManager.addMechanism(manipulator);
-    mechanismManager.addMechanism(arm);
-    mechanismManager.addMechanism(intake);
-    mechanismManager.addMechanism(spinner);
-
     // Inits Our Trajectory
-
     if (tfod != null) {
       tfod.activate();
       tfod.setZoom(1, 16.0 / 9.0);
@@ -129,38 +209,40 @@ public class RegionalWinner extends EctoOpMode {
           telemetry.addData("Level", "3");
         }
       }
+
+      telemetry.update();
     }
 
-
-    // + TRAJ 1
-    trajectoryOne =
-            drive
-                    .trajectorySequenceBuilder(startPos)
-                    .addDisplacementMarker(() -> {
-                      arm.setPosition(high);
-                    })
-                    .lineToSplineHeading(allianceShippingHubPos)
-                    .lineToSplineHeading(startPos)
-                    .build();
-
-    telemetry.addData(">", "Press Play to start op mode");
-    telemetry.update();
+    telemetry.addData(">", " Robot Built");
   }
 
   @Override
   public void startRobot() {
-
-    drive.followTrajectorySequenceAsync(trajectoryOne);
+    drive.followTrajectorySequenceAsync(trajectoryInitializer);
   }
 
   @Override
   public void updateRobot(Double timeStep) {
+
+    if (!drive.isBusy()) {
+      if (randomPosition == low) {
+
+        drive.followTrajectorySequenceAsync(levelOne);
+
+      } else if (randomPosition == medium) {
+
+        drive.followTrajectorySequenceAsync(levelTwo);
+
+      } else if (randomPosition == high) {
+
+        drive.followTrajectorySequenceAsync(levelThree);
+      }
+    }
+
     drive.update();
   }
 
-  // + Inits Vision
   private void initVuforia() {
-
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
     parameters.vuforiaLicenseKey = VUFORIA_KEY;
     parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam");
@@ -168,7 +250,6 @@ public class RegionalWinner extends EctoOpMode {
   }
 
   private void initTfod() {
-
     int tfodMonitorViewId =
         hardwareMap
             .appContext

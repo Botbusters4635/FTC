@@ -9,9 +9,10 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(13, -64, 0);
+    Pose2d startingPosition = new Pose2d(-36, -64, 0);
     Pose2d wareHouseP2 = new Pose2d(48, -64);
     Pose2d wareHouseP1 = new Pose2d(-32, -64);
+    Pose2d storageUnitPos = new Pose2d(-60,-35, Math.toRadians(90));
 
     Pose2d allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
 
@@ -25,79 +26,11 @@ public class MeepMeepTesting {
                 drive ->
                     drive
                         .trajectorySequenceBuilder(startingPosition)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Subir El Brazo
-                            })
+                        .lineToLinearHeading(allianceShippingHub)
+                        .lineToLinearHeading(spinner)
+                            .lineToLinearHeading(storageUnitPos)
 
-                        // 1st Cycle
-                        .lineToSplineHeading(allianceShippingHub)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Escupir Game Piece
-                            })
-                        .lineToSplineHeading(startingPosition)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-                        .lineToSplineHeading(wareHouseP2)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-                        .lineToSplineHeading(startingPosition)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-
-                        // 2nd Cycle
-                        .lineToSplineHeading(allianceShippingHub)
-                        .strafeRight(3)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Escupir Game Piece
-                            })
-                        .lineToSplineHeading(startingPosition)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-                        .lineToSplineHeading(wareHouseP2)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-                        .lineToSplineHeading(startingPosition)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Bajar Brazo a MEDIUM
-                            })
-
-                        // 3rd Cycle
-                        .lineToSplineHeading(allianceShippingHub)
-                        .strafeRight(3)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Escupir Game Piece
-                            })
-
-                        // Spinner
-                        .lineToSplineHeading(spinner)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Escupir Game Piece
-                            })
-
-                        // Warehouse Parking
-                        .lineToSplineHeading(wareHouseP1)
-                        .lineToSplineHeading(wareHouseP2)
-                        .addDisplacementMarker(
-                            () -> {
-                              // Escupir Game Piece
-                            })
-                        .build());
+                            .build());
 
     meepMeep
         .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)

@@ -13,10 +13,6 @@ public class Module {
     public Telemetry telemetry;
     public HardwareMap hardwareMap;
 
-    public Module(String moduleName, String moduleType) {
-
-//        telemetry.addData(moduleName, moduleType);
-
-    }
+    public Module(String moduleName, String moduleType) {}
 
 }

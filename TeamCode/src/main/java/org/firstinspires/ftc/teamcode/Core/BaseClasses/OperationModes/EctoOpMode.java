@@ -36,6 +36,7 @@ abstract public class EctoOpMode extends OpMode {
         lastTimeRunned = getRuntime();
         mechanismManager.startMechanisms();
         startRobot();
+
     }
 
     @Override
