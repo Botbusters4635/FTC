@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red.Left42PointerAuto.RobotState.IdleMode;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
@@ -26,7 +27,7 @@ public class Left42PointerAuto extends EctoOpMode {
 
   enum RobotState {
     Running,
-    Idle
+    IdleMode
   }
 
   RobotState currentRobotState = RobotState.Running;
@@ -48,8 +49,8 @@ public class Left42PointerAuto extends EctoOpMode {
 
   // + Positions
   Pose2d startingPosition = new Pose2d(-35, -64, 0);
-  Pose2d allianceShippingHub = new Pose2d(-10, -48, Math.toRadians(90));
-  Pose2d spinnerPos = new Pose2d(-50, -64, Math.toRadians(90));
+  Pose2d allianceShippingHub = new Pose2d(-38, -24, Math.toRadians(0));
+  Pose2d spinnerPos = new Pose2d(-60, -64, Math.toRadians(90));
   Pose2d storageUnitPos = new Pose2d(-60, -35, Math.toRadians(90));
   SampleMecanumDrive drive;
 
@@ -57,13 +58,12 @@ public class Left42PointerAuto extends EctoOpMode {
   Arm arm;
   Manipulator manipulator;
   Spinner spinner;
-  //  Intake intake;
 
   // + Arm Positions
   int low = 75;
-  int medium = 150;
+  int medium = 175;
   int high = 275;
-  int randomPosition = high;
+  int randomPosition = medium;
 
   @Override
   public void initRobotClasses() {
@@ -87,21 +87,22 @@ public class Left42PointerAuto extends EctoOpMode {
                 () -> {
                   arm.setPosition(low);
                 })
-            .forward(0.1)
-            .forward(0.1)
+            .forward(4.5)
             .waitSeconds(1)
+            .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(0.6);
+                  manipulator.turnOn(1);
+                  spinner.turnOn(-0.7);
                 })
             .lineToLinearHeading(spinnerPos)
             .addDisplacementMarker(
                 () -> {
                   arm.setHomePosition();
                   manipulator.turnOff();
-                  spinner.turnOn(0.6);
                 })
-            .waitSeconds(4)
+            .strafeLeft(0.1)
+            .waitSeconds(6)
             .lineToLinearHeading(storageUnitPos)
             .addDisplacementMarker(
                 () -> {
@@ -116,21 +117,22 @@ public class Left42PointerAuto extends EctoOpMode {
                 () -> {
                   arm.setPosition(medium);
                 })
-            .forward(0.1)
-            .forward(0.1)
+            .forward(4.5)
             .waitSeconds(1)
+            .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(0.6);
+                  manipulator.turnOn(1);
+                  spinner.turnOn(-0.7);
                 })
             .lineToLinearHeading(spinnerPos)
             .addDisplacementMarker(
                 () -> {
                   arm.setHomePosition();
                   manipulator.turnOff();
-                  spinner.turnOn(0.6);
                 })
-            .waitSeconds(4)
+            .strafeLeft(0.1)
+            .waitSeconds(6)
             .lineToLinearHeading(storageUnitPos)
             .addDisplacementMarker(
                 () -> {
@@ -145,21 +147,22 @@ public class Left42PointerAuto extends EctoOpMode {
                 () -> {
                   arm.setPosition(high);
                 })
-            .forward(0.1)
-            .forward(0.1)
+            .forward(4.5)
             .waitSeconds(1)
+            .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(0.6);
+                  manipulator.turnOn(1);
+                  spinner.turnOn(-0.7);
                 })
             .lineToLinearHeading(spinnerPos)
             .addDisplacementMarker(
                 () -> {
                   arm.setHomePosition();
                   manipulator.turnOff();
-                  spinner.turnOn(0.6);
                 })
-            .waitSeconds(4)
+            .strafeLeft(0.1)
+            .waitSeconds(6)
             .lineToLinearHeading(storageUnitPos)
             .addDisplacementMarker(
                 () -> {
@@ -218,25 +221,41 @@ public class Left42PointerAuto extends EctoOpMode {
 
   @Override
   public void startRobot() {
+    arm.resetEncoder();
     drive.followTrajectorySequenceAsync(trajectoryInitializer);
   }
 
   @Override
   public void updateRobot(Double timeStep) {
 
-    if (!drive.isBusy()) {
-      if (randomPosition == low) {
+    switch (currentRobotState) {
+      case Running:
+        if (!drive.isBusy()) {
 
-        drive.followTrajectorySequenceAsync(levelOne);
+          if (randomPosition == low) {
 
-      } else if (randomPosition == medium) {
+            drive.followTrajectorySequenceAsync(levelOne);
+            currentRobotState = IdleMode;
 
-        drive.followTrajectorySequenceAsync(levelTwo);
+          } else if (randomPosition == medium) {
 
-      } else if (randomPosition == high) {
+            drive.followTrajectorySequenceAsync(levelTwo);
+            currentRobotState = IdleMode;
 
-        drive.followTrajectorySequenceAsync(levelThree);
-      }
+          } else if (randomPosition == high) {
+
+            drive.followTrajectorySequenceAsync(levelThree);
+            currentRobotState = IdleMode;
+          }
+        }
+
+        break;
+
+      case IdleMode:
+        if (!drive.isBusy()) {
+          mechanismManager.stopMechanisms();
+        }
+        break;
     }
 
     drive.update();

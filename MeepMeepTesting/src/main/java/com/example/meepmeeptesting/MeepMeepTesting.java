@@ -9,14 +9,10 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(-36, -64, 0);
-    Pose2d wareHouseP2 = new Pose2d(48, -64);
-    Pose2d wareHouseP1 = new Pose2d(-32, -64);
-    Pose2d storageUnitPos = new Pose2d(-60,-35, Math.toRadians(90));
-
-    Pose2d allianceShippingHub = new Pose2d(-12, -42, Math.toRadians(90));
-
+    Pose2d startingPosition = new Pose2d(-35, -64, 0);
+    Pose2d allianceShippingHub = new Pose2d(-35, -24, Math.toRadians(0));
     Pose2d spinner = new Pose2d(-48, -64, Math.toRadians(90));
+    Pose2d storageUnitPos = new Pose2d(-60, -35, Math.toRadians(90));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
@@ -27,10 +23,11 @@ public class MeepMeepTesting {
                     drive
                         .trajectorySequenceBuilder(startingPosition)
                         .lineToLinearHeading(allianceShippingHub)
+                        .forward(0.5)
+                        .back(0.5)
                         .lineToLinearHeading(spinner)
-                            .lineToLinearHeading(storageUnitPos)
-
-                            .build());
+                        .lineToLinearHeading(storageUnitPos)
+                        .build());
 
     meepMeep
         .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
