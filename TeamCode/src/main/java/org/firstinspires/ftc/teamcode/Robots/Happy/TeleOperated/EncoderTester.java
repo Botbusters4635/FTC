@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode
 public class EncoderTester extends EctoOpMode {
 
     MotorEx fL, fR, bL, bR;
-
+//test
     MotorEx arm;
 
     @Override
