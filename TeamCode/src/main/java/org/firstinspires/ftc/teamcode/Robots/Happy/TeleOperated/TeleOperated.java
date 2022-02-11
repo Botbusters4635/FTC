@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
-@TeleOp(name = "TeleOperated")
+@TeleOp(name = "TeleOperated", group = "Working")
 public class TeleOperated extends EctoOpMode {
 
   // Mechanisms
@@ -28,8 +28,8 @@ public class TeleOperated extends EctoOpMode {
   Spinner spinner;
 
   // Arm Positions
-  int highLevel = 250;
-  int midLevel = 150;
+  int highLevel = 300;
+  int midLevel = 175;
   int lowLevel = 75;
 
   // Controllers

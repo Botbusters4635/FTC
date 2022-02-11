@@ -11,7 +11,7 @@ public class MeepMeepTesting {
 
     Pose2d startingPosition = new Pose2d(-35, -64, 0);
     Pose2d allianceShippingHub = new Pose2d(-35, -24, Math.toRadians(0));
-    Pose2d spinner = new Pose2d(-48, -64, Math.toRadians(90));
+    Pose2d spinnerPosition = new Pose2d(-60, -64, Math.toRadians(90));
     Pose2d storageUnitPos = new Pose2d(-60, -35, Math.toRadians(90));
 
     RoadRunnerBotEntity bot =
@@ -25,7 +25,7 @@ public class MeepMeepTesting {
                         .lineToLinearHeading(allianceShippingHub)
                         .forward(0.5)
                         .back(0.5)
-                        .lineToLinearHeading(spinner)
+                        .lineToLinearHeading(spinnerPosition)
                         .lineToLinearHeading(storageUnitPos)
                         .build());
 

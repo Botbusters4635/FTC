@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
-import static org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red.Left42PointerAuto.RobotState.IdleMode;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red.Left42Pointer.RobotState.IdleMode;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
@@ -22,8 +22,8 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 
 import java.util.List;
 
-@Autonomous(name = "42-Pointer")
-public class Left42PointerAuto extends EctoOpMode {
+@Autonomous(name = "Red-Left-42-Pointer", group = "Red")
+public class Left42Pointer extends EctoOpMode {
 
   enum RobotState {
     Running,
@@ -62,7 +62,7 @@ public class Left42PointerAuto extends EctoOpMode {
   // + Arm Positions
   int low = 75;
   int medium = 175;
-  int high = 275;
+  int high = 300;
   int randomPosition = medium;
 
   @Override

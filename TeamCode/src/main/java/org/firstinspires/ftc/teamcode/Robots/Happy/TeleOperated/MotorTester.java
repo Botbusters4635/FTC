@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanis
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
+@Disabled
 @TeleOp(name = "MotorTester")
 public class MotorTester extends EctoOpMode {
 
