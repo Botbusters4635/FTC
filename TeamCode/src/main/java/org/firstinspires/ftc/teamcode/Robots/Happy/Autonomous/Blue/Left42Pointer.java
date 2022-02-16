@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
+package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Blue;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
@@ -22,16 +22,15 @@ import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 import java.util.List;
 
-@Autonomous(name = "Red-Left-42-Pointer", group = "Red")
+@Autonomous(name = "Blue-Left-42-Pointer", group = "Blue")
 public class Left42Pointer extends EctoOpMode {
 
-  private enum  RobotState {
+  private enum RobotState {
     Running,
     IdleMode
   }
 
   RobotState currentRobotState = RobotState.Running;
-
 
   // + VISION STUFF
   private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
@@ -42,35 +41,29 @@ public class Left42Pointer extends EctoOpMode {
   private VuforiaLocalizer vuforia;
   private TFObjectDetector tfod;
 
-
   // + TRAJECTORIES
   TrajectorySequence trajectoryInitializer;
   TrajectorySequence levelOne;
   TrajectorySequence levelTwo;
   TrajectorySequence levelThree;
 
-
   // + Positions
-  Pose2d startingPosition = new Pose2d(-35, -64, 0);
-  Pose2d allianceShippingHubPosition = new Pose2d(-35, -24, Math.toRadians(0));
-  Pose2d spinnerPosition = new Pose2d(-60, -64, Math.toRadians(90));
-  Pose2d storageUnitPosition = new Pose2d(-60, -38, Math.toRadians(90));
-
+  Pose2d startingPosition = new Pose2d(-35, 64, 0);
+  Pose2d allianceShippingHubPosition = new Pose2d(-35, 24, Math.toRadians(0));
+  Pose2d spinnerPosition = new Pose2d(-57, 57, Math.toRadians(0));
+  Pose2d storageUnitPosition = new Pose2d(-60, 35, Math.toRadians(90));
+  SampleMecanumDrive drive;
 
   // + Mechanisms
   Arm arm;
   Manipulator manipulator;
   Spinner spinner;
 
-  SampleMecanumDrive drive;
-
-
   // + Arm Positions
   int low = Configuration.Mechanisms.armPositions.lowPosition;
   int medium = Configuration.Mechanisms.armPositions.midPosition;
   int high = Configuration.Mechanisms.armPositions.highPosition;
   int randomPosition = medium;
-
 
   @Override
   public void initRobotClasses() {
@@ -189,6 +182,7 @@ public class Left42Pointer extends EctoOpMode {
   @Override
   public void initRobot() {
 
+    // Inits Our Trajectory
     if (tfod != null) {
       tfod.activate();
       tfod.setZoom(1, 16.0 / 9.0);
@@ -218,6 +212,7 @@ public class Left42Pointer extends EctoOpMode {
           telemetry.addData("Level", "3");
         }
       }
+
       telemetry.update();
     }
 

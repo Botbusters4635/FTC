@@ -9,24 +9,59 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(-35, -64, 0);
-    Pose2d allianceShippingHub = new Pose2d(-35, -24, Math.toRadians(0));
+    Pose2d startingPosition = new Pose2d(12, -64, Math.toRadians(0));
+    Pose2d allianceShippingHub = new Pose2d(-12, -45, Math.toRadians(90));
     Pose2d spinnerPosition = new Pose2d(-60, -64, Math.toRadians(90));
-    Pose2d storageUnitPos = new Pose2d(-60, -35, Math.toRadians(90));
+    Pose2d allianceSkipper = new Pose2d(-42, -45, Math.toRadians(90));
+    Pose2d storageUnitPosition = new Pose2d(-60, -40, Math.toRadians(90));
+    Pose2d wareHouseIntakePosition = new Pose2d(42, -64, Math.toRadians(0));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
-            .setConstraints(40, 37, 13.241691158998306, Math.toRadians(214.92695399999997), 10)
+            .setConstraints(40, 37, 12.5, Math.toRadians(214.92695399999997), 10)
             .setDimensions(13.5, 15.5)
             .followTrajectorySequence(
                 drive ->
                     drive
                         .trajectorySequenceBuilder(startingPosition)
+
+                        // + First Cycle
                         .lineToLinearHeading(allianceShippingHub)
-                        .forward(0.5)
-                        .back(0.5)
-                        .lineToLinearHeading(spinnerPosition)
-                        .lineToLinearHeading(storageUnitPos)
+                        .waitSeconds(0.2)
+                        .lineToLinearHeading(startingPosition)
+                        .lineToLinearHeading(wareHouseIntakePosition)
+                        .forward(2)
+                        .lineToLinearHeading(startingPosition)
+
+                        // + Second Cycle
+                        .lineToLinearHeading(allianceShippingHub)
+                            .waitSeconds(0.2)
+
+                        .lineToLinearHeading(startingPosition)
+                        .lineToLinearHeading(wareHouseIntakePosition)
+                        .forward(4)
+                        .waitSeconds(0.1)
+                        .lineToLinearHeading(startingPosition)
+
+                        // + Third Cycle
+                        .lineToLinearHeading(allianceShippingHub)
+                        .waitSeconds(0.2)
+                        .lineToLinearHeading(startingPosition)
+                        .lineToLinearHeading(wareHouseIntakePosition)
+                        .forward(6)
+                        .waitSeconds(0.1)
+                        .lineToLinearHeading(startingPosition)
+
+                        // + Fourth Cycle
+                        .lineToLinearHeading(allianceShippingHub)
+                        .waitSeconds(0.2)
+                        .lineToLinearHeading(startingPosition)
+
+                        // + Parking
+                        .lineToLinearHeading(wareHouseIntakePosition)
+                        .forward(6)
+
+                        // + FIN
                         .build());
 
     meepMeep

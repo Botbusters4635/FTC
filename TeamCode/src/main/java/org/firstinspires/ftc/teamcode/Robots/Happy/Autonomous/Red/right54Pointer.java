@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.intakeConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
 
@@ -16,22 +17,22 @@ import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode
 import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Core.Utils.EctoPathFollowing.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
+import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 import java.util.List;
 
-@Autonomous(name = "Red-Left-42-Pointer", group = "Red")
-public class Left42Pointer extends EctoOpMode {
+@Autonomous(name = "Red-Right-54-Pointer", group = "Red")
+public class right54Pointer extends EctoOpMode {
 
-  private enum  RobotState {
+  private enum RobotState {
     Running,
     IdleMode
   }
 
   RobotState currentRobotState = RobotState.Running;
-
 
   // + VISION STUFF
   private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
@@ -42,35 +43,33 @@ public class Left42Pointer extends EctoOpMode {
   private VuforiaLocalizer vuforia;
   private TFObjectDetector tfod;
 
-
   // + TRAJECTORIES
   TrajectorySequence trajectoryInitializer;
   TrajectorySequence levelOne;
   TrajectorySequence levelTwo;
   TrajectorySequence levelThree;
 
-
   // + Positions
-  Pose2d startingPosition = new Pose2d(-35, -64, 0);
-  Pose2d allianceShippingHubPosition = new Pose2d(-35, -24, Math.toRadians(0));
+  Pose2d startingPosition = new Pose2d(12, -64, Math.toRadians(0));
+  Pose2d allianceShippingHub = new Pose2d(-12, -45, Math.toRadians(90));
   Pose2d spinnerPosition = new Pose2d(-60, -64, Math.toRadians(90));
-  Pose2d storageUnitPosition = new Pose2d(-60, -38, Math.toRadians(90));
-
+  Pose2d allianceSkipper = new Pose2d(-35, -35, Math.toRadians(90));
+  Pose2d storageUnitPosition = new Pose2d(-60, -35, Math.toRadians(90));
+  Pose2d wareHouseIntakePosition = new Pose2d(40, -64, Math.toRadians(0));
 
   // + Mechanisms
   Arm arm;
   Manipulator manipulator;
   Spinner spinner;
+  Intake intake;
 
   SampleMecanumDrive drive;
-
 
   // + Arm Positions
   int low = Configuration.Mechanisms.armPositions.lowPosition;
   int medium = Configuration.Mechanisms.armPositions.midPosition;
   int high = Configuration.Mechanisms.armPositions.highPosition;
   int randomPosition = medium;
-
 
   @Override
   public void initRobotClasses() {
@@ -81,109 +80,61 @@ public class Left42Pointer extends EctoOpMode {
     initVuforia();
     initTfod();
 
+    // + TRAJS GO HERE
     trajectoryInitializer =
         drive
+
             .trajectorySequenceBuilder(startingPosition)
-            .lineToLinearHeading(allianceShippingHubPosition)
+
+            // + First Cycle
+            .lineToLinearHeading(allianceShippingHub)
+            .waitSeconds(0.2)
+            .lineToLinearHeading(startingPosition)
+            .lineToLinearHeading(wareHouseIntakePosition)
+            .forward(2)
+            .lineToLinearHeading(startingPosition)
+
+            // + Second Cycle
+            .lineToLinearHeading(allianceShippingHub)
+            .waitSeconds(0.2)
+
+            .lineToLinearHeading(startingPosition)
+            .lineToLinearHeading(wareHouseIntakePosition)
+            .forward(4)
+            .waitSeconds(0.1)
+            .lineToLinearHeading(startingPosition)
+
+            // + Third Cycle
+            .lineToLinearHeading(allianceShippingHub)
+            .waitSeconds(0.2)
+            .lineToLinearHeading(startingPosition)
+            .lineToLinearHeading(wareHouseIntakePosition)
+            .forward(6)
+            .waitSeconds(0.1)
+            .lineToLinearHeading(startingPosition)
+
+            // + Fourth Cycle
+            .lineToLinearHeading(allianceShippingHub)
+            .waitSeconds(0.2)
+            .lineToLinearHeading(startingPosition)
+
+            // + Parking
+            .lineToLinearHeading(wareHouseIntakePosition)
+            .forward(6)
+
+            // + FIN
             .build();
 
-    levelOne =
-        drive
-            .trajectorySequenceBuilder(allianceShippingHubPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(low);
-                })
-            .forward(4.5)
-            .waitSeconds(1)
-            .back(0.5)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
-                })
-            .lineToLinearHeading(spinnerPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setHomePosition();
-                  manipulator.turnOff();
-                })
-            .strafeLeft(0.1)
-            .waitSeconds(6)
-            .lineToLinearHeading(storageUnitPosition)
-            .addDisplacementMarker(
-                () -> {
-                  spinner.turnOff();
-                })
-            .build();
-
-    levelTwo =
-        drive
-            .trajectorySequenceBuilder(allianceShippingHubPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(medium);
-                })
-            .forward(4.5)
-            .waitSeconds(1)
-            .back(0.5)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
-                })
-            .lineToLinearHeading(spinnerPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setHomePosition();
-                  manipulator.turnOff();
-                })
-            .strafeLeft(0.1)
-            .waitSeconds(6)
-            .lineToLinearHeading(storageUnitPosition)
-            .addDisplacementMarker(
-                () -> {
-                  spinner.turnOff();
-                })
-            .build();
-
-    levelThree =
-        drive
-            .trajectorySequenceBuilder(allianceShippingHubPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(high);
-                })
-            .forward(4.5)
-            .waitSeconds(1)
-            .back(0.5)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
-                })
-            .lineToLinearHeading(spinnerPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setHomePosition();
-                  manipulator.turnOff();
-                })
-            .strafeLeft(0.1)
-            .waitSeconds(6)
-            .lineToLinearHeading(storageUnitPosition)
-            .addDisplacementMarker(
-                () -> {
-                  spinner.turnOff();
-                })
-            .build();
 
     arm = new Arm("arm", "Mechanism", armConfig);
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
+    intake = new Intake("intake", "Mechanism", intakeConfig);
 
     mechanismManager.addMechanism(arm);
     mechanismManager.addMechanism(manipulator);
     mechanismManager.addMechanism(spinner);
+    mechanismManager.addMechanism(intake);
   }
 
   @Override
@@ -227,6 +178,7 @@ public class Left42Pointer extends EctoOpMode {
   @Override
   public void startRobot() {
     arm.resetEncoder();
+    tfod.shutdown();
     drive.followTrajectorySequenceAsync(trajectoryInitializer);
   }
 
