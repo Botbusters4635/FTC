@@ -20,7 +20,7 @@ public class Configuration {
     public static class armPositions {
       public static int highPosition = 300;
       public static int midPosition = 175;
-      public static int lowPosition = 75;
+      public static int lowPosition = 100;
     }
 
     public static MecanumConfig mecanumConfig =

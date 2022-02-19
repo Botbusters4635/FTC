@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Blue;
+package org.firstinspires.ftc.teamcode.Robots.Happy.Autonomous.Red;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
@@ -22,8 +22,8 @@ import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 import java.util.List;
 
-@Autonomous(name = "Blue-Left-42-Pointer", group = "Blue")
-public class Left42Pointer extends EctoOpMode {
+@Autonomous(name = "Red", group = "Red")
+public class Red42Pointer extends EctoOpMode {
 
   private enum RobotState {
     Running,
@@ -49,21 +49,33 @@ public class Left42Pointer extends EctoOpMode {
 
   // + Positions
   Pose2d startingPosition = new Pose2d(-35, 64, 0);
-  Pose2d allianceShippingHubPosition = new Pose2d(-35, 24, Math.toRadians(0));
-  Pose2d spinnerPosition = new Pose2d(-57, 57, Math.toRadians(0));
-  Pose2d storageUnitPosition = new Pose2d(-60, 35, Math.toRadians(90));
-  SampleMecanumDrive drive;
+  Pose2d allianceShippingHubPosition = new Pose2d(-44, 20.5, Math.toRadians(0));
+  Pose2d spinnerPosition = new Pose2d(-59, 55, Math.toRadians(0));
+  Pose2d storageUnitPosition = new Pose2d(-59, 28, Math.toRadians(270));
+  Pose2d warehouseP1Position = new Pose2d(-12, 40, Math.toRadians(0));
+  Pose2d warehouseP2Position = new Pose2d(10, 63, Math.toRadians(0));
+  Pose2d warehouseEndPosition = new Pose2d(39, 53, Math.toRadians(270));
+
+  double forwardness = 5;
 
   // + Mechanisms
   Arm arm;
   Manipulator manipulator;
   Spinner spinner;
+  SampleMecanumDrive drive;
 
   // + Arm Positions
   int low = Configuration.Mechanisms.armPositions.lowPosition;
   int medium = Configuration.Mechanisms.armPositions.midPosition;
   int high = Configuration.Mechanisms.armPositions.highPosition;
   int randomPosition = medium;
+
+  // + Timer
+  double spinnerTimer = 4.5;
+
+  // + Voltages
+  double spinnerPower = 0.7;
+  double manipulatorPower = 1.0;
 
   @Override
   public void initRobotClasses() {
@@ -87,13 +99,13 @@ public class Left42Pointer extends EctoOpMode {
                 () -> {
                   arm.setPosition(low);
                 })
-            .forward(4.5)
+            .forward(forwardness)
             .waitSeconds(1)
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
+                  manipulator.turnOn(manipulatorPower);
+                  spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
             .addDisplacementMarker(
@@ -102,12 +114,14 @@ public class Left42Pointer extends EctoOpMode {
                   manipulator.turnOff();
                 })
             .strafeLeft(0.1)
-            .waitSeconds(6)
+            .waitSeconds(spinnerTimer)
             .lineToLinearHeading(storageUnitPosition)
             .addDisplacementMarker(
                 () -> {
                   spinner.turnOff();
                 })
+            .strafeRight(12)
+            .back(1.5)
             .build();
 
     levelTwo =
@@ -117,13 +131,13 @@ public class Left42Pointer extends EctoOpMode {
                 () -> {
                   arm.setPosition(medium);
                 })
-            .forward(4.5)
+            .forward(forwardness)
             .waitSeconds(1)
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
+                  manipulator.turnOn(manipulatorPower);
+                  spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
             .addDisplacementMarker(
@@ -132,12 +146,14 @@ public class Left42Pointer extends EctoOpMode {
                   manipulator.turnOff();
                 })
             .strafeLeft(0.1)
-            .waitSeconds(6)
+            .waitSeconds(spinnerTimer)
             .lineToLinearHeading(storageUnitPosition)
             .addDisplacementMarker(
                 () -> {
                   spinner.turnOff();
                 })
+            .strafeRight(12)
+            .back(1.5)
             .build();
 
     levelThree =
@@ -147,13 +163,13 @@ public class Left42Pointer extends EctoOpMode {
                 () -> {
                   arm.setPosition(high);
                 })
-            .forward(4.5)
+            .forward(forwardness)
             .waitSeconds(1)
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(1);
-                  spinner.turnOn(-0.7);
+                  manipulator.turnOn(manipulatorPower - 0.2);
+                  spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
             .addDisplacementMarker(
@@ -162,12 +178,14 @@ public class Left42Pointer extends EctoOpMode {
                   manipulator.turnOff();
                 })
             .strafeLeft(0.1)
-            .waitSeconds(6)
+            .waitSeconds(spinnerTimer)
             .lineToLinearHeading(storageUnitPosition)
             .addDisplacementMarker(
                 () -> {
                   spinner.turnOff();
                 })
+            .strafeRight(12)
+            .back(1.5)
             .build();
 
     arm = new Arm("arm", "Mechanism", armConfig);
@@ -198,8 +216,8 @@ public class Left42Pointer extends EctoOpMode {
         Recognition newRecognition = updatedRecognitions.get(updatedRecognitions.size() - 1);
 
         if (newRecognition.getLeft() < 249 && newRecognition.getLeft() > 0) {
-          randomPosition = low;
-          telemetry.addData("Level", "1");
+          randomPosition = high;
+          telemetry.addData("Level", "3");
         }
 
         if (newRecognition.getLeft() < 399 && newRecognition.getLeft() > 250) {
@@ -208,8 +226,8 @@ public class Left42Pointer extends EctoOpMode {
         }
 
         if (newRecognition.getLeft() < 800 && newRecognition.getLeft() > 400) {
-          randomPosition = high;
-          telemetry.addData("Level", "3");
+          randomPosition = low;
+          telemetry.addData("Level", "1");
         }
       }
 

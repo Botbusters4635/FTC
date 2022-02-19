@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "EncoderTester")
 public class EncoderTester extends EctoOpMode {
 
