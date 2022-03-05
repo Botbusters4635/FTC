@@ -71,6 +71,7 @@ public class Arm extends EctoMechanism {
 
   @Override
   public void updateMechanism() {
+
     double PIDoutput = pidf.calculate(armMotor.getCurrentPosition());
     pidf.setPIDF(ArmConfig.p, ArmConfig.i, ArmConfig.d, ArmConfig.f);
 

@@ -55,11 +55,6 @@ public class Blue42Pointer extends EctoOpMode {
   Pose2d allianceShippingHubPosition = new Pose2d(-35, -24, Math.toRadians(0));
   Pose2d spinnerPosition = new Pose2d(-60, -64, Math.toRadians(90));
   Pose2d storageUnitPosition = new Pose2d(-60, -38, Math.toRadians(90));
-  Pose2d warehouseP1Position = new Pose2d(-12, -40, Math.toRadians(0));
-  Pose2d warehouseP2Position = new Pose2d(10, -63, Math.toRadians(0));
-  Pose2d warehouseEndPosition = new Pose2d(39, -53, Math.toRadians(90));
-
-  double forwardness = 5;
 
 
   // + Mechanisms
@@ -71,17 +66,21 @@ public class Blue42Pointer extends EctoOpMode {
 
 
   // + Arm Positions
-  int low = Configuration.Mechanisms.armPositions.lowPosition;
-  int medium = Configuration.Mechanisms.armPositions.midPosition;
-  int high = Configuration.Mechanisms.armPositions.highPosition;
+  int low = Configuration.Mechanisms.Positions.arm.lowPosition;
+  int medium = Configuration.Mechanisms.Positions.arm.midPosition;
+  int high = Configuration.Mechanisms.Positions.arm.highPosition;
   int randomPosition = medium;
 
   // + Timer
   double spinnerTimer = 4.5;
 
   // + Voltages
-  double spinnerPower = -0.7;
+  double spinnerPower = 0.7;
   double manipulatorPower = 1.0;
+
+  // + Distances
+  double forwardness = 5;
+  double backness = 3.0;
 
   @Override
   public void initRobotClasses() {
@@ -110,7 +109,7 @@ public class Blue42Pointer extends EctoOpMode {
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(manipulatorPower);
+                  manipulator.turnOn(manipulatorPower - 0.25);
                   spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
@@ -140,7 +139,7 @@ public class Blue42Pointer extends EctoOpMode {
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(manipulatorPower);
+                  manipulator.turnOn(manipulatorPower - 0.2);
                   spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
@@ -170,7 +169,7 @@ public class Blue42Pointer extends EctoOpMode {
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(manipulatorPower -2);
+                  manipulator.turnOn(manipulatorPower -0.05);
                   spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)

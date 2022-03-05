@@ -23,22 +23,16 @@ public class MeepMeepTesting {
             .setDimensions(13.5, 15.5)
             .followTrajectorySequence(
                 drive ->
-                    drive
-                        .trajectorySequenceBuilder(startingPosition)
-                        .lineToLinearHeading(allianceShippingHubPosition)
-                        .addDisplacementMarker(() -> {})
-                        .forward(6)
-                        .waitSeconds(1)
-                        .back(0.5)
-                        .addDisplacementMarker(() -> {})
-                        .lineToLinearHeading(spinnerPosition)
-                        .addDisplacementMarker(() -> {})
-                        .strafeLeft(0.1)
-                        .waitSeconds(4.5)
-                        .lineToLinearHeading(storageUnitPosition)
-
-                        // + FIN
-                        .build());
+                        drive
+                                .trajectorySequenceBuilder(allianceShippingHubPosition)
+                                .waitSeconds(1)
+                                .back(0.5)
+                                .lineToLinearHeading(spinnerPosition)
+                                .strafeLeft(0.1)
+                                .lineToLinearHeading(storageUnitPosition)
+                                .strafeRight(12)
+                                .back(1.5)
+                                .build());
 
     meepMeep
         .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)

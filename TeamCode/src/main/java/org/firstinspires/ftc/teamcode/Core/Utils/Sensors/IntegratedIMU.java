@@ -2,7 +2,7 @@
 // Created by Neil Rodriguez 12/07/2021
 //
 
-package org.firstinspires.ftc.teamcode.Core.Utils.Gyro;
+package org.firstinspires.ftc.teamcode.Core.Utils.Sensors;
 
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.qualcomm.hardware.bosch.BNO055IMU;

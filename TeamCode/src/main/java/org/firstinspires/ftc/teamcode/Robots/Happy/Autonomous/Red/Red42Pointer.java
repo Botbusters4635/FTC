@@ -50,32 +50,33 @@ public class Red42Pointer extends EctoOpMode {
   // + Positions
   Pose2d startingPosition = new Pose2d(-35, 64, 0);
   Pose2d allianceShippingHubPosition = new Pose2d(-44, 20.5, Math.toRadians(0));
-  Pose2d spinnerPosition = new Pose2d(-59, 55, Math.toRadians(0));
+  Pose2d spinnerPosition = new Pose2d(-60, 60, Math.toRadians(0));
   Pose2d storageUnitPosition = new Pose2d(-59, 28, Math.toRadians(270));
-  Pose2d warehouseP1Position = new Pose2d(-12, 40, Math.toRadians(0));
-  Pose2d warehouseP2Position = new Pose2d(10, 63, Math.toRadians(0));
-  Pose2d warehouseEndPosition = new Pose2d(39, 53, Math.toRadians(270));
 
-  double forwardness = 5;
 
   // + Mechanisms
   Arm arm;
   Manipulator manipulator;
   Spinner spinner;
+
   SampleMecanumDrive drive;
 
   // + Arm Positions
-  int low = Configuration.Mechanisms.armPositions.lowPosition;
-  int medium = Configuration.Mechanisms.armPositions.midPosition;
-  int high = Configuration.Mechanisms.armPositions.highPosition;
+  int low = Configuration.Mechanisms.Positions.arm.lowPosition;
+  int medium = Configuration.Mechanisms.Positions.arm.midPosition;
+  int high = Configuration.Mechanisms.Positions.arm.highPosition;
   int randomPosition = medium;
 
   // + Timer
   double spinnerTimer = 4.5;
 
   // + Voltages
-  double spinnerPower = 0.7;
+  double spinnerPower = -0.7;
   double manipulatorPower = 1.0;
+
+  // + Distances
+  double forwardness = 5.7 ;
+  double backness = 3.0;
 
   @Override
   public void initRobotClasses() {
@@ -104,7 +105,7 @@ public class Red42Pointer extends EctoOpMode {
             .back(0.5)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(manipulatorPower);
+                  manipulator.turnOn(manipulatorPower - 0.25);
                   spinner.turnOn(spinnerPower);
                 })
             .lineToLinearHeading(spinnerPosition)
@@ -121,7 +122,7 @@ public class Red42Pointer extends EctoOpMode {
                   spinner.turnOff();
                 })
             .strafeRight(12)
-            .back(1.5)
+            .back(backness)
             .build();
 
     levelTwo =
@@ -130,38 +131,6 @@ public class Red42Pointer extends EctoOpMode {
             .addDisplacementMarker(
                 () -> {
                   arm.setPosition(medium);
-                })
-            .forward(forwardness)
-            .waitSeconds(1)
-            .back(0.5)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOn(manipulatorPower);
-                  spinner.turnOn(spinnerPower);
-                })
-            .lineToLinearHeading(spinnerPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setHomePosition();
-                  manipulator.turnOff();
-                })
-            .strafeLeft(0.1)
-            .waitSeconds(spinnerTimer)
-            .lineToLinearHeading(storageUnitPosition)
-            .addDisplacementMarker(
-                () -> {
-                  spinner.turnOff();
-                })
-            .strafeRight(12)
-            .back(1.5)
-            .build();
-
-    levelThree =
-        drive
-            .trajectorySequenceBuilder(allianceShippingHubPosition)
-            .addDisplacementMarker(
-                () -> {
-                  arm.setPosition(high);
                 })
             .forward(forwardness)
             .waitSeconds(1)
@@ -185,7 +154,39 @@ public class Red42Pointer extends EctoOpMode {
                   spinner.turnOff();
                 })
             .strafeRight(12)
-            .back(1.5)
+            .back(backness)
+            .build();
+
+    levelThree =
+        drive
+            .trajectorySequenceBuilder(allianceShippingHubPosition)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setPosition(high);
+                })
+            .forward(forwardness)
+            .waitSeconds(1)
+            .back(0.5)
+            .addDisplacementMarker(
+                () -> {
+                  manipulator.turnOn(manipulatorPower - 0.05);
+                  spinner.turnOn(spinnerPower);
+                })
+            .lineToLinearHeading(spinnerPosition)
+            .addDisplacementMarker(
+                () -> {
+                  arm.setHomePosition();
+                  manipulator.turnOff();
+                })
+            .strafeLeft(0.1)
+            .waitSeconds(spinnerTimer)
+            .lineToLinearHeading(storageUnitPosition)
+            .addDisplacementMarker(
+                () -> {
+                  spinner.turnOff();
+                })
+            .strafeRight(12)
+            .back(backness)
             .build();
 
     arm = new Arm("arm", "Mechanism", armConfig);

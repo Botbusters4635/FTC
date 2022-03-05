@@ -1,21 +1,25 @@
 package org.firstinspires.ftc.teamcode.Robots.Happy.TeleOperated;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.armConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.capperConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.intakeConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.mecanumConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
+import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Sensors.gamePieceDetectorConfig;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.Arm;
+import org.firstinspires.ftc.teamcode.Mechanisms.Capper.Capper;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.Mecanum;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
+import org.firstinspires.ftc.teamcode.Sensors.GamePieceDetector.GamePieceDetector;
 
 @TeleOp(name = "TeleOperated", group = "Working")
 public class TeleOperated extends EctoOpMode {
@@ -26,11 +30,10 @@ public class TeleOperated extends EctoOpMode {
   Arm arm;
   Intake intake;
   Spinner spinner;
+  Capper capper;
 
-  // Arm Positions
-  int highLevel = 300;
-  int midLevel = 175;
-  int lowLevel = 75;
+  // Sensors
+  GamePieceDetector gamePieceDetector;
 
   // Controllers
   public static GamepadEx driverGamepad;
@@ -49,6 +52,12 @@ public class TeleOperated extends EctoOpMode {
     manipulator = new Manipulator("Manipulator", "Mechanism", manipulatorConfig);
     intake = new Intake("intake", "Mechanism", intakeConfig);
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
+    capper = new Capper("capper", "Mechanism", capperConfig);
+
+    // Sensors
+    gamePieceDetector =
+        new GamePieceDetector("manipulatorColorSensor", "Sensor", gamePieceDetectorConfig);
+
   }
 
   @Override
@@ -58,10 +67,15 @@ public class TeleOperated extends EctoOpMode {
     mechanismManager.addMechanism(arm);
     mechanismManager.addMechanism(intake);
     mechanismManager.addMechanism(spinner);
+    mechanismManager.addMechanism(capper);
+
+    mechanismManager.addMechanism(gamePieceDetector);
   }
 
   @Override
-  public void startRobot() {}
+  public void startRobot() {
+    intake.setPosition(Configuration.Mechanisms.Positions.intake.down);
+  }
 
   @Override
   public void updateRobot(Double timeStep) {
@@ -74,9 +88,9 @@ public class TeleOperated extends EctoOpMode {
             && driverGamepad.getButton(Configuration.Buttons.rightBumper)) {
 
       chassis.setChassisMovement(
-          driverGamepad.getLeftX() * -0.25,
-          driverGamepad.getLeftY() * -0.25,
-          driverGamepad.getRightX() * -0.25,
+          driverGamepad.getLeftX() * -0.325,
+          driverGamepad.getLeftY() * -0.325,
+          driverGamepad.getRightX() * -0.325,
           Mecanum.orientation.field);
 
     } else if (driverGamepad.getLeftY() != 0
@@ -103,46 +117,62 @@ public class TeleOperated extends EctoOpMode {
           Mecanum.orientation.field);
 
     } else {
-      chassis.stopChassis();
-    }
 
+      chassis.stopChassis();
+
+    }
 
     // + ARM BUTTON CONFIGURATION
     if (driverGamepad.getButton(Configuration.Buttons.y)) {
 
-      arm.setPosition(highLevel);
+      arm.setPosition(Configuration.Mechanisms.Positions.arm.highPosition);
+      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.b)) {
 
-      arm.setPosition(midLevel);
+      arm.setPosition(Configuration.Mechanisms.Positions.arm.midPosition);
+      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.a)) {
 
-      arm.setPosition(lowLevel);
+      arm.setPosition(Configuration.Mechanisms.Positions.arm.lowPosition);
+      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.x)) {
 
       arm.setHomePosition();
+      intake.setPosition(Configuration.Mechanisms.Positions.intake.down);
+
     }
     if (driverGamepad.getButton(Configuration.Buttons.start)) {
+
       arm.resetEncoder();
     }
-
 
     // + INTAKE && MANIPULATOR BUTTON CONFIGURATION
     if (driverGamepad.getButton(Configuration.Buttons.dPadUp)) {
 
       manipulator.turnOn(1);
+      intake.turnOff();
 
     } else {
 
+      intake.turnOff();
       manipulator.turnOff();
+
     }
 
     if (driverGamepad.getButton(Configuration.Buttons.dPadRight)) {
 
-      manipulator.turnOn(-1);
-      intake.turnOn(-1);
+      if (gamePieceDetector.gamePieceDetected()) {
+
+        arm.setPosition(Configuration.Mechanisms.Positions.arm.highPosition);
+
+      } else {
+
+        manipulator.turnOn(-1);
+        intake.turnOn(-1);
+      }
 
     } else if (driverGamepad.getButton(Configuration.Buttons.dPadLeft)) {
 
@@ -153,7 +183,6 @@ public class TeleOperated extends EctoOpMode {
       manipulator.turnOff();
       intake.turnOff();
     }
-
 
     // + SPINNER BUTTON CONFIGURATION
     if (driverGamepad.getTrigger(Configuration.Buttons.rightTrigger) != 0) {
@@ -169,13 +198,10 @@ public class TeleOperated extends EctoOpMode {
       spinner.turnOff();
     }
 
-    telemetry.addData("Left Y JoyInput:", driverGamepad.getLeftY());
-    telemetry.addData("Left X JoyInput:", driverGamepad.getLeftX());
 
-    telemetry.addData("Right Y JoyInput:", driverGamepad.getRightY());
-    telemetry.addData("Right X JoyInput:", driverGamepad.getRightX());
 
-    telemetry.addData("arm", arm.getActualPosition());
+    telemetry.addData("Arm Position: ", arm.getActualPosition());
+    telemetry.addData("Game Piece Detected: ", gamePieceDetector.gamePieceDetected());
     telemetry.update();
   }
 }

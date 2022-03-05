@@ -8,19 +8,30 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.ArmConfig;
+import org.firstinspires.ftc.teamcode.Mechanisms.Capper.CapperConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.MecanumConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.IntakeConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.ManipulatorConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.SpinnerConfig;
+import org.firstinspires.ftc.teamcode.Sensors.GamePieceDetector.GamePieceDetectorConfig;
 
 public class Configuration {
 
   public static class Mechanisms {
 
-    public static class armPositions {
-      public static int highPosition = 300;
-      public static int midPosition = 175;
-      public static int lowPosition = 100;
+    public static class Positions {
+
+      public static class arm {
+        public static int highPosition = 300;
+        public static int midPosition = 175;
+        public static int lowPosition = 105;
+      }
+
+      public static class intake {
+        public static int down = 45;
+        public static int up = 0;
+      }
+
     }
 
     public static MecanumConfig mecanumConfig =
@@ -31,17 +42,28 @@ public class Configuration {
             "backRightMotor",
             "imu",
             Motor.GoBILDA.RPM_223);
+
     public static ManipulatorConfig manipulatorConfig =
         new ManipulatorConfig("manipulatorMotor", Motor.GoBILDA.RPM_435);
+
     public static ArmConfig armConfig =
         new ArmConfig("armMotor", 1451.5, 13.5, 30, Motor.GoBILDA.RPM_117);
+
     public static IntakeConfig intakeConfig =
-        new IntakeConfig("intakeMotor", Motor.GoBILDA.RPM_435);
+        new IntakeConfig(
+            "intakeMotor", "leftIntakeServo", "rightIntakeServo", Motor.GoBILDA.RPM_435);
+
     public static SpinnerConfig spinnerConfig =
         new SpinnerConfig("spinnerMotor", Motor.GoBILDA.RPM_435);
+
+    public static CapperConfig capperConfig = new CapperConfig("capperServo");
   }
 
-  public static class Sensors {}
+  public static class Sensors {
+
+    public static GamePieceDetectorConfig gamePieceDetectorConfig =
+        new GamePieceDetectorConfig("colorSensor", 400);
+  }
 
   public static class Buttons {
 
