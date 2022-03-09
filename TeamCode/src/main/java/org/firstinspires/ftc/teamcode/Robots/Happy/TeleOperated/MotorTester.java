@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
-@Disabled
+
 @TeleOp(name = "MotorTester")
 public class MotorTester extends EctoOpMode {
 

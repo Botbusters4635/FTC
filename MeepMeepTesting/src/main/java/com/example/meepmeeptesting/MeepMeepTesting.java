@@ -9,13 +9,20 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(-35, 64, 0);
-    Pose2d allianceShippingHubPosition = new Pose2d(-44, 22, Math.toRadians(0));
-    Pose2d spinnerPosition = new Pose2d(-59, 55, Math.toRadians(0));
-    Pose2d storageUnitPosition = new Pose2d(-60, 38, Math.toRadians(270));
-    Pose2d warehouseP1Position = new Pose2d(-12, 40, Math.toRadians(0));
-    Pose2d warehouseP2Position = new Pose2d(10, 63, Math.toRadians(0));
-    Pose2d warehouseEndPosition = new Pose2d(39, 53, Math.toRadians(270));
+    Pose2d startingPosition = new Pose2d(-35, -64, 0);
+
+    Pose2d allianceShippingPositioning = new Pose2d(-35, -23, Math.toRadians(0));
+    Pose2d allianceShippingHubPosition = new Pose2d(-30, -23, Math.toRadians(0));
+    Pose2d spinnerPosition = new Pose2d(-59, -55, Math.toRadians(90));
+    Pose2d rubberDuckPositioning = new Pose2d(-54, -39, Math.toRadians(270));
+    Pose2d rubberDuckPosition = new Pose2d(-55, -58, Math.toRadians(270));
+    Pose2d barcodePrePositioning = new Pose2d(-17, 0, Math.toRadians(0));
+    Pose2d barcodePositioning = new Pose2d(4,0, Math.toRadians(0));
+    Pose2d barcodeDuckPosition = new Pose2d(12,-35, Math.toRadians(270));
+    Pose2d barcodeDuckDelivery = new Pose2d(0, -39, Math.toRadians(135));
+    Pose2d preloadedBoxPositioning = new Pose2d(-6, -52, Math.toRadians(240));
+    Pose2d wareHousePrePositioning = new Pose2d(12, -64, Math.toRadians(0));
+    Pose2d wareHousePosition = new Pose2d(50, -64, Math.toRadians(0));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
@@ -24,14 +31,24 @@ public class MeepMeepTesting {
             .followTrajectorySequence(
                 drive ->
                         drive
-                                .trajectorySequenceBuilder(allianceShippingHubPosition)
-                                .waitSeconds(1)
-                                .back(0.5)
+                                .trajectorySequenceBuilder(startingPosition)
+                                .lineToLinearHeading(allianceShippingPositioning)
+                                .lineToLinearHeading(allianceShippingHubPosition)
                                 .lineToLinearHeading(spinnerPosition)
-                                .strafeLeft(0.1)
-                                .lineToLinearHeading(storageUnitPosition)
-                                .strafeRight(12)
-                                .back(1.5)
+                                .lineToLinearHeading(rubberDuckPositioning)
+                                .setReversed(true)
+                                .lineToLinearHeading(rubberDuckPosition)
+                                .lineToLinearHeading(allianceShippingPositioning)
+                                .lineToLinearHeading(allianceShippingHubPosition)
+                                .lineToLinearHeading(allianceShippingPositioning)
+                                .lineToLinearHeading(barcodePrePositioning)
+                                .lineToLinearHeading(barcodePositioning)
+                                .lineToLinearHeading(barcodeDuckPosition)
+                                .lineToLinearHeading(barcodeDuckDelivery)
+                                .lineToLinearHeading(preloadedBoxPositioning)
+                                .lineToLinearHeading(barcodeDuckDelivery)
+                                .lineToLinearHeading(wareHousePrePositioning)
+                                .lineToLinearHeading(wareHousePosition)
                                 .build());
 
     meepMeep

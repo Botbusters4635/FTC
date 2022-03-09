@@ -74,7 +74,7 @@ public class TeleOperated extends EctoOpMode {
 
   @Override
   public void startRobot() {
-    intake.setPosition(Configuration.Mechanisms.Positions.intake.down);
+    intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
   }
 
   @Override
@@ -126,22 +126,18 @@ public class TeleOperated extends EctoOpMode {
     if (driverGamepad.getButton(Configuration.Buttons.y)) {
 
       arm.setPosition(Configuration.Mechanisms.Positions.arm.highPosition);
-      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.b)) {
 
       arm.setPosition(Configuration.Mechanisms.Positions.arm.midPosition);
-      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.a)) {
 
       arm.setPosition(Configuration.Mechanisms.Positions.arm.lowPosition);
-      intake.setPosition(Configuration.Mechanisms.Positions.intake.up);
 
     } else if (driverGamepad.getButton(Configuration.Buttons.x)) {
 
       arm.setHomePosition();
-      intake.setPosition(Configuration.Mechanisms.Positions.intake.down);
 
     }
     if (driverGamepad.getButton(Configuration.Buttons.start)) {
@@ -182,6 +178,7 @@ public class TeleOperated extends EctoOpMode {
 
       manipulator.turnOff();
       intake.turnOff();
+
     }
 
     // + SPINNER BUTTON CONFIGURATION
@@ -199,9 +196,9 @@ public class TeleOperated extends EctoOpMode {
     }
 
 
-
     telemetry.addData("Arm Position: ", arm.getActualPosition());
     telemetry.addData("Game Piece Detected: ", gamePieceDetector.gamePieceDetected());
+
     telemetry.update();
   }
 }

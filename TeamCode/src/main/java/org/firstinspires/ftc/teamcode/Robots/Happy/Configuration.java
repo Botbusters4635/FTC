@@ -28,8 +28,8 @@ public class Configuration {
       }
 
       public static class intake {
-        public static int down = 45;
-        public static int up = 0;
+        public static double down = 50;
+        public static double up = 0;
       }
 
     }

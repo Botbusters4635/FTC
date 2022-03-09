@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
 public class Intake extends EctoMechanism {
@@ -20,16 +21,20 @@ public class Intake extends EctoMechanism {
   ServoEx rightServo;
 
   public void turnOn(double powerPecentage) {
-
     intakeMotor.set(powerPecentage);
-
   }
 
-  public void setPosition(double setPoint) {
+  public void setServoPosition(double setPoint) {
+    leftServo.turnToAngle(setPoint);
+    rightServo.turnToAngle(setPoint);
+  }
 
-    leftServo.setPosition(setPoint);
-    rightServo.setPosition(setPoint);
+  public double getRightServoPosition() {
+    return rightServo.getPosition();
+  }
 
+  public double getLeftServoPosition() {
+    return leftServo.getPosition();
   }
 
   public void turnOff() {
@@ -39,15 +44,18 @@ public class Intake extends EctoMechanism {
   @Override
   public void initMechanism() {
 
-    leftServo = new SimpleServo(hardwareMap, config.getLeftServoId, 0, 360);
-    rightServo = new SimpleServo(hardwareMap, config.getLeftServoId, 0, 360);
+    leftServo = new SimpleServo(hardwareMap, config.getLeftServoId, 0, 270, AngleUnit.DEGREES);
+    rightServo = new SimpleServo(hardwareMap, config.getRightServoId, 0, 270, AngleUnit.DEGREES);
+
+    leftServo.setInverted(true);
+
     intakeMotor = new Motor(hardwareMap, config.getIntakeMotorId, config.getGobildaType);
     intakeMotor.setRunMode(Motor.RunMode.RawPower);
-
   }
 
   @Override
-  public void startMechanism() {}
+  public void startMechanism() {
+  }
 
   @Override
   public void updateMechanism() {}
