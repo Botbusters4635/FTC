@@ -9,20 +9,23 @@ public class MeepMeepTesting {
   public static void main(String[] args) {
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(-35, -64, 0);
+    Pose2d startingPosition = new Pose2d(-36, -64, 0);
 
-    Pose2d allianceShippingPositioning = new Pose2d(-35, -23, Math.toRadians(0));
-    Pose2d allianceShippingHubPosition = new Pose2d(-30, -23, Math.toRadians(0));
+    Pose2d allianceShippingPosition = new Pose2d(-36, -23, Math.toRadians(0));
+
     Pose2d spinnerPosition = new Pose2d(-59, -55, Math.toRadians(90));
-    Pose2d rubberDuckPositioning = new Pose2d(-54, -39, Math.toRadians(270));
-    Pose2d rubberDuckPosition = new Pose2d(-55, -58, Math.toRadians(270));
-    Pose2d barcodePrePositioning = new Pose2d(-17, 0, Math.toRadians(0));
-    Pose2d barcodePositioning = new Pose2d(4,0, Math.toRadians(0));
-    Pose2d barcodeDuckPosition = new Pose2d(12,-35, Math.toRadians(270));
-    Pose2d barcodeDuckDelivery = new Pose2d(0, -39, Math.toRadians(135));
-    Pose2d preloadedBoxPositioning = new Pose2d(-6, -52, Math.toRadians(240));
-    Pose2d wareHousePrePositioning = new Pose2d(12, -64, Math.toRadians(0));
-    Pose2d wareHousePosition = new Pose2d(50, -64, Math.toRadians(0));
+
+    Pose2d spinnerDuckPositioning = new Pose2d(-55, -40, Math.toRadians(270));
+    Pose2d spinnerDuckPosition = new Pose2d(-55, -58, Math.toRadians(270));
+
+//    Pose2d spinnerDuckPositioning = new Pose2d(-36, -64, Math.toRadians(220));
+//    Pose2d spinnerDuckPosition = new Pose2d(-62, -64, Math.toRadians(220));
+
+    Pose2d wareHouseP1 = new Pose2d(-39, 2, Math.toRadians(0));
+    Pose2d wareHouseP2 = new Pose2d(10, 2, Math.toRadians(0));
+    Pose2d wareHouseP3 = new Pose2d(10, -62, Math.toRadians(0));
+    Pose2d wareHouseP4 = new Pose2d(40, -77, Math.toRadians(0));
+    Pose2d wareHouseP5 = new Pose2d(44, -54, Math.toRadians(90));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
@@ -30,26 +33,25 @@ public class MeepMeepTesting {
             .setDimensions(13.5, 15.5)
             .followTrajectorySequence(
                 drive ->
-                        drive
-                                .trajectorySequenceBuilder(startingPosition)
-                                .lineToLinearHeading(allianceShippingPositioning)
-                                .lineToLinearHeading(allianceShippingHubPosition)
-                                .lineToLinearHeading(spinnerPosition)
-                                .lineToLinearHeading(rubberDuckPositioning)
-                                .setReversed(true)
-                                .lineToLinearHeading(rubberDuckPosition)
-                                .lineToLinearHeading(allianceShippingPositioning)
-                                .lineToLinearHeading(allianceShippingHubPosition)
-                                .lineToLinearHeading(allianceShippingPositioning)
-                                .lineToLinearHeading(barcodePrePositioning)
-                                .lineToLinearHeading(barcodePositioning)
-                                .lineToLinearHeading(barcodeDuckPosition)
-                                .lineToLinearHeading(barcodeDuckDelivery)
-                                .lineToLinearHeading(preloadedBoxPositioning)
-                                .lineToLinearHeading(barcodeDuckDelivery)
-                                .lineToLinearHeading(wareHousePrePositioning)
-                                .lineToLinearHeading(wareHousePosition)
-                                .build());
+                    drive
+                        .trajectorySequenceBuilder(startingPosition)
+                        .lineToLinearHeading(allianceShippingPosition)
+                        .forward(11)
+                        .lineToLinearHeading(spinnerPosition)
+                        .strafeLeft(0.1)
+                        .waitSeconds(4.5)
+                        .lineToLinearHeading(spinnerDuckPositioning)
+                        .lineToLinearHeading(spinnerDuckPosition)
+                        .lineToLinearHeading(allianceShippingPosition)
+                        .forward(11)
+                        .back(12)
+                        .lineToLinearHeading(wareHouseP1)
+                        .lineToLinearHeading(wareHouseP2)
+                        .lineToLinearHeading(wareHouseP3)
+                        .strafeRight(15)
+                        .lineToLinearHeading(wareHouseP4)
+                        .lineToLinearHeading(wareHouseP5)
+                        .build());
 
     meepMeep
         .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)

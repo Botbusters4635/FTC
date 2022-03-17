@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 import java.util.List;
 
-@Autonomous(name = "Red", group = "Red")
+@Autonomous(name = "Red42Pointer", group = "Red")
 public class Red42Pointer extends EctoOpMode {
 
   private enum RobotState {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots.Happy;
+package org.firstinspires.ftc.teamcode.Robots.Happy.TeleOperated;
 
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.intakeConfig;
 
@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.OperationModes.EctoOpMode;
 import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
+import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 @TeleOp(name = "ServoTester", group = "Testing")
 public class ServoTester extends EctoOpMode {

@@ -15,22 +15,23 @@ public class Capper extends EctoMechanism {
   CapperConfig config;
   ServoEx capperServo;
 
-  int targetPosition = 0;
-
   public void up() {
-    targetPosition++;
-    capperServo.setPosition(targetPosition);
+    capperServo.rotateByAngle(2);
   }
 
   public void down() {
-    targetPosition--;
-    capperServo.setPosition(targetPosition);
+        capperServo.rotateByAngle(-2);
   }
-
 
   @Override
   public void initMechanism() {
-    capperServo = new SimpleServo(hardwareMap, config.getCapperServoId, 0, 360);
+
+    capperServo =
+        new SimpleServo(
+            hardwareMap, config.getCapperServoId, config.getMinServoAngle, config.getMaxServoAngle);
+
+    capperServo.setInverted(true);
+
   }
 
   @Override
@@ -41,5 +42,4 @@ public class Capper extends EctoMechanism {
 
   @Override
   public void stopMechanism() {}
-
 }

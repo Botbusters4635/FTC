@@ -44,8 +44,21 @@ public class Intake extends EctoMechanism {
   @Override
   public void initMechanism() {
 
-    leftServo = new SimpleServo(hardwareMap, config.getLeftServoId, 0, 270, AngleUnit.DEGREES);
-    rightServo = new SimpleServo(hardwareMap, config.getRightServoId, 0, 270, AngleUnit.DEGREES);
+    leftServo =
+        new SimpleServo(
+            hardwareMap,
+            config.getLeftServoId,
+            config.getMinServoAngle,
+            config.getMaxServoAngle,
+            AngleUnit.DEGREES);
+
+    rightServo =
+        new SimpleServo(
+            hardwareMap,
+            config.getRightServoId,
+            config.getMinServoAngle,
+            config.getMaxServoAngle,
+            AngleUnit.DEGREES);
 
     leftServo.setInverted(true);
 

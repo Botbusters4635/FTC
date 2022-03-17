@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 
-@TeleOp(name = "MotorTester")
+@TeleOp(name = "MotorTester", group = "Testing")
 public class MotorTester extends EctoOpMode {
 
     Manipulator manipulator;

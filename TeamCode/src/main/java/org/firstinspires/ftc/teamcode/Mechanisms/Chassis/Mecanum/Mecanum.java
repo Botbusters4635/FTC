@@ -54,6 +54,10 @@ public class Mecanum extends EctoMechanism {
 
     }
 
+    public void resetHeading(){
+        imu.reset();
+    }
+
     public void stopChassis(){
         mecanum.stop();
     }

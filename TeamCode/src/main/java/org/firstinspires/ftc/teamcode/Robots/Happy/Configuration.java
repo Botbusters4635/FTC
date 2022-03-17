@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.Robots.Happy;
 
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.Arm.ArmConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Capper.CapperConfig;
@@ -19,12 +20,38 @@ public class Configuration {
 
   public static class Mechanisms {
 
+    public static class RumbleEffets {
+
+      public static Gamepad.RumbleEffect endGameRumble =
+          new Gamepad.RumbleEffect.Builder()
+              .addStep(0.0, 1.0, 500)
+              .addStep(0.0, 0.0, 300)
+              .addStep(1.0, 0.0, 250)
+              .addStep(0.0, 0.0, 250)
+              .addStep(1.0, 0.0, 250)
+              .addStep(0.0, 0.0, 300)
+              .addStep(1.0, 0.0, 250)
+              .addStep(0.0, 0.0, 250)
+              .addStep(1.0, 0.0, 250)
+              .build();
+
+    }
+
     public static class Positions {
 
       public static class arm {
+
         public static int highPosition = 300;
         public static int midPosition = 175;
         public static int lowPosition = 105;
+
+        public enum States {
+          highPosition,
+          midPosition,
+          lowPosition,
+          homePosition,
+        }
+
       }
 
       public static class intake {
@@ -51,12 +78,12 @@ public class Configuration {
 
     public static IntakeConfig intakeConfig =
         new IntakeConfig(
-            "intakeMotor", "leftIntakeServo", "rightIntakeServo", Motor.GoBILDA.RPM_435);
+            "intakeMotor", "leftIntakeServo", "rightIntakeServo", 0, 270, Motor.GoBILDA.RPM_435);
 
     public static SpinnerConfig spinnerConfig =
         new SpinnerConfig("spinnerMotor", Motor.GoBILDA.RPM_435);
 
-    public static CapperConfig capperConfig = new CapperConfig("capperServo");
+    public static CapperConfig capperConfig = new CapperConfig("capperServo", 0, 270);
   }
 
   public static class Sensors {
@@ -87,5 +114,6 @@ public class Configuration {
     public static GamepadKeys.Button dPadRight = GamepadKeys.Button.DPAD_RIGHT;
 
     public static GamepadKeys.Button start = GamepadKeys.Button.START;
+    public static GamepadKeys.Button back = GamepadKeys.Button.BACK;
   }
 }
