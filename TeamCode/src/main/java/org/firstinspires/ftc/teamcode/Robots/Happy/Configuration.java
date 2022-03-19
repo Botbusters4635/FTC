@@ -20,7 +20,7 @@ public class Configuration {
 
   public static class Mechanisms {
 
-    public static class RumbleEffets {
+    public static class RumbleEffects {
 
       public static Gamepad.RumbleEffect endGameRumble =
           new Gamepad.RumbleEffect.Builder()
@@ -35,6 +35,28 @@ public class Configuration {
               .addStep(1.0, 0.0, 250)
               .build();
 
+      public static Gamepad.RumbleEffect cappingRumble =
+          new Gamepad.RumbleEffect.Builder()
+              .addStep(0.0, 1.0, 250)
+              .addStep(0.2, 0.2, 300)
+              .addStep(1.0, 0.0, 250)
+              .addStep(0.0, 1.0, 250)
+              .addStep(0.2, 0.2, 300)
+              .addStep(1.0, 0.0, 250)
+              .build();
+
+      public static Gamepad.RumbleEffect wareHouseRumble =
+              new Gamepad.RumbleEffect.Builder()
+                      .addStep(0.0, 1.0, 500)
+                      .addStep(0.0, 0.0, 300)
+                      .addStep(1.0, 0.0, 250)
+                      .addStep(0.0, 0.0, 250)
+                      .addStep(1.0, 0.0, 250)
+                      .addStep(0.0, 0.0, 300)
+                      .addStep(1.0, 0.0, 250)
+                      .addStep(0.0, 0.0, 250)
+                      .addStep(1.0, 0.0, 250)
+                      .build();
     }
 
     public static class Positions {
@@ -51,14 +73,12 @@ public class Configuration {
           lowPosition,
           homePosition,
         }
-
       }
 
       public static class intake {
         public static double down = 50;
         public static double up = 0;
       }
-
     }
 
     public static MecanumConfig mecanumConfig =
@@ -74,7 +94,7 @@ public class Configuration {
         new ManipulatorConfig("manipulatorMotor", Motor.GoBILDA.RPM_435);
 
     public static ArmConfig armConfig =
-        new ArmConfig("armMotor", 1451.5, 13.5, 30, Motor.GoBILDA.RPM_117);
+        new ArmConfig("armMotor", 1451.5, 13.5, 18, Motor.GoBILDA.RPM_117);
 
     public static IntakeConfig intakeConfig =
         new IntakeConfig(

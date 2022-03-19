@@ -7,25 +7,22 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
   public static void main(String[] args) {
+
     MeepMeep meepMeep = new MeepMeep(600);
 
-    Pose2d startingPosition = new Pose2d(-36, -64, 0);
+    // + POSITIONS
+    Pose2d startingPosition = new Pose2d(-36, 64, 0);
 
-    Pose2d allianceShippingPosition = new Pose2d(-36, -23, Math.toRadians(0));
+    Pose2d allianceShippingPosition = new Pose2d(-36, 23, Math.toRadians(0));
 
-    Pose2d spinnerPosition = new Pose2d(-59, -55, Math.toRadians(90));
+    Pose2d spinnerPosition = new Pose2d(-60.5, 57, Math.toRadians(0));
 
-    Pose2d spinnerDuckPositioning = new Pose2d(-55, -40, Math.toRadians(270));
-    Pose2d spinnerDuckPosition = new Pose2d(-55, -58, Math.toRadians(270));
+    Pose2d spinnerDuckPositioning = new Pose2d(-55, 40, Math.toRadians(90));
+    Pose2d spinnerDuckPosition = new Pose2d(-55, 58, Math.toRadians(90));
 
-//    Pose2d spinnerDuckPositioning = new Pose2d(-36, -64, Math.toRadians(220));
-//    Pose2d spinnerDuckPosition = new Pose2d(-62, -64, Math.toRadians(220));
-
-    Pose2d wareHouseP1 = new Pose2d(-39, 2, Math.toRadians(0));
-    Pose2d wareHouseP2 = new Pose2d(10, 2, Math.toRadians(0));
-    Pose2d wareHouseP3 = new Pose2d(10, -62, Math.toRadians(0));
-    Pose2d wareHouseP4 = new Pose2d(40, -77, Math.toRadians(0));
-    Pose2d wareHouseP5 = new Pose2d(44, -54, Math.toRadians(90));
+    Pose2d wareHouseP1 = new Pose2d(-39, -2, Math.toRadians(0));
+    Pose2d wareHouseP2 = new Pose2d(14, -2, Math.toRadians(0));
+    Pose2d wareHouseP3 = new Pose2d(14, 62, Math.toRadians(0));
 
     RoadRunnerBotEntity bot =
         new DefaultBotBuilder(meepMeep)
@@ -48,9 +45,8 @@ public class MeepMeepTesting {
                         .lineToLinearHeading(wareHouseP1)
                         .lineToLinearHeading(wareHouseP2)
                         .lineToLinearHeading(wareHouseP3)
-                        .strafeRight(15)
-                        .lineToLinearHeading(wareHouseP4)
-                        .lineToLinearHeading(wareHouseP5)
+                        .strafeRight(-15)
+                        .forward(30)
                         .build());
 
     meepMeep

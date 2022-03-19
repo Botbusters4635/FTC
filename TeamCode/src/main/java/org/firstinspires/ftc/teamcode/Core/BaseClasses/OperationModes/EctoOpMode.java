@@ -13,7 +13,11 @@ import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 public abstract class EctoOpMode extends OpMode {
 
   ElapsedTime runtime = new ElapsedTime();
-  boolean rumbleHasNotHappened = true;
+
+  boolean endgameRumbleHasNotHappened = true;
+  boolean cappingRumbleHasNotHappened = true;
+  boolean wareHouseRumbleHasNotHappened = true;
+
 
   Double lastTimeRunned = 0.0;
   int updateRate = 10; // Milliseconds
@@ -51,9 +55,19 @@ public abstract class EctoOpMode extends OpMode {
     lastTimeRunned = getRuntime();
     updateRobot(timeStep);
 
-    if ((runtime.seconds() > 118) && rumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffets.endGameRumble);
-      rumbleHasNotHappened = false;
+    if ((runtime.seconds() > 120) && endgameRumbleHasNotHappened) {
+      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.endGameRumble);
+      endgameRumbleHasNotHappened = false;
+    }
+
+    if ((runtime.seconds() > 110) && cappingRumbleHasNotHappened) {
+      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
+      cappingRumbleHasNotHappened = false;
+    }
+
+    if ((runtime.seconds() > 144) && wareHouseRumbleHasNotHappened) {
+      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
+      wareHouseRumbleHasNotHappened = false;
     }
 
   }

@@ -34,7 +34,7 @@ public class Blue42Pointer extends EctoOpMode {
 
 
   // + VISION STUFF
-  private static final String TFOD_MODEL_ASSET = "model_20220201_082128.tflite";
+  private static final String TFOD_MODEL_ASSET = "model_20220317_140747.tflite";
   private static final String[] LABELS = {"TSE"};
   private static final String VUFORIA_KEY =
       "AcPYhx//////AAABmUFaV20z2EmQkqbvhi5zgVyC8RDLUdcdScdfOzcbH3fA+pSEVZWlNIF+Ut/4VmqGbuk7uFqip+a3n8/B0pq1/CI+gVsV+uBZZ1CGA6DmLbDMwNu0jXJGH13oetb0LsQVjQXKVn5UNHDs3NSuZIElqucqsKVFjd4/UiYMTjV6mlkb9wtuZ2DXUThYi65NaqdEH9erho/RsjeoAhRbHBiHWZacLOT54Sv3TFt+QdWR9RvvDZewNSaP9bYCE8322fjmqdKd7qjT/jNEgJsM4G3qA9QqpOueIGbxKVJY5nN5vBLWruEdo/aH0C1pnxMzVTlQIFQjhALfyGHRCBSBWujGcXQq59onVkH/fnzg07TBLdFo ";
