@@ -6,7 +6,6 @@ import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanis
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.manipulatorConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.mecanumConfig;
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
-import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Sensors.gamePieceDetectorConfig;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -21,7 +20,6 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Intake.Intake;
 import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
-import org.firstinspires.ftc.teamcode.Sensors.GamePieceDetector.GamePieceDetector;
 
 @TeleOp(name = "TeleOperated", group = "Working")
 public class TeleOperated extends EctoOpMode {
@@ -37,14 +35,10 @@ public class TeleOperated extends EctoOpMode {
   Configuration.Mechanisms.Positions.arm.States currentArmState;
 
 
-  // Sensors
-  GamePieceDetector gamePieceDetector;
 
   // Controllers
   public static GamepadEx driverGamepad;
   public static GamepadEx manipulatorGamepad;
-
-
 
   ElapsedTime runtime = new ElapsedTime();
   boolean rumbleHasNotHappened = false;
@@ -64,10 +58,6 @@ public class TeleOperated extends EctoOpMode {
     spinner = new Spinner("spinner", "Mechanism", spinnerConfig);
     capper = new Capper("capper", "Mechanism", capperConfig);
 
-    // Sensors
-    gamePieceDetector =
-        new GamePieceDetector("manipulatorColorSensor", "Sensor", gamePieceDetectorConfig);
-
     // State Machines
     currentArmState = Configuration.Mechanisms.Positions.arm.States.homePosition;
   }
@@ -80,8 +70,6 @@ public class TeleOperated extends EctoOpMode {
     mechanismManager.addMechanism(intake);
     mechanismManager.addMechanism(spinner);
     mechanismManager.addMechanism(capper);
-
-    mechanismManager.addMechanism(gamePieceDetector);
   }
 
   @Override
@@ -104,7 +92,7 @@ public class TeleOperated extends EctoOpMode {
     // + ########################## + //
 
     // + CHASSIS BUTTON CONFIGURATION
-    if (driverGamepad.getButton(Configuration.Buttons.back)){
+    if (driverGamepad.getButton(Configuration.Buttons.back)) {
       chassis.resetHeading();
     }
 
@@ -146,7 +134,6 @@ public class TeleOperated extends EctoOpMode {
     } else {
 
       chassis.stopChassis();
-
     }
 
     // + ARM BUTTON CONFIGURATION
@@ -174,7 +161,6 @@ public class TeleOperated extends EctoOpMode {
     if (driverGamepad.getButton(Configuration.Buttons.start)) {
 
       arm.resetEncoder();
-
     }
 
     // + INTAKE && MANIPULATOR BUTTON CONFIGURATION
@@ -188,33 +174,25 @@ public class TeleOperated extends EctoOpMode {
 
       intake.turnOff();
       manipulator.turnOff();
-
     }
 
-    if (currentArmState == Configuration.Mechanisms.Positions.arm.States.homePosition){
+    if (currentArmState == Configuration.Mechanisms.Positions.arm.States.homePosition) {
       intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
     }
 
     if (driverGamepad.getButton(Configuration.Buttons.dPadRight)) {
 
-      if (gamePieceDetector.gamePieceDetected()) {
-
-        arm.setPosition(Configuration.Mechanisms.Positions.arm.highPosition);
-
+      if (currentArmState == Configuration.Mechanisms.Positions.arm.States.homePosition) {
+        manipulator.turnOn(-1);
+        intake.turnOn(-1);
       } else {
-
-        if (currentArmState == Configuration.Mechanisms.Positions.arm.States.homePosition) {
-          manipulator.turnOn(-1);
-          intake.turnOn(-1);
-        } else {
-          intake.turnOff();
-          manipulator.turnOff();
-        }
+        intake.turnOff();
+        manipulator.turnOff();
       }
 
     } else if (driverGamepad.getButton(Configuration.Buttons.dPadLeft)) {
 
-      if (manipulator.getState() == EctoMechanism.State.On){
+      if (manipulator.getState() == EctoMechanism.State.On) {
         intake.turnOff();
       } else {
         intake.turnOn(1);
@@ -224,7 +202,6 @@ public class TeleOperated extends EctoOpMode {
 
       manipulator.turnOff();
       intake.turnOff();
-
     }
 
     // + ########################## + //
@@ -233,9 +210,9 @@ public class TeleOperated extends EctoOpMode {
 
     // + SPINNER BUTTON CONFIGURATION
     if (manipulatorGamepad.getTrigger(Configuration.Buttons.rightTrigger) != 0) {
-      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.rightTrigger));
+      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.rightTrigger) - 0.25);
     } else if (manipulatorGamepad.getTrigger(Configuration.Buttons.leftTrigger) != 0) {
-      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.leftTrigger) * -1);
+      spinner.turnOn(manipulatorGamepad.getTrigger(Configuration.Buttons.leftTrigger) * - 0.25);
     } else {
       spinner.turnOff();
     }
@@ -249,7 +226,6 @@ public class TeleOperated extends EctoOpMode {
       intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
     }
 
-
     // + CAPPER BUTTON CONFIGURATION
     if (manipulatorGamepad.getButton(Configuration.Buttons.rightBumper)) {
 
@@ -258,15 +234,10 @@ public class TeleOperated extends EctoOpMode {
     } else if (manipulatorGamepad.getButton(Configuration.Buttons.leftBumper)) {
 
       capper.down();
-
     }
 
-
-
     telemetry.addData("Arm Position: ", arm.getActualPosition());
-    telemetry.addData("Game Piece Detected: ", gamePieceDetector.gamePieceDetected());
 
     telemetry.update();
-
   }
 }

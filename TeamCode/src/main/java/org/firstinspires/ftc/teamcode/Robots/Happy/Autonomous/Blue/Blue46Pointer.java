@@ -88,7 +88,7 @@ public class Blue46Pointer extends EctoOpMode {
   double levelTwoForwardnessPreloaded = 1.8;
   double levelTwoForwardnessDuck = 2.0;
 
-  double levelThreeForwardnessPreloaded = 10.0;
+  double levelThreeForwardnessPreloaded = 5.0;
   double levelThreeForwardnessDuck = 10.0;
 
   @Override
@@ -278,6 +278,7 @@ public class Blue46Pointer extends EctoOpMode {
                   intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
                 })
             .lineToLinearHeading(allianceShippingPosition)
+            .strafeRight(2)
             .forward(levelThreeForwardnessPreloaded)
             .addDisplacementMarker(
                 () -> {

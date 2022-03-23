@@ -59,6 +59,7 @@ public class Red46Pointer extends EctoOpMode {
   Pose2d spinnerDuckPositioning = new Pose2d(-55, -40, Math.toRadians(270));
   Pose2d spinnerDuckPosition = new Pose2d(-55, -58, Math.toRadians(270));
 
+  Pose2d storageUnitPosition = new Pose2d(-64, -35, Math.toRadians(90));
   Pose2d wareHouseP1 = new Pose2d(-39, 2, Math.toRadians(0));
   Pose2d wareHouseP2 = new Pose2d(14, 2, Math.toRadians(0));
   Pose2d wareHouseP3 = new Pose2d(14, -62, Math.toRadians(0));
@@ -73,7 +74,7 @@ public class Red46Pointer extends EctoOpMode {
 
   // + Arm Positions
   int low = 120;
-  int medium = 215;
+  int medium = 230;
   int high = 315;
   int randomPosition = medium;
 
@@ -167,15 +168,7 @@ public class Red46Pointer extends EctoOpMode {
                   arm.setHomePosition();
                   intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
                 })
-            .lineToLinearHeading(wareHouseP1)
-            .addDisplacementMarker(
-                () -> {
-                  intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
-                })
-            .lineToLinearHeading(wareHouseP2)
-            .lineToLinearHeading(wareHouseP3)
-            .strafeRight(15)
-            .forward(50)
+            .lineToLinearHeading(storageUnitPosition)
             .build();
 
     levelTwo =
@@ -196,6 +189,7 @@ public class Red46Pointer extends EctoOpMode {
                   intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
                 })
             .lineToLinearHeading(allianceShippingPosition)
+                .strafeLeft(3)
             .forward(levelTwoForwardnessPreloaded)
             .addDisplacementMarker(
                 () -> {
@@ -244,15 +238,7 @@ public class Red46Pointer extends EctoOpMode {
                   arm.setHomePosition();
                   intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
                 })
-            .lineToLinearHeading(wareHouseP1)
-            .addDisplacementMarker(
-                () -> {
-                  intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
-                })
-            .lineToLinearHeading(wareHouseP2)
-            .lineToLinearHeading(wareHouseP3)
-            .strafeRight(15)
-            .forward(50)
+            .lineToLinearHeading(storageUnitPosition)
             .build();
 
     levelThree =
@@ -276,8 +262,7 @@ public class Red46Pointer extends EctoOpMode {
             .forward(levelThreeForwardnessPreloaded)
             .addDisplacementMarker(
                 () -> {
-                  manipulator.turnOn(0.7
-                   );
+                  manipulator.turnOn(0.7);
                   spinner.turnOn(0.7);
                 })
             .lineToLinearHeading(spinnerPosition)
@@ -305,32 +290,7 @@ public class Red46Pointer extends EctoOpMode {
                   intake.turnOff();
                   arm.setPosition(Configuration.Mechanisms.Positions.arm.highPosition);
                 })
-            .lineToLinearHeading(allianceShippingPosition)
-            .addDisplacementMarker(
-                () -> {
-                  intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
-                })
-            .forward(levelThreeForwardnessDuck)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOn(0.7);
-                })
-            .back(13.5)
-            .addDisplacementMarker(
-                () -> {
-                  manipulator.turnOff();
-                  arm.setHomePosition();
-                  intake.setServoPosition(Configuration.Mechanisms.Positions.intake.down);
-                })
-            .lineToLinearHeading(wareHouseP1)
-            .addDisplacementMarker(
-                () -> {
-                  intake.setServoPosition(Configuration.Mechanisms.Positions.intake.up);
-                })
-            .lineToLinearHeading(wareHouseP2)
-            .lineToLinearHeading(wareHouseP3)
-            .strafeRight(15)
-            .forward(50)
+            .lineToLinearHeading(storageUnitPosition)
             .build();
 
     arm = new Arm("arm", "Mechanism", armConfig);
