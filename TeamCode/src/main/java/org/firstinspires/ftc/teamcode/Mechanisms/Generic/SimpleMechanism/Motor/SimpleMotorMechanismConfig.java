@@ -8,14 +8,12 @@ public class SimpleMotorMechanismConfig {
     public SimpleMotorMechanismConfig(String motorId,
                                       double motorCPR,
                                       double motorRPMs,
-                                      double gearing,
                                       boolean isInverted
 
     ){
         this.motorId = motorId;
         this.motorCPR = motorCPR;
         this.motorRPMs = motorRPMs;
-        this.gearing = gearing;
         this.isInverted = isInverted;
 
     }
@@ -23,6 +21,5 @@ public class SimpleMotorMechanismConfig {
     String motorId;
     Double motorCPR;
     Double motorRPMs;
-    Double gearing;
     Boolean isInverted;
 }
