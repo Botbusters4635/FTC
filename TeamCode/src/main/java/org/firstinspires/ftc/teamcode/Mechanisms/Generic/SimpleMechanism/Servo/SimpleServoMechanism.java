@@ -23,6 +23,12 @@ public class SimpleServoMechanism extends EctoMechanism {
     Vector<ServoEx> servos;
     Vector<String> servoIds = config.servoIds;
 
+    public void set(double set, AngleUnit unit) {
+        for (int i = 0; i < servoIds.size(); i++){
+            servos.get(i).turnToAngle(set, unit);
+        }
+    }
+
     @Override
     public void initMechanism() {
         for (int i = 0; i < servoIds.size(); i++){
@@ -32,11 +38,7 @@ public class SimpleServoMechanism extends EctoMechanism {
     }
 
     @Override
-    public void startMechanism() {
-        for (int i = 0; i < servoIds.size(); i++){
-            ;
-        }
-    }
+    public void startMechanism() {;}
 
     @Override
     public void updateMechanism() {;}
