@@ -1,13 +1,8 @@
-//
-// Created by Neil Rodriguez 11/8/2021
-//
-
 package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Tank;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 public class TankConfig {
-
 
     public TankConfig(String frontLeftId, String backLeftId, String frontRightId, String backRightId, Motor.GoBILDA GobildaMotorType) {
 

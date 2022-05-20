@@ -35,7 +35,6 @@ public class Mecanum extends EctoMechanism {
 
     private MotorGroup allMotors;
 
-
     private final MecanumConfig mecanumConfig;
 
     private MecanumDrive mecanum;
