@@ -31,6 +31,10 @@ public class Pushbot extends EctoMechanism {
         pushbot.arcadeDrive(forwardSpeed, turnSpeed);
     }
 
+    public void stopChassis(){
+        pushbot.stop();
+    }
+
 
     @Override
     public void initMechanism() {
@@ -61,6 +65,6 @@ public class Pushbot extends EctoMechanism {
 
     @Override
     public void stopMechanism() {
-
+        stopChassis();
     }
 }

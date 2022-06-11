@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Pushbot;
 
 public class PushbotConfig {
 
-    public PushbotConfig(String leftId, String rightId, double cpr, double rpm){
+    public  PushbotConfig(String leftId, String rightId, double cpr, double rpm){
 
         getLeftId = leftId;
         getRightId = rightId;

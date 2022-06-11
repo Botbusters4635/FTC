@@ -15,13 +15,6 @@ public class MecanumConfig extends Configuration {
 
         getfrontLeftId = frontLeftId;
         getfrontRightId = frontRightId;
-        getbackLeftId = backLeftId;
-        getbackRightId = backRightId;
-
-        getIMUId = IMUId;
-
-        getGobildaType = GobildaMotorType;
-
     }
 
     public String getfrontLeftId;

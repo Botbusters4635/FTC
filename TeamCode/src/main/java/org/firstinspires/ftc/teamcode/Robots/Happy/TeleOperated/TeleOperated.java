@@ -8,7 +8,6 @@ import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanis
 import static org.firstinspires.ftc.teamcode.Robots.Happy.Configuration.Mechanisms.spinnerConfig;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
@@ -21,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
-@TeleOp(name = "TeleOperated", group = "Working")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOperated-Happy", group = "Working")
 public class TeleOperated extends EctoOpMode {
 
   // Mechanisms
