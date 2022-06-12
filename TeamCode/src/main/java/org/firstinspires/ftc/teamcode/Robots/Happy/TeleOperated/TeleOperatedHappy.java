@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Manipulator.Manipulator;
 import org.firstinspires.ftc.teamcode.Mechanisms.Spinner.Spinner;
 import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOperated-Happy", group = "Working")
-public class TeleOperated extends EctoOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOperatedHappy-Happy", group = "Working")
+public class TeleOperatedHappy extends EctoOpMode {
 
   // Mechanisms
   Mecanum chassis;
