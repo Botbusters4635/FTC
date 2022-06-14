@@ -11,15 +11,15 @@ public class SimpleMotorMechanismConfig {
                                       boolean isInverted
 
     ){
-        this.motorId = motorId;
-        this.motorCPR = motorCPR;
-        this.motorRPMs = motorRPMs;
-        this.isInverted = isInverted;
+        getMotorId = motorId;
+        getMotorCPR = motorCPR;
+        getMotorRPMs = motorRPMs;
+        getIsInverted = isInverted;
 
     }
 
-    String motorId;
-    Double motorCPR;
-    Double motorRPMs;
-    Boolean isInverted;
+    String getMotorId;
+    double getMotorCPR;
+    double getMotorRPMs;
+    boolean getIsInverted;
 }

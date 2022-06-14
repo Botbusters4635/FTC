@@ -3,11 +3,17 @@ package org.firstinspires.ftc.teamcode.Robots.MiniHog;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Pushbot.PushbotConfig;
+import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Motor.SimpleMotorMechanism;
+import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Motor.SimpleMotorMechanismConfig;
+import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Servo.DualServoMechanismConfig;
+import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Servo.SingleServoMechanismConfig;
 
 public class Configuration {
 
     public static class Mechanisms {
         public static PushbotConfig pushbotConfig = new PushbotConfig("leftMotor", "rightMotor", 560, 300);
+        public static SimpleMotorMechanismConfig armConfig = new SimpleMotorMechanismConfig("arm", 288, 125, true);
+        public static DualServoMechanismConfig servoTestConfig = new DualServoMechanismConfig("test", "testTwo", 270, 0, 1, false, true);
     }
 
     public static class Buttons {

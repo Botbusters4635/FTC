@@ -9,31 +9,35 @@ public class SimpleMotorMechanism extends EctoMechanism {
 
     public SimpleMotorMechanism(String moduleName, String moduleType, SimpleMotorMechanismConfig config) {
         super(moduleName, moduleType);
-        this.config = config;
+        getConfig = config;
     }
 
-    SimpleMotorMechanismConfig config;
+    SimpleMotorMechanismConfig getConfig;
     MotorEx motor;
-    Double set;
+    Double getSet = 0.0;
 
     public void set(double set){
-        this.set = set;
+        getSet = set;
     }
 
     @Override
     public void initMechanism() {
-        motor = new MotorEx(hardwareMap, config.motorId, config.motorCPR, config.motorRPMs);
-        motor.setInverted(config.isInverted);
+        motor = new MotorEx(hardwareMap, getConfig.getMotorId, getConfig.getMotorCPR, getConfig.getMotorCPR);
+        motor.setInverted(getConfig.getIsInverted);
         motor.setRunMode(Motor.RunMode.RawPower);
     }
 
     @Override
-    public void startMechanism() {motor.set(0);}
+    public void startMechanism() {;}
 
     @Override
-    public void updateMechanism() {motor.set(set);}
+    public void updateMechanism() {
+        motor.set(getSet);
+    }
 
     @Override
-    public void stopMechanism() {motor.set(0);}
+    public void stopMechanism() {
+        motor.set(0);
+    }
 
 }
