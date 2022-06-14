@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
+import org.firstinspires.ftc.teamcode.Core.Utils.Sensors.IntegratedIMU;
 
 public class Pushbot extends EctoMechanism {
 
@@ -17,6 +18,7 @@ public class Pushbot extends EctoMechanism {
 
   PushbotConfig pushbotConfig;
   PIDFController pidf;
+  boolean usePids;
 
   private MotorEx leftMotor;
   private MotorEx rightMotor;
@@ -28,13 +30,17 @@ public class Pushbot extends EctoMechanism {
 
   DifferentialDrive pushbot;
 
+  public void usePIDController (boolean usePids){
+    this.usePids = usePids;
+  }
+
   public void movdeForward(double setPoint) {
     pidf.setSetPoint(setPoint);
   }
 
   public void setChassisMovement(double forwardSpeed, double turnSpeed) {
     allMotors.setRunMode(MotorEx.RunMode.RawPower);
-    pushbot.arcadeDrive(forwardSpeed, turnSpeed);
+    pushbot.arcadeDrive(-forwardSpeed, turnSpeed);
   }
 
   public void stopChassis() {
@@ -65,15 +71,20 @@ public class Pushbot extends EctoMechanism {
 
   @Override
   public void updateMechanism() {
+    if (usePids){
+      double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
 
-    double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
+      pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
 
-    pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
-
-    if (!pidf.atSetPoint()) {
-      rightMotors.set(PIDoutput * -1);
-      leftMotors.set(PIDoutput);
+      if (!pidf.atSetPoint()) {
+        rightMotors.set(PIDoutput * -1);
+        leftMotors.set(PIDoutput);
+      }
+    }else{
+      ;
     }
+
+
   }
 
   @Override

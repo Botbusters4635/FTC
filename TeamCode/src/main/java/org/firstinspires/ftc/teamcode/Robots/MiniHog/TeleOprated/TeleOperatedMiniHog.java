@@ -55,34 +55,36 @@ public class TeleOperatedMiniHog extends EctoOpMode {
 
     if (driverGamepad.getButton(Configuration.Buttons.dPadLeft)){
 
-      test.set((test.getAngle("test") + 1), AngleUnit.DEGREES);
-      test.set((test.getAngle("testTwo") + 1), AngleUnit.DEGREES);
+      test.set("test", (test.getAngle("test") + 1), AngleUnit.DEGREES);
+      test.set("testTwo", (test.getAngle("testTwo") + 1), AngleUnit.DEGREES);
     }
 
     if (driverGamepad.getButton(Configuration.Buttons.dPadRight)){
 
-      test.set((test.getAngle("test") - 1), AngleUnit.DEGREES);
-      test.set((test.getAngle("testTwo") - 1), AngleUnit.DEGREES);
+      test.set("test", (test.getAngle("test") - 1), AngleUnit.DEGREES);
+      test.set("testTwo", (test.getAngle("testTwo") - 1), AngleUnit.DEGREES);
     }
 
 
-//    if (driverGamepad.getButton(Configuration.Buttons.dPadUp)){
-//      arm.set(12);
-//    }
-//
-//    if (driverGamepad.getButton(Configuration.Buttons.dPadDown)){
-//      arm.set(-2);
-//    }else{
-//      arm.set(1);
-//    }
+    if (driverGamepad.getButton(Configuration.Buttons.dPadUp)){
+      arm.set(12);
+    }else if (driverGamepad.getButton(Configuration.Buttons.dPadDown)){
+      arm.set(-12);
+    }else{
+      arm.set(0.01);
+    }
 
     if (driverGamepad.getButton(Configuration.Buttons.a)){
       chassis.movdeForward(560);
     }
 
+
+
     if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightX() != 0) {
+      chassis.usePIDController(false);
       chassis.setChassisMovement(driverGamepad.getLeftY(), driverGamepad.getRightX());
     } else {
+      chassis.usePIDController(false);
       chassis.stopChassis();
     }
   }

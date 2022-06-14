@@ -23,9 +23,13 @@ public class DualServoMechanism extends EctoMechanism {
     ServoEx firstServo;
     ServoEx secondServo;
 
-    public void set(double set, AngleUnit unit) {
-        firstServo.turnToAngle(set / config.gearing, unit);
-        secondServo.turnToAngle(set / config.gearing, unit);
+    public void set(String servoId, double set, AngleUnit unit) {
+        if (Objects.equals(servoId, config.firstServoId)){
+            firstServo.turnToAngle(set / config.gearing, unit);
+
+        }else{
+            secondServo.turnToAngle(set / config.gearing, unit);
+        }
 
     }
 
