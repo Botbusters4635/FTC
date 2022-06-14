@@ -30,11 +30,20 @@ public class Pushbot extends EctoMechanism {
 
   DifferentialDrive pushbot;
 
+  public double ticksToMeters(double ticks){
+    return (ticks / pushbotConfig.ticksPerRev) * pushbotConfig.wheelCircumference;
+  }
+
+  public double metersToTicks(double meters){
+    return (meters / pushbotConfig.wheelCircumference) * pushbotConfig.ticksPerRev;
+  }
+
   public void usePIDController (boolean usePids){
     this.usePids = usePids;
   }
 
-  public void movdeForward(double setPoint) {
+  public void movdeForward(double setPointInMeters) {
+    double setPoint = metersToTicks(setPointInMeters);
     pidf.setSetPoint(setPoint);
   }
 
