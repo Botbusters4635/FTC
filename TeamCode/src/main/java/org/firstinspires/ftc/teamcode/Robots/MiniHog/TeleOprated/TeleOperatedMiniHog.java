@@ -92,9 +92,20 @@ public class TeleOperatedMiniHog extends EctoOpMode {
     }else if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightX() != 0) {
       chassis.usePIDController(false);
       chassis.setChassisMovement(driverGamepad.getLeftY(), driverGamepad.getRightX());
-    }else{
+    }else if (driverGamepad.getLeftY() == 0 && driverGamepad.getRightX() == 0){
+      if (chassis.getVel() >= 0){
+        chassis.setChassisMovement(-0.001, 0);
+      }
+      if (chassis.getVel() <= 0){
+        chassis.setChassisMovement(0.001, 0);
+      }
+    }
+    else{
       chassis.usePIDController(false);
       chassis.stopChassis();
     }
+    telemetry.addData("rightMotor Pose: ", chassis.getEncoder());
+    telemetry.update();
+
   }
 }

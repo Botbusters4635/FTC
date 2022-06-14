@@ -41,8 +41,12 @@ public class Pushbot extends EctoMechanism {
   public void usePIDController (boolean usePids){
     this.usePids = usePids;
   }
+  public double getEncoder(){
+    return rightMotor.getCurrentPosition();
+  }
 
   public void movdeForward(double setPointInMeters) {
+    allMotors.resetEncoder();
     double setPoint = metersToTicks(setPointInMeters);
     pidf.setSetPoint(setPoint);
   }
@@ -50,6 +54,10 @@ public class Pushbot extends EctoMechanism {
   public void setChassisMovement(double forwardSpeed, double turnSpeed) {
     allMotors.setRunMode(MotorEx.RunMode.RawPower);
     pushbot.arcadeDrive(-forwardSpeed, turnSpeed);
+  }
+
+  public double getVel(){
+    return (rightMotors.getVelocity() + -leftMotors.getVelocity()) / 2;
   }
 
   public void stopChassis() {
@@ -86,8 +94,8 @@ public class Pushbot extends EctoMechanism {
       pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
 
       if (!pidf.atSetPoint()) {
-        rightMotors.set(PIDoutput * -1);
-        leftMotors.set(PIDoutput);
+        rightMotors.set(PIDoutput);
+        leftMotors.set(PIDoutput * -1);
       }
     }else{
       ;
