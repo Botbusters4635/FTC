@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.Robots.MiniHog.TeleOprated;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.chassisConfig;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.clawConfig;
-//import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.chassisConfig;
-//import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.servoTestConfig;
 
-import android.graphics.Bitmap;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
@@ -30,7 +27,7 @@ public class TeleOperatedMiniHog extends EctoOpMode {
   DualServoMechanism arm;
   DualServoMechanism claw;
 
-  // Contreller
+  // Controller
   public static GamepadEx driverGamepad;
 
   @Override
@@ -45,7 +42,7 @@ public class TeleOperatedMiniHog extends EctoOpMode {
 
   @Override
   public void initRobot() {
-//    mechanismManager.addMechanism(chassis);
+    mechanismManager.addMechanism(chassis);
     mechanismManager.addMechanism(arm);
     mechanismManager.addMechanism(claw);
 

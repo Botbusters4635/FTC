@@ -85,9 +85,9 @@ public class Mecanum extends EctoMechanism {
         backRight = new MotorEx(hardwareMap, mecanumConfig.getbackRightId, mecanumConfig.getGobildaType);
 
         allMotors = new MotorGroup(frontLeft, frontRight, backRight, backLeft);
-
+//
         mecanum = new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
-
+//
         allMotors.setRunMode(Motor.RunMode.RawPower);
 
     }
