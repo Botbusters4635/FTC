@@ -121,6 +121,7 @@ public class TeleOperatedMiniHog extends EctoOpMode {
     } else {
 
       chassis.stopChassis();
+      chassis.applyBreak(-0.1);
     }
   }
 }
