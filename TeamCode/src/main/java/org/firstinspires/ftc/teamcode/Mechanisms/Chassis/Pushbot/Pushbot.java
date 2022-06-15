@@ -34,8 +34,6 @@ public class Pushbot extends EctoMechanism {
 
   private MotorGroup allMotors;
 
-  public RateLimiter rateLimiter;
-
   DifferentialDrive pushbot;
 
   public double ticksToMeters(double ticks){
@@ -64,6 +62,7 @@ public class Pushbot extends EctoMechanism {
   }
 
   public void turnToAngle(double angle){
+    imu.reset();
     yawPid.setSetPoint(angle);
   }
 
@@ -73,7 +72,11 @@ public class Pushbot extends EctoMechanism {
   }
 
   public double getVel(){
-    return (rightMotors.getVelocity() + -leftMotors.getVelocity()) / 2;
+    return (rightMotor.getVelocity() + -leftMotor.getVelocity()) / 2;
+  }
+
+  public double getHeading(){
+    return imu.getAbsoluteHeading();
   }
 
   public void stopChassis() {
@@ -103,7 +106,6 @@ public class Pushbot extends EctoMechanism {
     pushbot = new DifferentialDrive(leftMotors, rightMotors);
 
     allMotors.setRunMode(Motor.RunMode.RawPower);
-    rateLimiter = new RateLimiter(PushbotConfig.rateLimit, 0.0, 1.0);
   }
 
   @Override
@@ -114,14 +116,17 @@ public class Pushbot extends EctoMechanism {
     if (usePids){
       double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
       double yawOut = yawPid.calculate(imu.getAbsoluteHeading());
-      double output = rateLimiter.calculate(PIDoutput);
 
       pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
       yawPid.setPIDF(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
 
       if (!pidf.atSetPoint()) {
-        rightMotors.set(output);
-        leftMotors.set(-output);
+        rightMotors.set(PIDoutput);
+        leftMotors.set(PIDoutput * -1);
+      }
+      if (!yawPid.atSetPoint()){
+        rightMotors.set(yawOut);
+        leftMotors.set(yawOut);
       }
     }else{
       ;

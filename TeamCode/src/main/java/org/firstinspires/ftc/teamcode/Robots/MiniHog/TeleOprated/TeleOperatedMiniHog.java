@@ -51,7 +51,19 @@ public class TeleOperatedMiniHog extends EctoOpMode {
     // + ########################## + //
 
     // + CHASSIS BUTTON CONFIGURATION
-    if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightX() != 0) {
+    if (driverGamepad.getButton(Configuration.Buttons.x)){
+      chassis.usePIDController(true);
+      chassis.turnToAngle(90);
+    } else if (driverGamepad.getButton(Configuration.Buttons.y)){
+      chassis.usePIDController(true);
+      chassis.turnToAngle(-90);
+    } else if (driverGamepad.getButton(Configuration.Buttons.a)){
+      chassis.usePIDController(true);
+      chassis.movdeForward(1);
+    } else if (driverGamepad.getButton(Configuration.Buttons.b)){
+      chassis.usePIDController(true);
+      chassis.movdeForward(-1);
+    } else if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightX() != 0) {
 
       chassis.usePIDController(false);
       chassis.setChassisMovement(driverGamepad.getLeftY(), driverGamepad.getRightX());
@@ -59,10 +71,12 @@ public class TeleOperatedMiniHog extends EctoOpMode {
     } else if (driverGamepad.getLeftY() == 0 && driverGamepad.getRightX() == 0) {
 
       if (chassis.getVel() >= 0) {
+        chassis.usePIDController(false);
         chassis.setChassisMovement(-0.001, 0);
       }
 
       if (chassis.getVel() <= 0) {
+        chassis.usePIDController(false);
         chassis.setChassisMovement(0.001, 0);
       }
 
@@ -92,6 +106,7 @@ public class TeleOperatedMiniHog extends EctoOpMode {
 
     telemetry.addData("rightMotor encoder: ", chassis.getEncoder());
     telemetry.addData("rightMotor meter: ", chassis.getPose());
+    telemetry.addData("imu angle: ", chassis.getHeading());
     telemetry.update();
   }
 }
