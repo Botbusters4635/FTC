@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
-import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 public abstract class EctoOpMode extends OpMode {
 
@@ -54,21 +53,6 @@ public abstract class EctoOpMode extends OpMode {
     double timeStep = getRuntime() - lastTimeRunned;
     lastTimeRunned = getRuntime();
     updateRobot(timeStep);
-
-    if ((runtime.seconds() > 120) && endgameRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.endGameRumble);
-      endgameRumbleHasNotHappened = false;
-    }
-
-    if ((runtime.seconds() > 110) && cappingRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
-      cappingRumbleHasNotHappened = false;
-    }
-
-    if ((runtime.seconds() > 144) && wareHouseRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
-      wareHouseRumbleHasNotHappened = false;
-    }
 
   }
 

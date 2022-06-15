@@ -7,9 +7,8 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
-import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
-public class MecanumConfig extends Configuration {
+public class MecanumConfig{
 
     public MecanumConfig(String frontLeftId, String backLeftId, String frontRightId, String backRightId, String IMUId, Motor.GoBILDA GobildaMotorType) {
 

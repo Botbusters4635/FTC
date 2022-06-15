@@ -7,37 +7,35 @@ import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
 public class SimpleMotorMechanism extends EctoMechanism {
 
-    public SimpleMotorMechanism(String moduleName, String moduleType, SimpleMotorMechanismConfig config) {
-        super(moduleName, moduleType);
-        getConfig = config;
-    }
+  public SimpleMotorMechanism(
+      String moduleName, String moduleType, SimpleMotorMechanismConfig config) {
+    super(moduleName, moduleType);
+    getConfig = config;
+  }
 
-    SimpleMotorMechanismConfig getConfig;
-    MotorEx motor;
-    Double getSet = 0.0;
+  SimpleMotorMechanismConfig getConfig;
+  MotorEx motor;
 
-    public void set(double set){
-        getSet = set;
-    }
+  public void set(double set) {
+    motor.set(set);
+  }
 
-    @Override
-    public void initMechanism() {
-        motor = new MotorEx(hardwareMap, getConfig.getMotorId, getConfig.getMotorCPR, getConfig.getMotorCPR);
-        motor.setInverted(getConfig.getIsInverted);
-        motor.setRunMode(Motor.RunMode.RawPower);
-    }
+  @Override
+  public void initMechanism() {
+    motor = new MotorEx(hardwareMap, getConfig.getMotorId, getConfig.getMotorCPR, getConfig.getMotorCPR);
 
-    @Override
-    public void startMechanism() {;}
+    motor.setInverted(getConfig.getIsInverted);
 
-    @Override
-    public void updateMechanism() {
-        motor.set(getSet);
-    }
+    motor.setRunMode(Motor.RunMode.RawPower);
+  }
 
-    @Override
-    public void stopMechanism() {
-        motor.set(0);
-    }
+  @Override
+  public void startMechanism() {}
+
+  @Override
+  public void updateMechanism() {}
+
+  @Override
+  public void stopMechanism() {motor.set(0);}
 
 }
