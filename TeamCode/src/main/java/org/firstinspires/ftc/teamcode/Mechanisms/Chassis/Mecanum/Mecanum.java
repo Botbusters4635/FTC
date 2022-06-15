@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
+import org.firstinspires.ftc.teamcode.Core.Utils.RateLimiter.RateLimiter;
 import org.firstinspires.ftc.teamcode.Core.Utils.Sensors.IntegratedIMU;
 
 public class Mecanum extends EctoMechanism {
@@ -33,6 +34,9 @@ public class Mecanum extends EctoMechanism {
     private MotorEx frontRight;
     private MotorEx backRight;
 
+    private RateLimiter rateLimit;
+    double rateLimiterOut;
+
     private MotorGroup allMotors;
 
 
@@ -40,6 +44,10 @@ public class Mecanum extends EctoMechanism {
 
     private MecanumDrive mecanum;
 
+
+    public double getRateOut(){
+        return rateLimiterOut;
+    }
 
     public void setChassisMovement(double strafeSpeed, double forwardSpeed, double turnSpeed, orientation robotOrentationType) {
         allMotors.setRunMode(Motor.RunMode.RawPower);
@@ -91,14 +99,19 @@ public class Mecanum extends EctoMechanism {
 
         allMotors.setRunMode(Motor.RunMode.RawPower);
 
+        rateLimit = new RateLimiter(1, 0, 1);
+
     }
 
     @Override
     public void startMechanism() {
+        rateLimiterOut = rateLimit.calculate(MecanumConfig.rateIn);
+        rateLimit.setRateLimit(MecanumConfig.rate);
     }
 
     @Override
     public void updateMechanism() {
+        telemetry.addData("Status", getRateOut());
     }
 
     @Override

@@ -29,6 +29,9 @@ public class MecanumConfig extends Configuration {
     public String getbackLeftId;
     public String getbackRightId;
 
+    public static double rateIn;
+    public static double rate;
+
     public String getIMUId;
 
     public Motor.GoBILDA getGobildaType;

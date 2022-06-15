@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.Core.Utils.RateLimiter;
 
 import static com.arcrobotics.ftclib.util.MathUtils.clamp;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
-
+@Config
 public class RateLimiter {
+
+    public  double rateLimit, initalValue, prevTime;
 
     public RateLimiter(double rateLimit, double initalValue, double modifier){
         this.rateLimit = rateLimit;
@@ -16,20 +19,19 @@ public class RateLimiter {
 
     };
 
-    double rateLimit, initalValue, prevTime;
     ElapsedTime time = new ElapsedTime();
-    double prevVal;
-    double modifier;
+   public double prevVal;
+   public double modifier;
 
-    void setRateLimit(double rateLimit){
-        this.rateLimit = rateLimit;
+  public double setRateLimit(double rateLimit){
+      this.rateLimit = rateLimit;
+      return rateLimit;
     }
-
-    void setRateModifier(double modifier){
+    public void setRateModifier(double modifier){
         this.modifier = modifier;
     }
 
-    double calculate(double input) {
+  public double calculate(double input) {
         rateLimit *= modifier;
         double currentTime = time.now(TimeUnit.MILLISECONDS);
         double elapsedTime = currentTime - prevTime;
@@ -39,7 +41,7 @@ public class RateLimiter {
 
     }
 
-    void reset(double value){
+   public void reset(double value){
         prevVal = value;
         prevTime = time.now(TimeUnit.MILLISECONDS);
     }

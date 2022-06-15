@@ -6,13 +6,14 @@ package org.firstinspires.ftc.teamcode.Core.Managers;
 
 import android.os.SystemClock;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 
 import java.util.ArrayList;
-
+@Config
 public class MechanismManager {
 
     //CONSTRUCTORS
