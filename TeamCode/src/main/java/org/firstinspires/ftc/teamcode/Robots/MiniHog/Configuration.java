@@ -1,20 +1,26 @@
 package org.firstinspires.ftc.teamcode.Robots.MiniHog;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum.MecanumConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Pushbot.PushbotConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Motor.SimpleMotorMechanism;
 import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Motor.SimpleMotorMechanismConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Servo.DualServoMechanismConfig;
 import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Servo.SingleServoMechanismConfig;
-
+@Config
 public class Configuration {
 
     public static class Mechanisms {
-        public static PushbotConfig pushbotConfig = new PushbotConfig("leftMotor", "rightMotor", 560, 300);
-        public static SimpleMotorMechanismConfig armConfig = new SimpleMotorMechanismConfig("arm", 288, 125, true);
-        public static DualServoMechanismConfig servoTestConfig = new DualServoMechanismConfig("test", "testTwo", 270, 0, 1, false, true);
+        public static MecanumConfig chassisConfig = new MecanumConfig("frontLeft", "backLeft", "frontRight", "backRight", "imu", Motor.GoBILDA.RPM_223);
+        public static DualServoMechanismConfig armConfig = new DualServoMechanismConfig("rightServo", "leftServo", 270, 0, 1, true, false);
+        public static DualServoMechanismConfig clawConfig = new DualServoMechanismConfig("clawRight", "clawLeft", 270, 0, 1, false, true);
     }
+
+    public static double setRightServo = 0;
+    public static double setLeftServo = 0;
 
     public static class Buttons {
 
