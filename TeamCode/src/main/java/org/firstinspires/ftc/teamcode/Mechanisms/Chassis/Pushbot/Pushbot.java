@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 import org.firstinspires.ftc.teamcode.Core.Utils.Sensors.IntegratedIMU;
 import org.firstinspires.ftc.teamcode.Core.Utils.SlewRateLimiter.RateLimiter;
@@ -19,6 +20,10 @@ public class Pushbot extends EctoMechanism {
 
   PushbotConfig pushbotConfig;
   PIDFController pidf;
+  PIDFController yawPid;
+
+  public IntegratedIMU imu;
+
   boolean usePids;
 
   private MotorEx leftMotor;
@@ -58,6 +63,10 @@ public class Pushbot extends EctoMechanism {
     pidf.setSetPoint(setPoint);
   }
 
+  public void turnToAngle(double angle){
+    yawPid.setSetPoint(angle);
+  }
+
   public void setChassisMovement(double forwardSpeed, double turnSpeed) {
     allMotors.setRunMode(MotorEx.RunMode.RawPower);
     pushbot.arcadeDrive(-forwardSpeed, turnSpeed);
@@ -76,6 +85,12 @@ public class Pushbot extends EctoMechanism {
 
     pidf = new PIDFController(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
     pidf.setTolerance(30);
+
+    yawPid = new PIDFController(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
+    yawPid.setTolerance(0.1);
+
+    imu = new IntegratedIMU(hardwareMap, pushbotConfig.imuId);
+    imu.initSensor();
 
     leftMotor = new MotorEx(hardwareMap, pushbotConfig.getLeftId);
     rightMotor = new MotorEx(hardwareMap, pushbotConfig.getRightId);
@@ -98,13 +113,15 @@ public class Pushbot extends EctoMechanism {
   public void updateMechanism() {
     if (usePids){
       double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
-//      double output = rateLimiter.calculate(PIDoutput);
+      double yawOut = yawPid.calculate(imu.getAbsoluteHeading());
+      double output = rateLimiter.calculate(PIDoutput);
 
       pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
+      yawPid.setPIDF(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
 
       if (!pidf.atSetPoint()) {
-        rightMotors.set(PIDoutput);
-        leftMotors.set(-PIDoutput);
+        rightMotors.set(output);
+        leftMotors.set(-output);
       }
     }else{
       ;

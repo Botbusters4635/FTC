@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class PushbotConfig {
 
-    public  PushbotConfig(String leftId, String rightId, double cpr, double rpm, double wheelCircumference){
+    public  PushbotConfig(String leftId, String rightId, double cpr, double rpm, double wheelCircumference, String imuId){
 
         getLeftId = leftId;
         getRightId = rightId;
@@ -14,13 +14,19 @@ public class PushbotConfig {
         getRPM = rpm;
         this.wheelCircumference = wheelCircumference;
         this.ticksPerRev = cpr;
+        this.imuId = imuId;
 
     }
 
-    public static double p = 0.0005;
+    public static double p = 0.0025;
     public static double i = 0.0;
     public static double d = 0.0;
     public static double f = 0.0;
+
+    public static double yawP = 0.1;
+    public static double yawI = 0.0;
+    public static double yawD = 0.0;
+    public static double yawF = 0.0;
 
     public static double rateLimit = 0.5;
 
@@ -30,5 +36,6 @@ public class PushbotConfig {
     public static double getRPM;
     public static double wheelCircumference;
     public static double ticksPerRev;
+    public String imuId;
 
 }

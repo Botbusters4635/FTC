@@ -11,9 +11,8 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Generic.SimpleMechanism.Servo.S
 public class Configuration {
 
     public static class Mechanisms {
-        public static PushbotConfig pushbotConfig = new PushbotConfig("leftMotor", "rightMotor", 389, 300, 0.28272);
+        public static PushbotConfig pushbotConfig = new PushbotConfig("leftMotor", "rightMotor", 389, 300, 0.2827, "imu");
         public static SimpleMotorMechanismConfig armConfig = new SimpleMotorMechanismConfig("arm", 288, 125, true);
-        public static DualServoMechanismConfig servoTestConfig = new DualServoMechanismConfig("test", "testTwo", 270, 0, 1, false, true);
         public static SimpleMotorMechanismConfig intakeConfig = new SimpleMotorMechanismConfig("intakeMotor", 288, 125,false);
     }
 
