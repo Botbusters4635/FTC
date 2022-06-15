@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 import org.firstinspires.ftc.teamcode.Core.Utils.Sensors.IntegratedIMU;
@@ -35,6 +36,7 @@ public class Mecanum extends EctoMechanism {
 
     private MotorGroup allMotors;
 
+
     private final MecanumConfig mecanumConfig;
 
     private MecanumDrive mecanum;
@@ -59,6 +61,32 @@ public class Mecanum extends EctoMechanism {
 
     public void stopChassis(){
         mecanum.stop();
+    }
+
+    public void applyBreak(double set){
+        if (frontLeft.getVelocity() >= 0){
+            frontLeft.set(set);
+        }else{
+            frontLeft.set(-set);
+        }
+
+        if (frontRight.getVelocity() <= 0){
+            frontRight.set(set);
+        }else{
+            frontRight.set(-set);
+        }
+
+        if (backLeft.getVelocity() >= 0){
+            backLeft.set(set);
+        }else{
+            backLeft.set(-set);
+        }
+
+        if (backRight.getVelocity() <= 0){
+            backRight.set(set);
+        }else{
+            backRight.set(-set);
+        }
     }
 
     public void headAlways(int errorTolerance, GamepadKeys button) {
