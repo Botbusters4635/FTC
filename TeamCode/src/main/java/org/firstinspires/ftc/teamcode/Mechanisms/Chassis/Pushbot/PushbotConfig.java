@@ -17,10 +17,12 @@ public class PushbotConfig {
 
     }
 
-    public static double p = 0.1;
+    public static double p = 0.0005;
     public static double i = 0.0;
     public static double d = 0.0;
     public static double f = 0.0;
+
+    public static double rateLimit = 0.5;
 
     public String getLeftId;
     public String getRightId;

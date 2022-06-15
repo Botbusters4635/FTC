@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 import org.firstinspires.ftc.teamcode.Core.BaseClasses.EctoMechanism;
 import org.firstinspires.ftc.teamcode.Core.Utils.Sensors.IntegratedIMU;
+import org.firstinspires.ftc.teamcode.Core.Utils.SlewRateLimiter.RateLimiter;
 
 public class Pushbot extends EctoMechanism {
 
@@ -28,6 +29,8 @@ public class Pushbot extends EctoMechanism {
 
   private MotorGroup allMotors;
 
+  public RateLimiter rateLimiter;
+
   DifferentialDrive pushbot;
 
   public double ticksToMeters(double ticks){
@@ -43,6 +46,10 @@ public class Pushbot extends EctoMechanism {
   }
   public double getEncoder(){
     return rightMotor.getCurrentPosition();
+  }
+
+  public double getPose(){
+    return ticksToMeters(rightMotor.getCurrentPosition());
   }
 
   public void movdeForward(double setPointInMeters) {
@@ -81,6 +88,7 @@ public class Pushbot extends EctoMechanism {
     pushbot = new DifferentialDrive(leftMotors, rightMotors);
 
     allMotors.setRunMode(Motor.RunMode.RawPower);
+    rateLimiter = new RateLimiter(PushbotConfig.rateLimit, 0.0, 1.0);
   }
 
   @Override
@@ -90,12 +98,13 @@ public class Pushbot extends EctoMechanism {
   public void updateMechanism() {
     if (usePids){
       double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
+//      double output = rateLimiter.calculate(PIDoutput);
 
       pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
 
       if (!pidf.atSetPoint()) {
         rightMotors.set(PIDoutput);
-        leftMotors.set(PIDoutput * -1);
+        leftMotors.set(-PIDoutput);
       }
     }else{
       ;
