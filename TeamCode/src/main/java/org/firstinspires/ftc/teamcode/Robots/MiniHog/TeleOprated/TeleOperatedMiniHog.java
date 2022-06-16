@@ -54,17 +54,37 @@ public class TeleOperatedMiniHog extends EctoOpMode {
         // + ########################## + //
 
         // + CHASSIS BUTTON CONFIUGRATION
-        if (driverGamepad.getLeftY() != 0
+        if (driverGamepad.getLeftY() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)
+                || driverGamepad.getLeftX() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)
+                || driverGamepad.getRightX() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)) {
+            chassis.setChassisMovement(
+                    driverGamepad.getLeftX() * -.325,
+                    driverGamepad.getLeftY() * -.325,
+                    driverGamepad.getRightX() * -.325,
+                    Mecanum.orientation.field);
+
+
+        } else if (driverGamepad.getLeftY() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)
+                || driverGamepad.getLeftX() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)
+                || driverGamepad.getRightX() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)) {
+            chassis.setChassisMovement(
+                    driverGamepad.getLeftX() * -.5,
+                    driverGamepad.getLeftY() * -.5,
+                    driverGamepad.getRightX() * -.5,
+                    Mecanum.orientation.field);
+
+
+        } else if (driverGamepad.getLeftY() != 0
                 || driverGamepad.getLeftX() != 0
                 || driverGamepad.getRightX() != 0) {
             chassis.setChassisMovement(
-                    driverGamepad.getLeftX(),
-                    driverGamepad.getLeftY(),
-                    driverGamepad.getRightX(),
+                    driverGamepad.getLeftX() * -1,
+                    driverGamepad.getLeftY() * -1,
+                    driverGamepad.getRightX() * -1,
                     Mecanum.orientation.field);
-        }
 
-        if (driverGamepad.getLeftY() == 0
+
+        } else if (driverGamepad.getLeftY() == 0
                 || driverGamepad.getLeftX() == 0
                 || driverGamepad.getRightX() == 0) {
             chassis.setChassisMovement(
@@ -72,27 +92,7 @@ public class TeleOperatedMiniHog extends EctoOpMode {
                     0.0000000001,
                     0.0,
                     Mecanum.orientation.field);
-        }
-
-
-        if (driverGamepad.getLeftY() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)
-                || driverGamepad.getLeftX() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)
-                || driverGamepad.getRightX() != 0 && driverGamepad.getButton(Configuration.Buttons.rightBumper)) {
-            chassis.setChassisMovement(
-                    driverGamepad.getLeftX() * .325,
-                    driverGamepad.getLeftY() * .325,
-                    driverGamepad.getRightX() * .325,
-                    Mecanum.orientation.field);
-        }
-
-        if (driverGamepad.getLeftY() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)
-                || driverGamepad.getLeftX() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)
-                || driverGamepad.getRightX() != 0 && driverGamepad.getButton(Configuration.Buttons.leftBumper)) {
-            chassis.setChassisMovement(
-                    driverGamepad.getLeftX() * .325,
-                    driverGamepad.getLeftY() * .325,
-                    driverGamepad.getRightX() * .325,
-                    Mecanum.orientation.field);
+            chassis.applyBreak(0.01);
         }
 
         // + ARM BUTTON CONFIGURATION
@@ -124,6 +124,9 @@ public class TeleOperatedMiniHog extends EctoOpMode {
             claw.set("clawRight", 100, AngleUnit.DEGREES);
             claw.set("clawLeft", 100, AngleUnit.DEGREES);
         }
+
+        telemetry.addData("Robot Heading: ", chassis.getHeading());
+        telemetry.update();
 
     }
 }

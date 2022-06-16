@@ -53,8 +53,8 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(7.6, 0, 0.00008);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7.7, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(5, 0, 0.000005);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(4.8, 0, 0.000001);
 
     public static double LATERAL_MULTIPLIER = 1.178474103883293; // eported y value / measured distance
 
@@ -99,10 +99,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         // upward (normal to the floor) using a command like the following:
         // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
-        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
-        backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
-        backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
+        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRightMotor = hardwareMap.get(DcMotorEx.class, "backRight");
+        frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRight");
 
         motors = Arrays.asList(frontLeftMotor, backLeftMotor, backRightMotor, frontRightMotor);
 

@@ -55,6 +55,10 @@ public class Mecanum extends EctoMechanism {
 
     }
 
+    public double getHeading() {
+        return imu.getHeading();
+    }
+
     public void resetHeading(){
         imu.reset();
     }

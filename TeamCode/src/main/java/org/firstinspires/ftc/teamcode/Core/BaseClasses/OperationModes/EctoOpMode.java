@@ -8,100 +8,84 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Core.Managers.MechanismManager;
-import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
 
 public abstract class EctoOpMode extends OpMode {
 
-  ElapsedTime runtime = new ElapsedTime();
+    ElapsedTime runtime = new ElapsedTime();
 
-  boolean endgameRumbleHasNotHappened = true;
-  boolean cappingRumbleHasNotHappened = true;
-  boolean wareHouseRumbleHasNotHappened = true;
+    boolean endgameRumbleHasNotHappened = true;
+    boolean cappingRumbleHasNotHappened = true;
+    boolean wareHouseRumbleHasNotHappened = true;
 
 
-  Double lastTimeRunned = 0.0;
-  int updateRate = 10; // Milliseconds
-  public MechanismManager mechanismManager;
+    Double lastTimeRunned = 0.0;
+    int updateRate = 10; // Milliseconds
+    public MechanismManager mechanismManager;
 
-  @Override
-  public final void init() {
-    mechanismManager = new MechanismManager();
-    initRobotClasses();
-  }
-
-  @Override
-  public final void init_loop() {
-    initRobot();
-    telemetry.setMsTransmissionInterval(updateRate);
-    mechanismManager.telemetry = telemetry;
-    mechanismManager.hardwareMap = hardwareMap;
-    mechanismManager.initMechanisms();
-  }
-
-  @Override
-  public final void start() {
-    runtime.reset();
-    runtime.startTime();
-    lastTimeRunned = getRuntime();
-    mechanismManager.startMechanisms();
-    startRobot();
-  }
-
-  @Override
-  public final void loop() {
-
-    mechanismManager.updateMechanisms();
-    double timeStep = getRuntime() - lastTimeRunned;
-    lastTimeRunned = getRuntime();
-    updateRobot(timeStep);
-
-    if ((runtime.seconds() > 120) && endgameRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.endGameRumble);
-      endgameRumbleHasNotHappened = false;
+    @Override
+    public final void init() {
+        mechanismManager = new MechanismManager();
+        initRobotClasses();
     }
 
-    if ((runtime.seconds() > 110) && cappingRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
-      cappingRumbleHasNotHappened = false;
+    @Override
+    public final void init_loop() {
+        initRobot();
+        telemetry.setMsTransmissionInterval(updateRate);
+        mechanismManager.telemetry = telemetry;
+        mechanismManager.hardwareMap = hardwareMap;
+        mechanismManager.initMechanisms();
     }
 
-    if ((runtime.seconds() > 144) && wareHouseRumbleHasNotHappened) {
-      gamepad1.runRumbleEffect(Configuration.Mechanisms.RumbleEffects.cappingRumble);
-      wareHouseRumbleHasNotHappened = false;
+    @Override
+    public final void start() {
+        runtime.reset();
+        runtime.startTime();
+        lastTimeRunned = getRuntime();
+        mechanismManager.startMechanisms();
+        startRobot();
     }
 
-  }
+    @Override
+    public final void loop() {
 
-  /*
-  - Runs Once Press Stop
-  - Stops Everything.
-  */
-  public final void stop() {
-    mechanismManager.stopMechanisms();
-  }
+        mechanismManager.updateMechanisms();
+        double timeStep = getRuntime() - lastTimeRunned;
+        lastTimeRunned = getRuntime();
+        updateRobot(timeStep);
 
-  /*
-  - Runs Once You Select The OP Mode On The Driver Station
-  - Used To Create The Objects Used In The Tele-Op Mode
-  */
-  public abstract void initRobotClasses();
+    }
 
-  /*
-  - Runs When You Click "Init" On The Driver Station
-  - Used To Add Mechanism To The Mechanism Manager
-  */
-  public abstract void initRobot();
+    /*
+    - Runs Once Press Stop
+    - Stops Everything.
+    */
+    public final void stop() {
+        mechanismManager.stopMechanisms();
+    }
 
-  /*
-  - Runs When You click "Start" On The Driver Station
-  - Used To Move Certain Mechanims To Their Starting Point
-  */
-  public abstract void startRobot();
+    /*
+    - Runs Once You Select The OP Mode On The Driver Station
+    - Used To Create The Objects Used In The Tele-Op Mode
+    */
+    public abstract void initRobotClasses();
 
-  /*
-  - Runs After You Click "Start" On The Driver Station
-  - Used To Get The Input From The Controllers and "Control" The Mechanisms
-  - Runs Every 10 Miliseconds
-  */
-  public abstract void updateRobot(Double timeStep);
+    /*
+    - Runs When You Click "Init" On The Driver Station
+    - Used To Add Mechanism To The Mechanism Manager
+    */
+    public abstract void initRobot();
+
+    /*
+    - Runs When You click "Start" On The Driver Station
+    - Used To Move Certain Mechanims To Their Starting Point
+    */
+    public abstract void startRobot();
+
+    /*
+    - Runs After You Click "Start" On The Driver Station
+    - Used To Get The Input From The Controllers and "Control" The Mechanisms
+    - Runs Every 10 Miliseconds
+    */
+    public abstract void updateRobot(Double timeStep);
 }

@@ -7,7 +7,7 @@ package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Mecanum;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
-import org.firstinspires.ftc.teamcode.Robots.Happy.Configuration;
+import org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration;
 
 public class MecanumConfig extends Configuration {
 
