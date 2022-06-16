@@ -89,17 +89,6 @@ public class Mecanum extends EctoMechanism {
         }
     }
 
-    public void headAlways(int errorTolerance, GamepadKeys button) {
-
-        if (imu.getHeading() < errorTolerance * -1 && imu.getHeading() < 0) {
-            setChassisMovement(0.0, 0.0, 1, orientation.robot);
-        }
-
-        if (imu.getHeading() > errorTolerance && imu.getHeading() > 0) {
-            setChassisMovement(0.0, 0.0, -1, orientation.robot);
-        }
-
-    }
 
     @Override
     public void initMechanism() {
