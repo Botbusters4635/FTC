@@ -44,6 +44,8 @@ public class Pushbot extends EctoMechanism {
 
   double yawOut;
 
+  double stateAtAngleBegin;
+
   public double ticksToMeters(double ticks){
     return (ticks / pushbotConfig.ticksPerRev) * pushbotConfig.wheelCircumference;
   }
@@ -150,13 +152,14 @@ public class Pushbot extends EctoMechanism {
       yawRateLimiter.setRateLimit(PushbotConfig.yawRateLimit);
 
       yawPid.setPIDF(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
+      yawPid.setTolerance(PushbotConfig.yawPidTol);
 
       if (!yawPid.atSetPoint()) {
         if (abs(yawRate) > PushbotConfig.yawVelLimit){
           yawRate = Math.copySign(PushbotConfig.yawVelLimit, yawRate);
         }
-        rightMotors.set(yawOut);
-        leftMotors.set(yawOut);
+        rightMotors.set(-yawRate);
+        leftMotors.set(-yawRate);
       }
 
     }else{

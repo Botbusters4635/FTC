@@ -23,16 +23,18 @@ public class PushbotConfig {
     public static double d = 0.0001;
     public static double f = 0.0;
 
-    public static double yawP = 0;
+    public static double yawP = 0.09;
     public static double yawI = 0;
-    public static double yawD = 0;
+    public static double yawD = 0.0009;
     public static double yawF = 0;
 
     public static double rateLimit = 0.01;
     public static double velLimit = 0.7;
 
-    public static double yawRateLimit = 0;
-    public static double yawVelLimit = 0;
+    public static double yawRateLimit = 0.09;
+    public static double yawVelLimit = 0.5;
+
+    public static double yawPidTol = 1;
 
     public String getLeftId;
     public String getRightId;
