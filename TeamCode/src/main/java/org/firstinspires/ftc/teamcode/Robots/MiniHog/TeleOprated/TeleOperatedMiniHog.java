@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Robots.MiniHog.TeleOprated;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.armConfig;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.intakeConfig;
 import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.pushbotConfig;
-import static org.firstinspires.ftc.teamcode.Robots.MiniHog.Configuration.Mechanisms.servoTestConfig;
 
 import android.graphics.Bitmap;
 
@@ -27,7 +26,6 @@ public class TeleOperatedMiniHog extends EctoOpMode {
   Pushbot chassis;
   SimpleMotorMechanism arm;
   SimpleMotorMechanism intake;
-  DualServoMechanism test;
 
   // Contrellers
   public static GamepadEx driverGamepad;
@@ -39,7 +37,6 @@ public class TeleOperatedMiniHog extends EctoOpMode {
 
     chassis = new Pushbot("ChassisPushbot", "Mechanism", pushbotConfig);
     arm = new SimpleMotorMechanism("arm", "Mechanism", armConfig);
-    test = new DualServoMechanism("test", "Mechanism", servoTestConfig);
     intake = new SimpleMotorMechanism("intake", "Mechanism", intakeConfig);
 
   }
@@ -48,7 +45,6 @@ public class TeleOperatedMiniHog extends EctoOpMode {
   public void initRobot() {
     mechanismManager.addMechanism(chassis);
     mechanismManager.addMechanism(arm);
-    mechanismManager.addMechanism(test);
     mechanismManager.addMechanism(intake);
 
   }
@@ -63,18 +59,6 @@ public class TeleOperatedMiniHog extends EctoOpMode {
       intake.set(12);
     }else{
       intake.set(0);
-    }
-
-    if (driverGamepad.getButton(Configuration.Buttons.dPadLeft)){
-
-      test.set("test", (test.getAngle("test") + 1), AngleUnit.DEGREES);
-      test.set("testTwo", (test.getAngle("testTwo") + 1), AngleUnit.DEGREES);
-    }
-
-    if (driverGamepad.getButton(Configuration.Buttons.dPadRight)){
-
-      test.set("test", (test.getAngle("test") - 1), AngleUnit.DEGREES);
-      test.set("testTwo", (test.getAngle("testTwo") - 1), AngleUnit.DEGREES);
     }
 
 
@@ -92,23 +76,33 @@ public class TeleOperatedMiniHog extends EctoOpMode {
     }else if (driverGamepad.getButton(Configuration.Buttons.a)){
       chassis.usePIDController(true);
       chassis.movdeForward(1);
+    }  else if (driverGamepad.getButton(Configuration.Buttons.x)){
+      chassis.usePIDController(true);
+      chassis.turnToAngle(90);
+    } else if (driverGamepad.getButton(Configuration.Buttons.y)) {
+      chassis.usePIDController(true);
+      chassis.turnToAngle(-90);
     } else if (driverGamepad.getLeftY() != 0 || driverGamepad.getRightX() != 0) {
       chassis.usePIDController(false);
       chassis.setChassisMovement(driverGamepad.getLeftY(), driverGamepad.getRightX());
-    }else if (driverGamepad.getLeftY() == 0 && driverGamepad.getRightX() == 0){
-      if (chassis.getVel() >= 0){
-        chassis.setChassisMovement(-0.001, 0);
-      }
-      if (chassis.getVel() <= 0){
-        chassis.setChassisMovement(0.001, 0);
-      }
     }
-    else{
-      chassis.usePIDController(false);
-      chassis.stopChassis();
-    }
+
+//    }else if (driverGamepad.getLeftY() == 0 && driverGamepad.getRightX() == 0){
+//      if (chassis.getVel() >= 0){
+//        chassis.setChassisMovement(-0.001, 0);
+//      }
+//      if (chassis.getVel() <= 0){
+//        chassis.setChassisMovement(0.001, 0);
+//      }
+//    }
+//    else{
+//      chassis.usePIDController(false);
+//      chassis.stopChassis();
+//    }
     telemetry.addData("rightMotor encoder: ", chassis.getEncoder());
     telemetry.addData("rightMotor meter: ", chassis.getPose());
+    telemetry.addData("Chassis heading: ", chassis.getHeading());
+    telemetry.addData("yawOut: ", chassis.getYawOut());
     telemetry.update();
 
   }

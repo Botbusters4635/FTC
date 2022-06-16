@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.Mechanisms.Chassis.Pushbot;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.copySign;
+
+import androidx.annotation.IntegerRes;
+
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -19,7 +24,10 @@ public class Pushbot extends EctoMechanism {
 
   PushbotConfig pushbotConfig;
   PIDFController pidf;
+  PIDFController yawPid;
   boolean usePids;
+
+  public IntegratedIMU imu;
 
   private MotorEx leftMotor;
   private MotorEx rightMotor;
@@ -30,8 +38,11 @@ public class Pushbot extends EctoMechanism {
   private MotorGroup allMotors;
 
   public RateLimiter rateLimiter;
+  public RateLimiter yawRateLimiter;
 
   DifferentialDrive pushbot;
+
+  double yawOut;
 
   public double ticksToMeters(double ticks){
     return (ticks / pushbotConfig.ticksPerRev) * pushbotConfig.wheelCircumference;
@@ -71,11 +82,31 @@ public class Pushbot extends EctoMechanism {
     pushbot.stop();
   }
 
+  public double getHeading(){
+    return imu.getHeading();
+  }
+
+  public void turnToAngle(double angle){
+    imu.reset();
+    yawPid.setSetPoint(angle);
+  }
+
+  public double getYawOut() {
+    return yawOut;
+  }
+
   @Override
   public void initMechanism() {
 
     pidf = new PIDFController(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
     pidf.setTolerance(30);
+
+    yawPid = new PIDFController(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
+    yawPid.setTolerance(2);
+
+    imu = new IntegratedIMU(hardwareMap, pushbotConfig.imuId);
+    imu.initSensor();
+
 
     leftMotor = new MotorEx(hardwareMap, pushbotConfig.getLeftId);
     rightMotor = new MotorEx(hardwareMap, pushbotConfig.getRightId);
@@ -89,6 +120,8 @@ public class Pushbot extends EctoMechanism {
 
     allMotors.setRunMode(Motor.RunMode.RawPower);
     rateLimiter = new RateLimiter(PushbotConfig.rateLimit, 0.0, 1.0);
+    yawRateLimiter = new RateLimiter(PushbotConfig.yawRateLimit, 0.0, 1.0);
+
   }
 
   @Override
@@ -97,15 +130,35 @@ public class Pushbot extends EctoMechanism {
   @Override
   public void updateMechanism() {
     if (usePids){
-      double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
+//      double PIDoutput = pidf.calculate(rightMotor.getCurrentPosition());
 //      double output = rateLimiter.calculate(PIDoutput);
+//
+//      rateLimiter.setRateLimit(PushbotConfig.rateLimit);
+//
+//      pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
+//
+//      if (!pidf.atSetPoint()) {
+//        if (abs(output) > PushbotConfig.velLimit){
+//          output = Math.copySign(PushbotConfig.velLimit, output);
+//        }
+//        rightMotors.set(output);
+//        leftMotors.set(-output);
+//      }
+      yawOut = yawPid.calculate(imu.getHeading());
+      double yawRate = rateLimiter.calculate(yawOut);
 
-      pidf.setPIDF(PushbotConfig.p, PushbotConfig.i, PushbotConfig.d, PushbotConfig.f);
+      yawRateLimiter.setRateLimit(PushbotConfig.yawRateLimit);
 
-      if (!pidf.atSetPoint()) {
-        rightMotors.set(PIDoutput);
-        leftMotors.set(-PIDoutput);
+      yawPid.setPIDF(PushbotConfig.yawP, PushbotConfig.yawI, PushbotConfig.yawD, PushbotConfig.yawF);
+
+      if (!yawPid.atSetPoint()) {
+        if (abs(yawRate) > PushbotConfig.yawVelLimit){
+          yawRate = Math.copySign(PushbotConfig.yawVelLimit, yawRate);
+        }
+        rightMotors.set(yawOut);
+        leftMotors.set(yawOut);
       }
+
     }else{
       ;
     }
