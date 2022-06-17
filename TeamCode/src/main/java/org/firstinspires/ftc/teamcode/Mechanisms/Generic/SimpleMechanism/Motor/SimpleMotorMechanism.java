@@ -20,6 +20,10 @@ public class SimpleMotorMechanism extends EctoMechanism {
         getSet = set;
     }
 
+//    public double getVel(){
+//        return motor.getVelocity();
+//    }
+
     @Override
     public void initMechanism() {
         motor = new MotorEx(hardwareMap, getConfig.getMotorId, getConfig.getMotorCPR, getConfig.getMotorCPR);

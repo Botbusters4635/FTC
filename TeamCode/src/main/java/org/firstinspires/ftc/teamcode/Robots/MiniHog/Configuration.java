@@ -15,8 +15,10 @@ public class Configuration {
 
     public static class Mechanisms {
         public static MecanumConfig chassisConfig = new MecanumConfig("frontLeft", "backLeft", "frontRight", "backRight", "imu", Motor.GoBILDA.RPM_223);
-        public static DualServoMechanismConfig armConfig = new DualServoMechanismConfig("rightServo", "leftServo", 270, 0, 1, true, false);
+        public static SimpleMotorMechanismConfig rightArmConfig = new SimpleMotorMechanismConfig("rightArm", 288, 125, true);
+        public static SimpleMotorMechanismConfig leftArmConfig = new SimpleMotorMechanismConfig("leftArm", 288, 125, false);
         public static DualServoMechanismConfig clawConfig = new DualServoMechanismConfig("clawRight", "clawLeft", 270, 0, 1, false, true);
+        public static SimpleMotorMechanismConfig intakeConfig = new SimpleMotorMechanismConfig("intakeMotor", 288, 125,true);
     }
 
     public static double setRightServo = 0;
